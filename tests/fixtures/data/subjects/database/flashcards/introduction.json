@@ -1,0 +1,36 @@
+{
+  "name": "Database fundamentals",
+  "description": "Data, databases, and the role of a DBMS.",
+  "questions": [
+    {
+      "id": "introduction-0",
+      "type": "flashcard",
+      "prompt": "What is a database?",
+      "answer": "An organized collection of related data.",
+      "explanation": "A database gives data structure so it can be stored, queried, and maintained.",
+      "tags": [
+        "introduction"
+      ]
+    },
+    {
+      "id": "introduction-1",
+      "type": "flashcard",
+      "prompt": "What is a DBMS?",
+      "answer": "A database management system.",
+      "explanation": "A DBMS provides tools to define, query, secure, and update a database.",
+      "tags": [
+        "introduction"
+      ]
+    },
+    {
+      "id": "introduction-2",
+      "type": "flashcard",
+      "prompt": "What does data independence mean?",
+      "answer": "Applications can be insulated from changes to data storage details.",
+      "explanation": "A DBMS separates logical access to data from its physical storage.",
+      "tags": [
+        "introduction"
+      ]
+    }
+  ]
+}

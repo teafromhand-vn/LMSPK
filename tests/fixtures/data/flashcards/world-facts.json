@@ -1,0 +1,111 @@
+{
+  "name": "A world of discovery",
+  "description": "Follow your curiosity through a collection of surprising world facts.",
+  "questions": [
+    {
+      "type": "flashcard",
+      "prompt": "What is an isotope?",
+      "answer": "One of two or more atoms of the same element with the same number of protons but different numbers of neutrons.",
+      "difficulty": "medium",
+      "tags": [
+        "chemistry"
+      ],
+      "explanation": "Isotopes share an atomic number but have different mass numbers.",
+      "id": "world-facts-1"
+    },
+    {
+      "type": "flashcard",
+      "prompt": "What is a prime number?",
+      "answer": "A whole number greater than 1 with exactly two positive divisors: 1 and itself.",
+      "difficulty": "easy",
+      "tags": [
+        "mathematics"
+      ],
+      "explanation": "Numbers such as 2, 3, 5, and 7 are prime; 1 is not.",
+      "id": "world-facts-2"
+    },
+    {
+      "type": "flashcard",
+      "prompt": "What does “renewable resource” mean?",
+      "answer": "A natural resource replenished on a human timescale when managed or used appropriately.",
+      "difficulty": "medium",
+      "tags": [
+        "environment",
+        "energy"
+      ],
+      "explanation": "Solar and wind energy are renewable; a renewable resource can still be depleted locally if mismanaged.",
+      "id": "world-facts-3"
+    },
+    {
+      "type": "flashcard",
+      "prompt": "What is a fossil?",
+      "answer": "Preserved remains, traces, or other evidence of ancient organisms, usually found in rock or sediment.",
+      "difficulty": "easy",
+      "tags": [
+        "earth-science",
+        "history"
+      ],
+      "explanation": "Fossils include body remains such as bones as well as traces such as footprints.",
+      "id": "world-facts-4"
+    },
+    {
+      "type": "flashcard",
+      "prompt": "What does an ISBN identify?",
+      "answer": "A specific edition and format of a published book.",
+      "difficulty": "medium",
+      "tags": [
+        "books",
+        "culture"
+      ],
+      "explanation": "Different formats or editions of a book generally have different ISBNs.",
+      "id": "world-facts-5"
+    },
+    {
+      "type": "flashcard",
+      "prompt": "What is a lingua franca?",
+      "answer": "A language used as a common means of communication among people with different native languages.",
+      "difficulty": "medium",
+      "tags": [
+        "language",
+        "culture"
+      ],
+      "explanation": "A lingua franca enables communication across language communities in trade, diplomacy, or other settings.",
+      "id": "world-facts-6"
+    },
+    {
+      "type": "flashcard",
+      "prompt": "What does “UNESCO World Heritage Site” designate?",
+      "answer": "A place recognized for cultural or natural value considered to have outstanding universal significance.",
+      "difficulty": "medium",
+      "tags": [
+        "organizations",
+        "culture"
+      ],
+      "explanation": "World Heritage status is based on criteria established by the UNESCO World Heritage Convention.",
+      "id": "world-facts-7"
+    },
+    {
+      "type": "flashcard",
+      "prompt": "What is an embargo?",
+      "answer": "An official restriction or ban on trade with a particular country or on particular goods.",
+      "difficulty": "medium",
+      "tags": [
+        "civics",
+        "economics"
+      ],
+      "explanation": "Governments may impose an embargo as a foreign-policy or security measure.",
+      "id": "world-facts-8"
+    },
+    {
+      "type": "flashcard",
+      "prompt": "What is the median of a data set?",
+      "answer": "The middle value when the observations are arranged in order; for an even count, it is the mean of the two middle values.",
+      "difficulty": "medium",
+      "tags": [
+        "mathematics"
+      ],
+      "explanation": "The median is less affected by extreme values than the arithmetic mean.",
+      "id": "world-facts-9"
+    }
+  ]
+}

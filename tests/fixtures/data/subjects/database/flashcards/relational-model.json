@@ -1,0 +1,36 @@
+{
+  "name": "Tables, keys & relationships",
+  "description": "Tables, keys, and relationships.",
+  "questions": [
+    {
+      "id": "relational-model-0",
+      "type": "flashcard",
+      "prompt": "What is a primary key?",
+      "answer": "An attribute or set of attributes that uniquely identifies a row.",
+      "explanation": "A primary key is unique and cannot contain null values.",
+      "tags": [
+        "relational-model"
+      ]
+    },
+    {
+      "id": "relational-model-1",
+      "type": "flashcard",
+      "prompt": "What is a foreign key?",
+      "answer": "An attribute or set of attributes referencing a key in another or the same table.",
+      "explanation": "Foreign keys help enforce referential integrity.",
+      "tags": [
+        "relational-model"
+      ]
+    },
+    {
+      "id": "relational-model-2",
+      "type": "flashcard",
+      "prompt": "What does a row represent?",
+      "answer": "One record or tuple in a relation.",
+      "explanation": "Columns describe attributes; rows hold individual records.",
+      "tags": [
+        "relational-model"
+      ]
+    }
+  ]
+}

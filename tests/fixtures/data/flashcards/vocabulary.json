@@ -1,0 +1,94 @@
+{
+  "name": "Words worth knowing",
+  "description": "Find the right words. Explore meanings, nuances, and new expressions.",
+  "questions": [
+    {
+      "type": "flashcard",
+      "prompt": "Define \"sycophant\".",
+      "answer": "A person who flatters someone powerful to gain an advantage.",
+      "difficulty": "medium",
+      "tags": [
+        "definitions"
+      ],
+      "explanation": "Merriam-Webster describes a self-seeking flatterer. Example: The sycophant praised every decision to gain favor.",
+      "id": "vocabulary-1"
+    },
+    {
+      "type": "flashcard",
+      "prompt": "Define \"equanimity\".",
+      "answer": "Calmness and composure, especially in a difficult situation.",
+      "difficulty": "medium",
+      "tags": [
+        "definitions"
+      ],
+      "explanation": "Merriam-Webster: \"evenness of mind especially under stress\". Example: She handled the delay with equanimity.",
+      "id": "vocabulary-2"
+    },
+    {
+      "type": "flashcard",
+      "prompt": "What does “deference” mean?",
+      "answer": "Respectful submission to another person’s judgment, authority, or wishes.",
+      "difficulty": "hard",
+      "tags": [
+        "definitions"
+      ],
+      "explanation": "A person may defer to an expert out of respect for that person’s knowledge.",
+      "id": "vocabulary-3"
+    },
+    {
+      "type": "flashcard",
+      "prompt": "What does “delineate” mean?",
+      "answer": "To describe, outline, or mark the boundaries of something clearly.",
+      "difficulty": "hard",
+      "tags": [
+        "definitions"
+      ],
+      "explanation": "A report can delineate the responsibilities of each group.",
+      "id": "vocabulary-4"
+    },
+    {
+      "type": "flashcard",
+      "prompt": "What does “deride” mean?",
+      "answer": "To ridicule or mock someone or something scornfully.",
+      "difficulty": "hard",
+      "tags": [
+        "definitions"
+      ],
+      "explanation": "Derision expresses contempt, often through mocking words.",
+      "id": "vocabulary-5"
+    },
+    {
+      "type": "flashcard",
+      "prompt": "What does “despondent” mean?",
+      "answer": "Very discouraged or low in spirits.",
+      "difficulty": "hard",
+      "tags": [
+        "definitions"
+      ],
+      "explanation": "A despondent person has lost hope or confidence.",
+      "id": "vocabulary-6"
+    },
+    {
+      "type": "flashcard",
+      "prompt": "What does “discern” mean?",
+      "answer": "To perceive, recognize, or distinguish something, often with effort.",
+      "difficulty": "hard",
+      "tags": [
+        "definitions"
+      ],
+      "explanation": "A reader may discern a subtle pattern after close examination.",
+      "id": "vocabulary-7"
+    },
+    {
+      "type": "flashcard",
+      "prompt": "What does “eclectic” mean?",
+      "answer": "Drawing ideas or styles from a varied range of sources.",
+      "difficulty": "hard",
+      "tags": [
+        "definitions"
+      ],
+      "explanation": "An eclectic collection includes works chosen from different styles or traditions.",
+      "id": "vocabulary-8"
+    }
+  ]
+}

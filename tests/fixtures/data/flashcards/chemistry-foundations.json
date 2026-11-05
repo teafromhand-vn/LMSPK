@@ -1,0 +1,214 @@
+{
+  "name": "Chemistry foundations",
+  "description": "Get to know atoms, elements, and the building blocks of matter.",
+  "questions": [
+    {
+      "type": "flashcard",
+      "prompt": "What is a controlled variable?",
+      "answer": "A factor kept the same during a test so its effect does not confuse the result.",
+      "difficulty": "easy",
+      "tags": [
+        "chemistry-foundations",
+        "introduction",
+        "scientific-method"
+      ],
+      "explanation": "Keeping controlled variables steady helps make a fair comparison when testing another factor.",
+      "id": "chemistry-foundations-1"
+    },
+    {
+      "type": "flashcard",
+      "prompt": "What do significant figures communicate in a measurement?",
+      "answer": "The digits supported by the measuring process, including the final estimated digit.",
+      "difficulty": "medium",
+      "tags": [
+        "chemistry-foundations",
+        "introduction",
+        "significant-figures"
+      ],
+      "explanation": "They indicate the precision of a reported value; they do not by themselves describe every source of uncertainty.",
+      "id": "chemistry-foundations-2"
+    },
+    {
+      "type": "flashcard",
+      "prompt": "What is a pure substance in chemistry?",
+      "answer": "Matter with a fixed composition, consisting of one element or one compound.",
+      "difficulty": "easy",
+      "tags": [
+        "chemistry-foundations",
+        "matter",
+        "pure-substances"
+      ],
+      "explanation": "A pure element and a pure compound are both pure substances; a mixture can have variable composition.",
+      "id": "chemistry-foundations-3"
+    },
+    {
+      "type": "flashcard",
+      "prompt": "What does chromatography separate substances by?",
+      "answer": "Differences in how strongly they move with a mobile phase versus interact with a stationary phase.",
+      "difficulty": "medium",
+      "tags": [
+        "chemistry-foundations",
+        "matter",
+        "separation"
+      ],
+      "explanation": "A dye that travels farther on paper interacts differently with the solvent and paper than a dye that stays behind.",
+      "id": "chemistry-foundations-4"
+    },
+    {
+      "type": "flashcard",
+      "prompt": "What does a flat section on a heating curve usually show for a pure substance?",
+      "answer": "A phase change occurring at nearly constant temperature while energy is added.",
+      "difficulty": "hard",
+      "tags": [
+        "chemistry-foundations",
+        "matter",
+        "heating-curves"
+      ],
+      "explanation": "At the melting or boiling plateau, energy changes the phase rather than increasing the average kinetic energy.",
+      "id": "chemistry-foundations-5"
+    },
+    {
+      "type": "flashcard",
+      "prompt": "How do you find an isotope’s mass number?",
+      "answer": "Add the number of protons and neutrons in its nucleus.",
+      "difficulty": "easy",
+      "tags": [
+        "chemistry-foundations",
+        "atomic-structure",
+        "mass-number"
+      ],
+      "explanation": "For carbon-14, 6 protons + 8 neutrons = mass number 14.",
+      "id": "chemistry-foundations-6"
+    },
+    {
+      "type": "flashcard",
+      "prompt": "What is the difference between an orbital and an electron shell?",
+      "answer": "A shell is a principal energy level; an orbital is a region within a shell that can hold up to two electrons.",
+      "difficulty": "hard",
+      "tags": [
+        "chemistry-foundations",
+        "atomic-structure",
+        "orbitals"
+      ],
+      "explanation": "Shells contain subshells and orbitals; the first shell has one orbital, while higher shells can have more.",
+      "id": "chemistry-foundations-7"
+    },
+    {
+      "type": "flashcard",
+      "prompt": "Which elements are called the halogens?",
+      "answer": "The group 17 elements, such as fluorine and chlorine.",
+      "difficulty": "easy",
+      "tags": [
+        "chemistry-foundations",
+        "periodic-table",
+        "families"
+      ],
+      "explanation": "Halogens often gain one electron in ionic compounds, forming ions with a 1− charge.",
+      "id": "chemistry-foundations-8"
+    },
+    {
+      "type": "flashcard",
+      "prompt": "What is the general atomic-radius trend down a group?",
+      "answer": "It generally increases because each step down adds an occupied principal electron shell.",
+      "difficulty": "medium",
+      "tags": [
+        "chemistry-foundations",
+        "periodic-table",
+        "atomic-radius"
+      ],
+      "explanation": "Additional shells place the outer electrons farther from the nucleus on average.",
+      "id": "chemistry-foundations-9"
+    },
+    {
+      "type": "flashcard",
+      "prompt": "What does a partial charge (δ+ or δ−) mean in a polar bond?",
+      "answer": "Electron density is shared unequally, leaving one end slightly positive and the other slightly negative.",
+      "difficulty": "medium",
+      "tags": [
+        "chemistry-foundations",
+        "bonding",
+        "bond-polarity"
+      ],
+      "explanation": "Partial charges are not full ionic charges; the bond still involves shared electrons.",
+      "id": "chemistry-foundations-10"
+    },
+    {
+      "type": "flashcard",
+      "prompt": "What does VSEPR stand for, and what does it predict?",
+      "answer": "Valence Shell Electron Pair Repulsion; it predicts molecular shapes from repulsions among electron groups around a central atom.",
+      "difficulty": "medium",
+      "tags": [
+        "chemistry-foundations",
+        "bonding",
+        "vsepr"
+      ],
+      "explanation": "Electron groups arrange to reduce repulsion; lone pairs also affect molecular shape.",
+      "id": "chemistry-foundations-11"
+    },
+    {
+      "type": "flashcard",
+      "prompt": "How are most binary ionic compounds named?",
+      "answer": "Name the cation first, then the anion with an -ide ending.",
+      "difficulty": "easy",
+      "tags": [
+        "chemistry-foundations",
+        "nomenclature",
+        "ionic-naming"
+      ],
+      "explanation": "For example, MgO is magnesium oxide; metals with multiple common charges need a Roman numeral.",
+      "id": "chemistry-foundations-12"
+    },
+    {
+      "type": "flashcard",
+      "prompt": "What is a polyatomic ion?",
+      "answer": "A group of covalently bonded atoms that carries an overall electric charge.",
+      "difficulty": "medium",
+      "tags": [
+        "chemistry-foundations",
+        "nomenclature",
+        "polyatomic-ions"
+      ],
+      "explanation": "Examples include ammonium, NH₄⁺, and sulfate, SO₄²⁻.",
+      "id": "chemistry-foundations-13"
+    },
+    {
+      "type": "flashcard",
+      "prompt": "How do you write a neutral ionic formula from ion charges?",
+      "answer": "Choose the smallest whole-number ratio of cations and anions that makes total charge zero.",
+      "difficulty": "medium",
+      "tags": [
+        "chemistry-foundations",
+        "nomenclature",
+        "ionic-formulas"
+      ],
+      "explanation": "For Al³⁺ and O²⁻, two aluminum ions (+6) balance three oxide ions (−6), giving Al₂O₃.",
+      "id": "chemistry-foundations-14"
+    },
+    {
+      "type": "flashcard",
+      "prompt": "What may be changed when balancing a chemical equation?",
+      "answer": "Coefficients placed before formulas, not the formulas’ subscripts.",
+      "difficulty": "medium",
+      "tags": [
+        "chemistry-foundations",
+        "reactions",
+        "balancing"
+      ],
+      "explanation": "Changing a subscript changes a compound’s identity and describes a different reaction.",
+      "id": "chemistry-foundations-15"
+    },
+    {
+      "type": "flashcard",
+      "prompt": "What is Avogadro’s constant?",
+      "answer": "6.02214076 × 10²³ entities per mole.",
+      "difficulty": "easy",
+      "tags": [
+        "chemistry-foundations",
+        "quantitative-chemistry",
+        "mole"
+      ],
+      "explanation": "The counted entity must be specified, such as atoms, molecules, or ions.",
+      "id": "chemistry-foundations-16"
+    }
+  ]
+}

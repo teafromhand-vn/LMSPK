@@ -1,0 +1,36 @@
+{
+  "name": "Java language essentials",
+  "description": "Types, variables, and the Java runtime.",
+  "questions": [
+    {
+      "id": "foundations-0",
+      "type": "flashcard",
+      "prompt": "What does JVM stand for?",
+      "answer": "Java Virtual Machine",
+      "explanation": "The JVM executes Java bytecode.",
+      "tags": [
+        "foundations"
+      ]
+    },
+    {
+      "id": "foundations-1",
+      "type": "flashcard",
+      "prompt": "What is a primitive type?",
+      "answer": "A built-in value type such as int or boolean.",
+      "explanation": "Primitive types are distinct from reference types such as String.",
+      "tags": [
+        "foundations"
+      ]
+    },
+    {
+      "id": "foundations-2",
+      "type": "flashcard",
+      "prompt": "What does javac produce?",
+      "answer": "Class files containing bytecode.",
+      "explanation": "The compiler translates Java source into bytecode for the JVM.",
+      "tags": [
+        "foundations"
+      ]
+    }
+  ]
+}

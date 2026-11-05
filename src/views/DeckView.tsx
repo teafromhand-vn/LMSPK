@@ -1,191 +1,137 @@
 import { useState } from 'react';
-import { useQuiz } from '../app/QuizContext';
-import { navigate } from '../app/router';
-import { useStatus } from '../app/StatusContext';
-import { ConfirmDialog } from '../components/ConfirmDialog';
-import type { KeyAction } from '../components/KeyBar';
-import { Link } from '../components/Link';
-import { Meter } from '../components/Meter';
-import { Notice } from '../components/Notice';
+import { ArrowLeft, RotateCw, Shuffle } from 'lucide-react';
 import { Screen } from '../components/Screen';
-import { store } from '../db';
+import { Link } from '../components/Link';
+import { Notice } from '../components/Notice';
 import { useAsync } from '../hooks/useAsync';
+import { assetUrl, flashcards, loadSubject, loadDeck, resourceContext } from '../lib/content';
+import { Breadcrumbs } from '../components/Breadcrumbs';
+import { shuffle } from '../lib/random';
 import { errorMessage } from '../lib/errors';
-import { formatDate, plural, slugify } from '../lib/format';
-import type { Question } from '../models/types';
-import { DEFAULT_SETTINGS, buildQuizItems, createSession, filterQuestions, type QuizSettings } from '../quiz/engine';
-import { countMastered } from '../quiz/mastery';
-import { bestsFor, describeBest } from '../quiz/personalBests';
-import { loadPreferences, savePreferences } from '../quiz/persistence';
-import { QuestionList } from './parts/QuestionList';
-import { QuizSetup } from './parts/QuizSetup';
-import { useDeckActions } from './parts/useDeckActions';
+import type { FlashcardContent, ResourceContext } from '../models/types';
 
-async function loadDeck(deckId: string) {
-  const [deck, questions, progress] = await Promise.all([
-    store.getDeck(deckId),
-    store.listQuestions(deckId),
-    store.loadProgress(deckId),
-  ]);
-  return { deck, questions, progress };
-}
-
-export function DeckView({ deckId }: { deckId: string }) {
-  const quiz = useQuiz();
-  const { notify } = useStatus();
-  const { data, error, reload } = useAsync(() => loadDeck(deckId), [deckId]);
-  const [settings, setSettings] = useState<QuizSettings>(() => ({ ...DEFAULT_SETTINGS, ...loadPreferences() }));
-  const [deleting, setDeleting] = useState<{ question: Question; number: number } | null>(null);
-
-  const deckActions = useDeckActions({
-    onEdited: reload,
-    onDuplicated: (copy) => navigate({ name: 'deck', deckId: copy.id }),
-    onDeleted: () => navigate({ name: 'library' }, { replace: true }),
-  });
-
-  const deck = data?.deck;
-  const questions = data?.questions ?? [];
-  const canStart = filterQuestions(questions, settings).length > 0;
-
-  function changeSettings(next: QuizSettings) {
-    setSettings(next);
-    savePreferences(next);
-  }
-
-  function startQuiz() {
-    if (!deck) return;
-    const items = buildQuizItems(questions, settings, { progress: data?.progress });
-    if (items.length === 0) return;
-    quiz.start(
-      createSession({
-        title: deck.name,
-        source: { kind: 'deck', deckId: deck.id },
-        settings,
-        items,
-        deckNames: { [deck.id]: deck.name },
-      }),
-    );
-    navigate({ name: 'quiz' });
-  }
-
-  const actions: KeyAction[] = deck
-    ? [
-        { label: 'start quiz', hotkey: 's', onAction: startQuiz, disabled: !canStart, primary: true },
-        { label: 'add question', hotkey: 'a', onAction: () => navigate({ name: 'newQuestion', deckId }) },
-        { label: 'library', hotkey: 'escape', keyLabel: 'Esc', onAction: () => navigate({ name: 'library' }) },
-      ]
-    : [];
-
-  if (!data) {
+export function DeckView({ deckId, subjectId }: { deckId: string; subjectId: string }) {
+  const { data, error, reload } = useAsync(async () => {
+    const catalog = await loadSubject(subjectId);
+    const entry = catalog.flashcards.find((d) => d.id === deckId);
+     if (!entry) throw new Error('Không tìm thấy bộ thẻ này.');
+    return {
+      entry,
+      context: resourceContext(catalog.subject, entry),
+      cards: flashcards((await loadDeck(entry.id, 'flashcards')).questions),
+    };
+  }, [deckId, subjectId]);
+  if (data)
     return (
-      <Screen path={['decks', '…']} title="Deck">
-        {error ? (
-          <Notice title="Couldn't load this deck." tone="error">
-            <p>{errorMessage(error)}</p>
-            <button type="button" className="btn" onClick={reload}>
-              try again
-            </button>
-          </Notice>
-        ) : (
-          <p className="dim">loading deck…</p>
-        )}
-      </Screen>
+      <FlashcardStudy title={data.entry.name} subject={data.entry.subject} context={data.context} cards={data.cards} />
     );
-  }
-
-  if (!deck) {
-    return (
-      <Screen path={['decks', 'not-found']} title="Deck not found">
-        <Notice title="This deck doesn't exist.">
-          <p>It may have been deleted, or the link is from another device.</p>
-          <Link to={{ name: 'library' }}>go to the library</Link>
-        </Notice>
-      </Screen>
-    );
-  }
-
-  // One line per quiz length, so a short quiz is never compared with a long one.
-  const bests = bestsFor({ kind: 'deck', deckId });
-  const played = data.progress.records.length > 0;
-  const mastered = countMastered(data.progress.records);
-
   return (
-    <Screen path={['decks', slugify(deck.name) || 'deck']} title={deck.name} actions={actions}>
-      <div className="view-head">
-        <h1>{deck.name}</h1>
-        {deck.description && <p className="deck-description-full">{deck.description}</p>}
-        <p className="dim">
-          {plural(questions.length, 'question')}, updated {formatDate(deck.updatedAt)}
-        </p>
-        {played && (
-          <p className="dim">
-            {mastered} of {questions.length} mastered{' '}
-            <Meter value={mastered} max={questions.length} label={`${mastered} of ${questions.length} mastered`} />
-          </p>
-        )}
-        {bests.map(({ count, best }) => (
-          <p key={count} className="deck-best">
-            Best at {count}: {describeBest(best)}
-          </p>
-        ))}
-        <p className="button-row toolbar">
-          <button type="button" className="btn" onClick={() => deckActions.editDeck(deck)}>
-            edit
+    <Screen path={['flashcards']} title="Thẻ ghi nhớ">
+      <Link to={{ name: 'subject', subjectId, section: 'flashcards' }}>← Thẻ ghi nhớ của môn học</Link>
+      {error ? (
+        <Notice title="Không thể mở bộ thẻ." tone="error">
+          <p>{errorMessage(error)}</p>
+          <button className="btn" onClick={reload}>
+            Thử lại
           </button>
-          <button type="button" className="btn" onClick={() => deckActions.duplicateDeck(deck)}>
-            duplicate
-          </button>
-          <button type="button" className="btn" onClick={() => deckActions.exportDeck(deck)}>
-            export
-          </button>
-          <button
-            type="button"
-            className="btn btn-danger"
-            onClick={() => deckActions.deleteDeck(deck, questions.length)}
-          >
-            delete
-          </button>
-        </p>
-      </div>
-
-      {questions.length === 0 ? (
-        <Notice title="No questions yet.">
-          <p>Add multiple choice, true/false or flashcard questions, then start a quiz.</p>
-          <p className="button-row">
-            <button type="button" className="btn btn-primary" onClick={() => navigate({ name: 'newQuestion', deckId })}>
-              add the first question
-            </button>
-          </p>
         </Notice>
       ) : (
-        <>
-          <QuizSetup questions={questions} settings={settings} onChange={changeSettings} />
-          <QuestionList
-            deckId={deckId}
-            questions={questions}
-            onDelete={(question, number) => setDeleting({ question, number })}
-          />
-        </>
+        <p role="status">Đang tải thẻ…</p>
       )}
-
-      {deleting && (
-        <ConfirmDialog
-          title="delete question"
-          confirmLabel="delete question"
-          danger
-          onCancel={() => setDeleting(null)}
-          onConfirm={async () => {
-            await store.deleteQuestion(deleting.question.id);
-            setDeleting(null);
-            notify(`Deleted question ${deleting.number}.`, 'ok');
-            reload();
-          }}
+    </Screen>
+  );
+}
+/** Dedicated version of Enyalië's revealable flashcard interaction, without self-grading. */
+function FlashcardStudy({
+  title,
+  subject,
+  cards,
+  context,
+}: {
+  title: string;
+  subject: string;
+  cards: FlashcardContent[];
+  context: ResourceContext;
+}) {
+  const [ordered, setOrdered] = useState(cards);
+  const [position, setPosition] = useState(0);
+  const [flipped, setFlipped] = useState(false);
+  const card = ordered[position];
+  const image = flipped ? card.backImage : card.image;
+  const move = (delta: number) => {
+    setPosition((p) => Math.max(0, Math.min(ordered.length - 1, p + delta)));
+    setFlipped(false);
+  };
+  const reshuffle = () => {
+    setOrdered(shuffle(cards));
+    setPosition(0);
+    setFlipped(false);
+  };
+  return (
+    <Screen
+      path={['flashcards', title]}
+      title={title}
+      actions={[
+        { label: 'Trước', hotkey: 'arrowleft', keyLabel: '←', onAction: () => move(-1), disabled: position === 0 },
+        {
+          label: 'Lật thẻ',
+          hotkey: 'space',
+          alsoKeys: ['f'],
+          keyLabel: 'Dấu cách',
+          onAction: () => setFlipped((v) => !v),
+          primary: true,
+        },
+        {
+          label: 'Tiếp',
+          hotkey: 'arrowright',
+          keyLabel: '→',
+          onAction: () => move(1),
+          disabled: position === ordered.length - 1,
+        },
+        { label: 'Xáo trộn', hotkey: 's', onAction: reshuffle },
+      ]}
+    >
+      <Breadcrumbs context={context} section="flashcards" title={title} />
+      <Link
+        to={{ name: 'subject', subjectId: context.subjectId, section: 'flashcards', chapterId: context.chapterId }}
+        className="back-link"
+      >
+        <ArrowLeft size={16} /> Quay lại {context.chapterName ?? subject}
+      </Link>
+      <div className="study-heading">
+        <div>
+          <p className="page-kicker">{subject}</p>
+          <h1>{title}</h1>
+          <p>Dành chút thời gian suy nghĩ trước khi lật thẻ.</p>
+        </div>
+        <button className="btn" onClick={reshuffle}>
+          <Shuffle size={16} /> Xáo trộn thẻ
+        </button>
+      </div>
+      <div className="study-area">
+        <div className="study-counter">
+          <span>THẺ GHI NHỚ</span>
+          <span aria-live="polite">
+            Thẻ {position + 1} / {ordered.length}
+          </span>
+        </div>
+        <button
+          className={`flashcard ${flipped ? 'flipped' : ''}`}
+          onClick={() => setFlipped((v) => !v)}
+          aria-label={`Lật thẻ. ${flipped ? 'Mặt sau' : 'Mặt trước'}: ${flipped ? card.answer : card.prompt}`}
         >
-          <p>Delete this question? This can't be undone.</p>
-          <blockquote className="quoted-prompt">{deleting.question.prompt}</blockquote>
-        </ConfirmDialog>
-      )}
-      {deckActions.dialogs}
+          <span className="card-side">{flipped ? 'ĐÁP ÁN' : 'CÂU HỎI'}</span>
+          <span key={`${position}-${flipped}`} className="flashcard-text flip-content" aria-live="polite">
+            {flipped ? card.answer : card.prompt}
+          </span>
+          {image && <img className="flashcard-image" src={assetUrl(image.src)} alt={image.alt} />}
+          {flipped && card.explanation && <span className="flashcard-explanation">{card.explanation}</span>}
+          <span className="flip-hint">
+            <RotateCw size={15} /> Nhấn để lật <span>hoặc nhấn F</span>
+          </span>
+        </button>
+        <p className="study-note">Tự do ôn tập. Không chấm điểm, không lưu vị trí.</p>
+      </div>
     </Screen>
   );
 }

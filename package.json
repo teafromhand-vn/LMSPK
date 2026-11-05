@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.1.0",
   "license": "MIT",
-  "description": "Local-first flashcards and quizzes: Anki-style decks with a quick, game-like quiz player.",
+  "description": "Enyalië subject library: chapter-organized flashcards, documents and tests with memory-only sessions.",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -13,23 +13,30 @@
     "preview:host": "vite preview --host",
     "typecheck": "tsc -b",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "test:e2e": "playwright test"
   },
   "dependencies": {
+    "docx-preview": "^0.4.1",
+    "lucide-react": "^1.68.0",
+    "pdfjs-dist": "^6.5.438",
     "react": "^19.2.0",
-    "react-dom": "^19.2.0"
+    "react-dom": "^19.2.0",
+    "react-markdown": "^10.1.0"
   },
   "devDependencies": {
+    "@playwright/test": "^1.64.1",
     "@types/node": "^24.0.0",
     "@types/react": "^19.2.0",
     "@types/react-dom": "^19.2.0",
     "@vitejs/plugin-react": "^6.1.0",
-    "fake-indexeddb": "^6.2.0",
+    "docx": "^9.15.2",
+    "pdf-lib": "^1.17.1",
     "typescript": "~6.0.3",
     "vite": "^8.3.0",
     "vitest": "^4.1.0"
   },
   "engines": {
-    "node": ">=20.19"
+    "node": ">=22.13"
   }
 }

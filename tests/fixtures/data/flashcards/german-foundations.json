@@ -1,0 +1,214 @@
+{
+  "name": "German essentials",
+  "description": "Everyday words and simple ideas to start thinking in German.",
+  "questions": [
+    {
+      "type": "flashcard",
+      "prompt": "What does ä represent?",
+      "answer": "An umlauted a; its common short sound is similar to [ɛ], while its exact quality depends on length and context.",
+      "difficulty": "easy",
+      "tags": [
+        "foundations",
+        "umlauts",
+        "vowels"
+      ],
+      "explanation": "This card follows standard German pronunciation and spelling conventions; IPA gives a more precise description than an English sound analogy.",
+      "id": "german-foundations-1"
+    },
+    {
+      "type": "flashcard",
+      "prompt": "What does ö represent?",
+      "answer": "An umlauted o; round the lips for an o while producing a front vowel.",
+      "difficulty": "easy",
+      "tags": [
+        "foundations",
+        "umlauts",
+        "vowels"
+      ],
+      "explanation": "This card follows standard German pronunciation and spelling conventions; IPA gives a more precise description than an English sound analogy.",
+      "id": "german-foundations-2"
+    },
+    {
+      "type": "flashcard",
+      "prompt": "What does ü represent?",
+      "answer": "An umlauted u; round the lips as for u while keeping the tongue position closer to i.",
+      "difficulty": "easy",
+      "tags": [
+        "foundations",
+        "umlauts",
+        "vowels"
+      ],
+      "explanation": "This card follows standard German pronunciation and spelling conventions; IPA gives a more precise description than an English sound analogy.",
+      "id": "german-foundations-3"
+    },
+    {
+      "type": "flashcard",
+      "prompt": "What is ß called in German?",
+      "answer": "Eszett or scharfes S; it represents an s sound and is not a separate vowel.",
+      "difficulty": "easy",
+      "tags": [
+        "foundations",
+        "orthography",
+        "special-letters"
+      ],
+      "explanation": "This card follows standard German pronunciation and spelling conventions; IPA gives a more precise description than an English sound analogy.",
+      "id": "german-foundations-4"
+    },
+    {
+      "type": "flashcard",
+      "prompt": "How is ß normally written in Swiss Standard German?",
+      "answer": "Swiss Standard German normally writes ss where Germany and Austria may write ß.",
+      "difficulty": "easy",
+      "tags": [
+        "foundations",
+        "orthography",
+        "regional"
+      ],
+      "explanation": "This card follows standard German pronunciation and spelling conventions; IPA gives a more precise description than an English sound analogy.",
+      "id": "german-foundations-5"
+    },
+    {
+      "type": "flashcard",
+      "prompt": "What does ei usually sound like?",
+      "answer": "The diphthong [aɪ̯], as in mein [maɪ̯n].",
+      "difficulty": "easy",
+      "tags": [
+        "foundations",
+        "pronunciation",
+        "diphthongs"
+      ],
+      "explanation": "This card follows standard German pronunciation and spelling conventions; IPA gives a more precise description than an English sound analogy.",
+      "id": "german-foundations-6"
+    },
+    {
+      "type": "flashcard",
+      "prompt": "What does au usually sound like?",
+      "answer": "The diphthong [aʊ̯], as in Haus [haʊ̯s].",
+      "difficulty": "easy",
+      "tags": [
+        "foundations",
+        "pronunciation",
+        "diphthongs"
+      ],
+      "explanation": "This card follows standard German pronunciation and spelling conventions; IPA gives a more precise description than an English sound analogy.",
+      "id": "german-foundations-7"
+    },
+    {
+      "type": "flashcard",
+      "prompt": "What does eu or äu usually sound like?",
+      "answer": "The diphthong [ɔʏ̯], as in heute [ˈhɔʏ̯tə] and Häuser [ˈhɔʏ̯zɐ].",
+      "difficulty": "easy",
+      "tags": [
+        "foundations",
+        "pronunciation",
+        "diphthongs"
+      ],
+      "explanation": "This card follows standard German pronunciation and spelling conventions; IPA gives a more precise description than an English sound analogy.",
+      "id": "german-foundations-8"
+    },
+    {
+      "type": "flashcard",
+      "prompt": "What is the main difference between a long and a short German vowel?",
+      "answer": "Length and often quality differ; a colon in IPA, such as [aː], marks a long vowel.",
+      "difficulty": "easy",
+      "tags": [
+        "foundations",
+        "pronunciation",
+        "vowels"
+      ],
+      "explanation": "This card follows standard German pronunciation and spelling conventions; IPA gives a more precise description than an English sound analogy.",
+      "id": "german-foundations-9"
+    },
+    {
+      "type": "flashcard",
+      "prompt": "What does a doubled consonant usually signal after a vowel?",
+      "answer": "It usually signals that the preceding vowel is short; it does not mean the consonant is held twice as long.",
+      "difficulty": "easy",
+      "tags": [
+        "foundations",
+        "pronunciation",
+        "orthography"
+      ],
+      "explanation": "This card follows standard German pronunciation and spelling conventions; IPA gives a more precise description than an English sound analogy.",
+      "id": "german-foundations-10"
+    },
+    {
+      "type": "flashcard",
+      "prompt": "What does h after a vowel often do in German spelling?",
+      "answer": "It can mark that the preceding vowel is long, as in fahren [ˈfaːʁən].",
+      "difficulty": "easy",
+      "tags": [
+        "foundations",
+        "pronunciation",
+        "orthography"
+      ],
+      "explanation": "This card follows standard German pronunciation and spelling conventions; IPA gives a more precise description than an English sound analogy.",
+      "id": "german-foundations-11"
+    },
+    {
+      "type": "flashcard",
+      "prompt": "What is word stress?",
+      "answer": "The syllable that receives the greatest prominence through a combination of loudness, length, pitch and vowel clarity.",
+      "difficulty": "easy",
+      "tags": [
+        "foundations",
+        "pronunciation",
+        "stress"
+      ],
+      "explanation": "This card follows standard German pronunciation and spelling conventions; IPA gives a more precise description than an English sound analogy.",
+      "id": "german-foundations-12"
+    },
+    {
+      "type": "flashcard",
+      "prompt": "Where is stress often found in native German compounds?",
+      "answer": "Often on the first element, though compounds and loanwords have exceptions that must be learned.",
+      "difficulty": "easy",
+      "tags": [
+        "foundations",
+        "pronunciation",
+        "stress"
+      ],
+      "explanation": "This card follows standard German pronunciation and spelling conventions; IPA gives a more precise description than an English sound analogy.",
+      "id": "german-foundations-13"
+    },
+    {
+      "type": "flashcard",
+      "prompt": "What does “Hallo” mean in English?",
+      "answer": "hello",
+      "difficulty": "easy",
+      "tags": [
+        "foundations",
+        "survival",
+        "phrases"
+      ],
+      "explanation": "“Hallo” is a common German expression meaning “hello.”",
+      "id": "german-foundations-14"
+    },
+    {
+      "type": "flashcard",
+      "prompt": "How do you say “hello” in German?",
+      "answer": "Hallo",
+      "difficulty": "easy",
+      "tags": [
+        "foundations",
+        "survival",
+        "phrases"
+      ],
+      "explanation": "The German expression for “hello” is “Hallo.”",
+      "id": "german-foundations-15"
+    },
+    {
+      "type": "flashcard",
+      "prompt": "What does “Guten Morgen” mean in English?",
+      "answer": "good morning",
+      "difficulty": "easy",
+      "tags": [
+        "foundations",
+        "survival",
+        "phrases"
+      ],
+      "explanation": "“Guten Morgen” is a common German expression meaning “good morning.”",
+      "id": "german-foundations-16"
+    }
+  ]
+}

@@ -1,32 +1,24 @@
-import { describe, expect, it } from 'vitest';
+import { expect, it } from 'vitest';
 import { depthOf, parseRoute, routeToHash, type Route } from '../src/app/router';
-
-describe('router', () => {
-  it('round-trips every screen through its URL', () => {
-    const routes: Route[] = [
-      { name: 'library' },
-      { name: 'deck', deckId: 'abc-123' },
-      { name: 'newQuestion', deckId: 'abc-123' },
-      { name: 'editQuestion', deckId: 'abc-123', questionId: 'q 1/2' },
-      { name: 'quiz' },
-      { name: 'results' },
-    ];
-    for (const route of routes) expect(parseRoute(routeToHash(route))).toEqual(route);
-  });
-
-  it('treats an empty hash as the library', () => {
-    expect(parseRoute('')).toEqual({ name: 'library' });
-    expect(parseRoute('#/')).toEqual({ name: 'library' });
-  });
-
-  it('reports unknown or malformed addresses', () => {
-    expect(parseRoute('#/nope')).toEqual({ name: 'notFound' });
-    expect(parseRoute('#/deck/abc/extra/parts/here')).toEqual({ name: 'notFound' });
-    expect(parseRoute('#/deck/%E0%A4%A')).toEqual({ name: 'notFound' });
-  });
-
-  it('reads app history depth', () => {
-    expect(depthOf({ enyalieDepth: 4 })).toBe(4);
-    expect(depthOf({ enyalieDepth: '4' })).toBe(0);
-  });
+it('round trips supported static-host routes', () => {
+  const routes: Route[] = [
+    { name: 'library' },
+    { name: 'deck', subjectId: 'java', deckId: 'a b' },
+    { name: 'subject', subjectId: 'java', section: 'documents' },
+    { name: 'subject', subjectId: 'database', section: 'tests', chapterId: 'sql' },
+    { name: 'document', subjectId: 'java', documentId: 'notes' },
+    { name: 'quiz', subjectId: 'java' },
+    { name: 'results', subjectId: 'java' },
+    { name: 'syllabus' },
+  ];
+  for (const route of routes) expect(parseRoute(routeToHash(route))).toEqual(route);
+});
+it('rejects editor routes and malformed URLs', () => {
+  for (const hash of ['#/deck/a/new', '#/deck/a/q/id', '#/%zz', '#/unknown'])
+    expect(parseRoute(hash)).toEqual({ name: 'notFound' });
+});
+it('retains navigation depth handling without learning state', () => {
+  expect(depthOf(null)).toBe(0);
+  expect(depthOf({ enyalieDepth: 2 })).toBe(2);
+  expect(depthOf({ enyalieDepth: 'bad' })).toBe(0);
 });

@@ -1,0 +1,49 @@
+{
+  "name": "Tables, keys & relationships",
+  "description": "Tables, keys, and relationships.",
+  "questions": [
+    {
+      "id": "relational-model-choice",
+      "type": "multiple_choice",
+      "prompt": "What is a primary key?",
+      "choices": [
+        "An attribute or set of attributes that uniquely identifies a row.",
+        "A visual theme for an application.",
+        "A temporary browser preference."
+      ],
+      "correctIndex": 0,
+      "explanation": "A primary key is unique and cannot contain null values.",
+      "tags": [
+        "relational-model"
+      ]
+    },
+    {
+      "id": "relational-model-true",
+      "type": "true_false",
+      "prompt": "Foreign keys help enforce referential integrity.",
+      "answer": true,
+      "explanation": "Foreign keys help enforce referential integrity.",
+      "tags": [
+        "relational-model"
+      ]
+    },
+    {
+      "id": "relational-model-select",
+      "type": "multiple_select",
+      "prompt": "Which statements are correct?",
+      "choices": [
+        "A primary key is unique and cannot contain null values.",
+        "Columns describe attributes; rows hold individual records.",
+        "All information in this subject is stored only as images."
+      ],
+      "correctIndices": [
+        0,
+        1
+      ],
+      "explanation": "A primary key is unique and cannot contain null values. Columns describe attributes; rows hold individual records.",
+      "tags": [
+        "relational-model"
+      ]
+    }
+  ]
+}

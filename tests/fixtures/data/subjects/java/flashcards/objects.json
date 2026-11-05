@@ -1,0 +1,36 @@
+{
+  "name": "Thinking in objects",
+  "description": "Encapsulation and reusable behavior.",
+  "questions": [
+    {
+      "id": "objects-0",
+      "type": "flashcard",
+      "prompt": "What is a class?",
+      "answer": "A definition of the state and behavior of a kind of object.",
+      "explanation": "Instances are objects created from a class.",
+      "tags": [
+        "objects"
+      ]
+    },
+    {
+      "id": "objects-1",
+      "type": "flashcard",
+      "prompt": "What is encapsulation?",
+      "answer": "Bundling state and behavior while controlling access to implementation details.",
+      "explanation": "Private fields and public methods can provide a controlled interface.",
+      "tags": [
+        "objects"
+      ]
+    },
+    {
+      "id": "objects-2",
+      "type": "flashcard",
+      "prompt": "What is an interface?",
+      "answer": "A contract describing behavior that implementing classes provide.",
+      "explanation": "Interfaces allow code to depend on behavior rather than a particular implementation.",
+      "tags": [
+        "objects"
+      ]
+    }
+  ]
+}

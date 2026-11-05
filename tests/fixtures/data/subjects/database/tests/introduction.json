@@ -1,0 +1,49 @@
+{
+  "name": "Database fundamentals",
+  "description": "Data, databases, and the role of a DBMS.",
+  "questions": [
+    {
+      "id": "introduction-choice",
+      "type": "multiple_choice",
+      "prompt": "What is a database?",
+      "choices": [
+        "An organized collection of related data.",
+        "A visual theme for an application.",
+        "A temporary browser preference."
+      ],
+      "correctIndex": 0,
+      "explanation": "A database gives data structure so it can be stored, queried, and maintained.",
+      "tags": [
+        "introduction"
+      ]
+    },
+    {
+      "id": "introduction-true",
+      "type": "true_false",
+      "prompt": "A DBMS provides tools to define, query, secure, and update a database.",
+      "answer": true,
+      "explanation": "A DBMS provides tools to define, query, secure, and update a database.",
+      "tags": [
+        "introduction"
+      ]
+    },
+    {
+      "id": "introduction-select",
+      "type": "multiple_select",
+      "prompt": "Which statements are correct?",
+      "choices": [
+        "A database gives data structure so it can be stored, queried, and maintained.",
+        "A DBMS separates logical access to data from its physical storage.",
+        "All information in this subject is stored only as images."
+      ],
+      "correctIndices": [
+        0,
+        1
+      ],
+      "explanation": "A database gives data structure so it can be stored, queried, and maintained. A DBMS separates logical access to data from its physical storage.",
+      "tags": [
+        "introduction"
+      ]
+    }
+  ]
+}

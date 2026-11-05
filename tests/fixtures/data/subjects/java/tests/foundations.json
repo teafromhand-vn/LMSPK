@@ -1,0 +1,49 @@
+{
+  "name": "Java language essentials",
+  "description": "Types, variables, and the Java runtime.",
+  "questions": [
+    {
+      "id": "foundations-choice",
+      "type": "multiple_choice",
+      "prompt": "What does JVM stand for?",
+      "choices": [
+        "Java Virtual Machine",
+        "A visual theme for an application.",
+        "A temporary browser preference."
+      ],
+      "correctIndex": 0,
+      "explanation": "The JVM executes Java bytecode.",
+      "tags": [
+        "foundations"
+      ]
+    },
+    {
+      "id": "foundations-true",
+      "type": "true_false",
+      "prompt": "Primitive types are distinct from reference types such as String.",
+      "answer": true,
+      "explanation": "Primitive types are distinct from reference types such as String.",
+      "tags": [
+        "foundations"
+      ]
+    },
+    {
+      "id": "foundations-select",
+      "type": "multiple_select",
+      "prompt": "Which statements are correct?",
+      "choices": [
+        "The JVM executes Java bytecode.",
+        "The compiler translates Java source into bytecode for the JVM.",
+        "All information in this subject is stored only as images."
+      ],
+      "correctIndices": [
+        0,
+        1
+      ],
+      "explanation": "The JVM executes Java bytecode. The compiler translates Java source into bytecode for the JVM.",
+      "tags": [
+        "foundations"
+      ]
+    }
+  ]
+}

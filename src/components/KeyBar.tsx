@@ -33,6 +33,7 @@ export function KeyBar({ actions }: { actions: KeyAction[] }) {
         <button
           key={action.label}
           type="button"
+          aria-label={action.label}
           className={action.primary ? 'keybar-action is-primary' : 'keybar-action'}
           onClick={action.onAction}
           disabled={action.disabled}

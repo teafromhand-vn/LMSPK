@@ -11,3 +11,10 @@ coverage
 # local tooling and notes
 skills/
 claude/
+playwright-report/
+test-results/
+/spec.md
+/.vercel/
+
+.vercel
+.env*

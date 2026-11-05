@@ -1,0 +1,179 @@
+{
+  "name": "A world of discovery",
+  "description": "Follow your curiosity through a collection of surprising world facts.",
+  "questions": [
+    {
+      "type": "multiple_choice",
+      "prompt": "Which layer of Earth is liquid and generates most of the planet’s magnetic field through moving metal?",
+      "choices": [
+        "Inner core",
+        "Outer core",
+        "Crust",
+        "Upper mantle"
+      ],
+      "correctIndex": 1,
+      "difficulty": "medium",
+      "tags": [
+        "earth-science"
+      ],
+      "explanation": "Convection in the liquid iron-rich outer core helps generate Earth’s magnetic field.",
+      "id": "world-facts-1"
+    },
+    {
+      "type": "multiple_choice",
+      "prompt": "Which gas makes up the largest fraction of Earth’s dry atmosphere?",
+      "choices": [
+        "Oxygen",
+        "Argon",
+        "Nitrogen",
+        "Carbon dioxide"
+      ],
+      "correctIndex": 2,
+      "difficulty": "easy",
+      "tags": [
+        "earth-science",
+        "chemistry"
+      ],
+      "explanation": "Nitrogen makes up about 78 percent of dry air by volume.",
+      "id": "world-facts-2"
+    },
+    {
+      "type": "multiple_choice",
+      "prompt": "What is the name for the boundary between Earth’s crust and mantle?",
+      "choices": [
+        "Gutenberg discontinuity",
+        "Kármán line",
+        "Chicxulub boundary",
+        "Mohorovičić discontinuity"
+      ],
+      "correctIndex": 3,
+      "difficulty": "hard",
+      "tags": [
+        "earth-science"
+      ],
+      "explanation": "The Mohorovičić discontinuity, or Moho, marks the boundary between the crust and mantle.",
+      "id": "world-facts-3"
+    },
+    {
+      "type": "multiple_choice",
+      "prompt": "Which scale is used to describe the magnitude of an earthquake from seismic-wave data?",
+      "choices": [
+        "Moment magnitude scale",
+        "Beaufort scale",
+        "Fujita scale",
+        "Richter temperature scale"
+      ],
+      "correctIndex": 0,
+      "difficulty": "medium",
+      "tags": [
+        "earth-science"
+      ],
+      "explanation": "Modern earthquake magnitudes are commonly reported using the moment magnitude scale.",
+      "id": "world-facts-4"
+    },
+    {
+      "type": "multiple_choice",
+      "prompt": "Which process converts atmospheric nitrogen into compounds that plants can use?",
+      "choices": [
+        "Photosynthesis",
+        "Nitrogen fixation",
+        "Transpiration",
+        "Denitrification only"
+      ],
+      "correctIndex": 1,
+      "difficulty": "medium",
+      "tags": [
+        "biology",
+        "earth-science"
+      ],
+      "explanation": "Nitrogen fixation converts nitrogen gas into biologically usable forms, often through microbes or lightning.",
+      "id": "world-facts-5"
+    },
+    {
+      "type": "multiple_choice",
+      "prompt": "Which cell structure contains most of a eukaryotic cell’s genetic material?",
+      "choices": [
+        "Ribosome",
+        "Golgi apparatus",
+        "Nucleus",
+        "Lysosome"
+      ],
+      "correctIndex": 2,
+      "difficulty": "easy",
+      "tags": [
+        "biology"
+      ],
+      "explanation": "Most eukaryotic DNA is organized in chromosomes inside the nucleus.",
+      "id": "world-facts-6"
+    },
+    {
+      "type": "multiple_choice",
+      "prompt": "Which molecule carries genetic information in most living organisms?",
+      "choices": [
+        "Cellulose",
+        "ATP only",
+        "Hemoglobin",
+        "DNA"
+      ],
+      "correctIndex": 3,
+      "difficulty": "easy",
+      "tags": [
+        "biology"
+      ],
+      "explanation": "DNA stores hereditary instructions in the sequence of its nucleotide bases.",
+      "id": "world-facts-7"
+    },
+    {
+      "type": "multiple_choice",
+      "prompt": "What is the main role of ribosomes?",
+      "choices": [
+        "Protein synthesis",
+        "Lipid storage",
+        "DNA replication only",
+        "Cell movement"
+      ],
+      "correctIndex": 0,
+      "difficulty": "easy",
+      "tags": [
+        "biology"
+      ],
+      "explanation": "Ribosomes translate messenger RNA into chains of amino acids.",
+      "id": "world-facts-8"
+    },
+    {
+      "type": "multiple_choice",
+      "prompt": "Which blood type is often called the universal red-cell donor when Rh factor is included?",
+      "choices": [
+        "AB positive",
+        "O negative",
+        "A positive",
+        "B negative"
+      ],
+      "correctIndex": 1,
+      "difficulty": "medium",
+      "tags": [
+        "biology",
+        "health"
+      ],
+      "explanation": "O-negative red cells lack A, B, and Rh(D) antigens, though clinical transfusion decisions require compatibility testing.",
+      "id": "world-facts-9"
+    },
+    {
+      "type": "multiple_choice",
+      "prompt": "Which organelle modifies, sorts, and packages many proteins for transport?",
+      "choices": [
+        "Nucleolus",
+        "Centrosome",
+        "Golgi apparatus",
+        "Vacuole"
+      ],
+      "correctIndex": 2,
+      "difficulty": "medium",
+      "tags": [
+        "biology"
+      ],
+      "explanation": "The Golgi apparatus modifies and sorts molecules received from the endoplasmic reticulum.",
+      "id": "world-facts-10"
+    }
+  ]
+}

@@ -1,0 +1,54 @@
+{
+  "name": "The natural world",
+  "description": "A closer look at living things and the remarkable world around us.",
+  "questions": [
+    {
+      "type": "flashcard",
+      "prompt": "What is an ecosystem?",
+      "answer": "A community of organisms and the nonliving environment they interact with.",
+      "explanation": "A pond ecosystem includes its fish, plants and microbes, plus the water, sunlight and mud they depend on.",
+      "difficulty": "medium",
+      "tags": [
+        "ecology"
+      ],
+      "id": "nature-1",
+      "image": {
+        "src": "documents/images/leaf.svg",
+        "alt": "A simple diagram of a leaf and its branching veins"
+      }
+    },
+    {
+      "type": "flashcard",
+      "prompt": "What is natural selection?",
+      "answer": "A process in which inherited traits that improve reproductive success become more common over generations.",
+      "explanation": "Charles Darwin and Alfred Russel Wallace first presented the idea together in 1858.",
+      "difficulty": "hard",
+      "tags": [
+        "evolution"
+      ],
+      "id": "nature-2"
+    },
+    {
+      "type": "flashcard",
+      "prompt": "What is pollination?",
+      "answer": "The transfer of pollen from a flower's anther to a stigma, often by wind or by animals such as bees.",
+      "difficulty": "medium",
+      "tags": [
+        "plants"
+      ],
+      "explanation": "Pollination lets many flowering plants make seeds.",
+      "id": "nature-3"
+    },
+    {
+      "type": "flashcard",
+      "prompt": "What is hibernation?",
+      "answer": "A long, deep rest in which an animal's body temperature, heart rate and metabolism drop sharply to save energy through winter.",
+      "difficulty": "medium",
+      "tags": [
+        "adaptations"
+      ],
+      "explanation": "Ground squirrels, many bats and marmots are true hibernators.",
+      "id": "nature-4"
+    }
+  ]
+}

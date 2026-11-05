@@ -1,0 +1,147 @@
+[
+  {
+    "id": "database",
+    "semester": 3,
+    "courseId": "DBI202",
+    "name": "Database Systems",
+    "description": "From organizing data to writing your first SQL query. Build a solid relational foundation.",
+    "category": "Computer science",
+    "color": "blue",
+    "icon": "database",
+    "chapters": [
+      {
+        "id": "introduction",
+        "name": "Introduction",
+        "description": "Data, databases, and the role of a DBMS."
+      },
+      {
+        "id": "relational-model",
+        "name": "The relational model",
+        "description": "Tables, keys, and relationships."
+      },
+      {
+        "id": "sql",
+        "name": "SQL essentials",
+        "description": "Ask useful questions of your data."
+      }
+    ]
+  },
+  {
+    "id": "java",
+    "semester": 2,
+    "courseId": "PRO192",
+    "name": "Java Programming",
+    "description": "Learn the language, understand objects, and turn small ideas into working programs.",
+    "category": "Computer science",
+    "color": "amber",
+    "icon": "code",
+    "chapters": [
+      {
+        "id": "foundations",
+        "name": "Language foundations",
+        "description": "Types, variables, and the Java runtime."
+      },
+      {
+        "id": "objects",
+        "name": "Objects & classes",
+        "description": "Encapsulation and reusable behavior."
+      }
+    ]
+  },
+  {
+    "id": "geography",
+    "semester": 1,
+    "name": "Geography",
+    "description": "Explore places, landscapes, and the connections that shape our world.",
+    "category": "Humanities",
+    "color": "blue",
+    "icon": "globe",
+    "chapters": [
+      {
+        "id": "foundations",
+        "name": "Foundations",
+        "description": "Start with the essential concepts and vocabulary."
+      }
+    ]
+  },
+  {
+    "id": "chemistry",
+    "semester": 1,
+    "name": "Chemistry",
+    "description": "Understand atoms, matter, and the building blocks of the world around us.",
+    "category": "Science",
+    "color": "purple",
+    "icon": "flask",
+    "chapters": [
+      {
+        "id": "foundations",
+        "name": "Foundations",
+        "description": "Start with the essential concepts and vocabulary."
+      }
+    ]
+  },
+  {
+    "id": "english",
+    "semester": 1,
+    "name": "English Vocabulary",
+    "description": "Discover useful words, precise meanings, and better ways to express ideas.",
+    "category": "Languages",
+    "color": "amber",
+    "icon": "languages",
+    "chapters": [
+      {
+        "id": "foundations",
+        "name": "Foundations",
+        "description": "Start with the essential concepts and vocabulary."
+      }
+    ]
+  },
+  {
+    "id": "biology",
+    "semester": 1,
+    "name": "Biology",
+    "description": "Take a closer look at living things and the ecosystems they share.",
+    "category": "Science",
+    "color": "green",
+    "icon": "leaf",
+    "chapters": [
+      {
+        "id": "foundations",
+        "name": "Foundations",
+        "description": "Start with the essential concepts and vocabulary."
+      }
+    ]
+  },
+  {
+    "id": "german",
+    "semester": 2,
+    "name": "German",
+    "description": "Build confidence with everyday vocabulary and essential expressions.",
+    "category": "Languages",
+    "color": "blue",
+    "icon": "languages",
+    "chapters": [
+      {
+        "id": "foundations",
+        "name": "Foundations",
+        "description": "Start with the essential concepts and vocabulary."
+      }
+    ]
+  },
+  {
+    "id": "general",
+    "semester": 1,
+    "name": "World Knowledge",
+    "description": "Follow your curiosity through surprising facts and connected ideas.",
+    "category": "Humanities",
+    "color": "purple",
+    "icon": "book",
+    "chapters": [
+      {
+        "id": "foundations",
+        "name": "Foundations",
+        "description": "Start with the essential concepts and vocabulary."
+      }
+    ]
+  }
+]

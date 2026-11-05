@@ -1,0 +1,36 @@
+{
+  "name": "Querying with SQL",
+  "description": "Ask useful questions of your data.",
+  "questions": [
+    {
+      "id": "sql-0",
+      "type": "flashcard",
+      "prompt": "Which clause filters rows before grouping?",
+      "answer": "WHERE",
+      "explanation": "WHERE filters individual rows before GROUP BY is applied.",
+      "tags": [
+        "sql"
+      ]
+    },
+    {
+      "id": "sql-1",
+      "type": "flashcard",
+      "prompt": "What does SELECT do?",
+      "answer": "Retrieves data from a database.",
+      "explanation": "SELECT specifies the expressions or columns returned by a query.",
+      "tags": [
+        "sql"
+      ]
+    },
+    {
+      "id": "sql-2",
+      "type": "flashcard",
+      "prompt": "What does INNER JOIN return?",
+      "answer": "Rows with matching join conditions in both inputs.",
+      "explanation": "Rows without a match are excluded by an inner join.",
+      "tags": [
+        "sql"
+      ]
+    }
+  ]
+}

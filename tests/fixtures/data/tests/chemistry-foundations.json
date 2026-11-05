@@ -1,0 +1,209 @@
+{
+  "name": "Chemistry foundations",
+  "description": "Get to know atoms, elements, and the building blocks of matter.",
+  "questions": [
+    {
+      "type": "multiple_choice",
+      "prompt": "What does chemistry mainly study?",
+      "choices": [
+        "Matter, its properties, and how it changes",
+        "Energy, its transfer, and how it changes",
+        "Living things, their parts, and how they grow",
+        "Earth features, their motion, and how they form"
+      ],
+      "correctIndex": 0,
+      "difficulty": "easy",
+      "tags": [
+        "chemistry-foundations",
+        "introduction",
+        "scope"
+      ],
+      "explanation": "Chemistry examines matter and the changes it undergoes, from reactions in cells to materials in buildings.",
+      "id": "chemistry-foundations-1"
+    },
+    {
+      "type": "multiple_choice",
+      "prompt": "Which is an example of chemistry in everyday life?",
+      "choices": [
+        "A book resting on a table",
+        "Browning bread as it toasts",
+        "A ball rolling down a hill",
+        "A shadow moving across a wall"
+      ],
+      "correctIndex": 1,
+      "difficulty": "easy",
+      "tags": [
+        "chemistry-foundations",
+        "introduction",
+        "everyday-chemistry"
+      ],
+      "explanation": "Toasting creates new substances through chemical reactions such as browning; the other examples are mainly physical motion or light effects.",
+      "id": "chemistry-foundations-2"
+    },
+    {
+      "type": "multiple_choice",
+      "prompt": "A student tests whether warmer water dissolves sugar faster. What should stay the same for a fair test?",
+      "choices": [
+        "The water temperature",
+        "The result the student hopes to get",
+        "The amount of sugar and the stirring method",
+        "The time at which the student writes the conclusion"
+      ],
+      "correctIndex": 2,
+      "difficulty": "medium",
+      "tags": [
+        "chemistry-foundations",
+        "introduction",
+        "scientific-method"
+      ],
+      "explanation": "Keeping other conditions the same helps isolate temperature as the factor being tested.",
+      "id": "chemistry-foundations-3"
+    },
+    {
+      "type": "multiple_choice",
+      "prompt": "Which observation describes a chemical property of iron?",
+      "choices": [
+        "Iron is gray",
+        "Iron has a density of about 7.9 g/cm³",
+        "Iron can be shaped into a thin sheet",
+        "Iron can react with oxygen to form rust"
+      ],
+      "correctIndex": 3,
+      "difficulty": "medium",
+      "tags": [
+        "chemistry-foundations",
+        "introduction",
+        "properties"
+      ],
+      "explanation": "A chemical property describes a substance’s ability to form different substances in a reaction.",
+      "id": "chemistry-foundations-4"
+    },
+    {
+      "type": "multiple_choice",
+      "prompt": "Which change is physical rather than chemical?",
+      "choices": [
+        "Liquid water freezing into ice",
+        "Wood burning into ash and gases",
+        "Iron forming rust",
+        "An egg cooking"
+      ],
+      "correctIndex": 0,
+      "difficulty": "easy",
+      "tags": [
+        "chemistry-foundations",
+        "introduction",
+        "physical-change"
+      ],
+      "explanation": "Freezing changes water’s state but leaves it as H₂O; the other processes form substances with different chemical compositions.",
+      "id": "chemistry-foundations-5"
+    },
+    {
+      "type": "multiple_choice",
+      "prompt": "Which property does not depend on how much of a pure substance you have?",
+      "choices": [
+        "Total mass",
+        "Density",
+        "Total volume",
+        "Total amount of heat contained"
+      ],
+      "correctIndex": 1,
+      "difficulty": "medium",
+      "tags": [
+        "chemistry-foundations",
+        "introduction",
+        "intensive-extensive"
+      ],
+      "explanation": "Density is an intensive property; mass and volume scale with sample size.",
+      "id": "chemistry-foundations-6"
+    },
+    {
+      "type": "multiple_choice",
+      "prompt": "A sample has a mass of 2.5 kg. What is its mass in grams?",
+      "choices": [
+        "250 g",
+        "25 000 g",
+        "0.0025 g",
+        "2500 g"
+      ],
+      "correctIndex": 3,
+      "difficulty": "medium",
+      "tags": [
+        "chemistry-foundations",
+        "introduction",
+        "unit-conversion"
+      ],
+      "explanation": "One kilogram is 1000 grams, so 2.5 × 1000 = 2500 g.",
+      "id": "chemistry-foundations-7"
+    },
+    {
+      "type": "multiple_choice",
+      "prompt": "How is 0.000 72 written in scientific notation?",
+      "choices": [
+        "7.2 × 10⁻⁴",
+        "7.2 × 10⁴",
+        "72 × 10⁻⁴",
+        "0.72 × 10⁻³"
+      ],
+      "correctIndex": 0,
+      "difficulty": "medium",
+      "tags": [
+        "chemistry-foundations",
+        "introduction",
+        "scientific-notation"
+      ],
+      "explanation": "Move the decimal four places right to get 7.2, so the power is 10⁻⁴.",
+      "id": "chemistry-foundations-8"
+    },
+    {
+      "type": "multiple_choice",
+      "prompt": "How many significant figures are in 0.0405?",
+      "choices": [
+        "Two",
+        "Three",
+        "Four",
+        "Five"
+      ],
+      "correctIndex": 1,
+      "difficulty": "medium",
+      "tags": [
+        "chemistry-foundations",
+        "introduction",
+        "significant-figures"
+      ],
+      "explanation": "Leading zeros are placeholders; the zero between 4 and 5 is significant, giving 4, 0, and 5.",
+      "id": "chemistry-foundations-9"
+    },
+    {
+      "type": "true_false",
+      "prompt": "A prediction should be changed after seeing the results so it matches them.",
+      "answer": false,
+      "difficulty": "medium",
+      "tags": [
+        "chemistry-foundations",
+        "introduction",
+        "experimental-design"
+      ],
+      "explanation": "A prediction is recorded before a test; results should be reported honestly even when they do not support it.",
+      "id": "chemistry-foundations-10"
+    },
+    {
+      "id": "chemistry-select",
+      "type": "multiple_select",
+      "prompt": "Which of these particles are found in an atomic nucleus?",
+      "choices": [
+        "Protons",
+        "Neutrons",
+        "Electrons",
+        "Photons"
+      ],
+      "correctIndices": [
+        0,
+        1
+      ],
+      "tags": [
+        "atoms"
+      ],
+      "explanation": "The nucleus contains protons and, in most atoms, neutrons. Electrons occupy orbitals outside the nucleus."
+    }
+  ]
+}

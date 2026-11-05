@@ -1,0 +1,49 @@
+{
+  "name": "Thinking in objects",
+  "description": "Encapsulation and reusable behavior.",
+  "questions": [
+    {
+      "id": "objects-choice",
+      "type": "multiple_choice",
+      "prompt": "What is a class?",
+      "choices": [
+        "A definition of the state and behavior of a kind of object.",
+        "A visual theme for an application.",
+        "A temporary browser preference."
+      ],
+      "correctIndex": 0,
+      "explanation": "Instances are objects created from a class.",
+      "tags": [
+        "objects"
+      ]
+    },
+    {
+      "id": "objects-true",
+      "type": "true_false",
+      "prompt": "Private fields and public methods can provide a controlled interface.",
+      "answer": true,
+      "explanation": "Private fields and public methods can provide a controlled interface.",
+      "tags": [
+        "objects"
+      ]
+    },
+    {
+      "id": "objects-select",
+      "type": "multiple_select",
+      "prompt": "Which statements are correct?",
+      "choices": [
+        "Instances are objects created from a class.",
+        "Interfaces allow code to depend on behavior rather than a particular implementation.",
+        "All information in this subject is stored only as images."
+      ],
+      "correctIndices": [
+        0,
+        1
+      ],
+      "explanation": "Instances are objects created from a class. Interfaces allow code to depend on behavior rather than a particular implementation.",
+      "tags": [
+        "objects"
+      ]
+    }
+  ]
+}

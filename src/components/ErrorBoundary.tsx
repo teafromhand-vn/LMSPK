@@ -20,11 +20,11 @@ export class ErrorBoundary extends Component<{ children: ReactNode }, State> {
     if (!this.state.error) return this.props.children;
     return (
       <div className="crash" role="alert">
-        <p className="notice-title">Enyalië hit an error and stopped drawing this screen.</p>
-        <p>Your decks are saved on this device. Reloading usually fixes this.</p>
+        <p className="notice-title">Đã xảy ra lỗi khi hiển thị trang.</p>
+        <p>Tải lại để thử lại. Câu trả lời và vị trí đọc sẽ được đặt lại.</p>
         <pre className="crash-detail">{this.state.error.message}</pre>
         <button type="button" className="btn btn-primary" onClick={() => window.location.reload()}>
-          reload
+          Tải lại
         </button>
       </div>
     );

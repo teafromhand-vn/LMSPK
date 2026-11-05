@@ -1,66 +1,89 @@
 import { useEffect, type ReactNode } from 'react';
-import { useQuiz } from '../app/QuizContext';
+import { BookOpen, FileText, Layers, ListTree, Heart, Sprout, Sun, Moon } from 'lucide-react';
 import { useRoute } from '../app/router';
-import { useStatus } from '../app/StatusContext';
-import { isFinished } from '../quiz/engine';
+import { useTheme } from '../app/ThemeContext';
 import { KeyBar, type KeyAction } from './KeyBar';
 import { Link } from './Link';
+import { AdSlot } from './AdSlot';
 
 interface ScreenProps {
-  /** Shown as a path in the title bar, e.g. ["decks", "postgresql-basics"]. */
   path: string[];
-  /** Browser tab title. */
   title: string;
   actions?: KeyAction[];
   children: ReactNode;
+  sideAds?: boolean;
 }
-
-/**
- * Only the area between the title bar and the bottom bar scrolls, so the
- * scroll bar stays between them. Scroll it with this, not window.scrollTo.
- */
 export function scrollScreenToTop(): void {
-  document.querySelector('.screen-body')?.scrollTo(0, 0);
+  window.scrollTo(0, 0);
 }
-
-/** The frame around every view: title bar, content, status line and key bar. */
-export function Screen({ path, title, actions = [], children }: ScreenProps) {
-  const { session } = useQuiz();
+/** Enyalië's shared frame and keyboard bar, restyled for a quiet study library. */
+export function Screen({ title, actions = [], children, sideAds = false }: ScreenProps) {
+  const theme = useTheme();
   const route = useRoute();
-  const { message } = useStatus();
-  const canResume = session !== null && !isFinished(session) && route.name !== 'quiz';
-
+  const active = route.name === 'document' ? 'documents' : route.name === 'deck' ? 'flashcards' : route.name;
   useEffect(() => {
-    document.title = title ? `${title} – Enyalië` : 'Enyalië';
+    document.title = `${title} · Enyalië`;
   }, [title]);
-
   return (
     <div className="screen">
+      <a
+        className="skip-link"
+        href="#main"
+        onClick={(event) => {
+          event.preventDefault();
+          document.getElementById('main')?.focus();
+        }}
+      >
+        Chuyển đến nội dung
+      </a>
       <header className="titlebar">
         <div className="bar-inner">
-          <Link to={{ name: 'library' }} className="brand" title="Library">
-            Enyalië
-            <span className="cursor" aria-hidden="true" />
+          <Link to={{ name: 'library' }} className="brand">
+            <span className="brand-symbol">
+              <Sprout size={23} />
+            </span>
+            Enyalië<span className="brand-dot">.</span>
           </Link>
-          <span className="path">~/{path.join('/')}</span>
-          {canResume && (
-            <Link to={{ name: 'quiz' }} className="resume">
-              resume quiz
-            </Link>
-          )}
+          <nav className="main-nav" aria-label="Điều hướng chính">
+            {([
+              ['library', 'Courses', BookOpen],
+              ['documents', 'Documents', FileText],
+              ['flashcards', 'Flashcards', Layers],
+              ['syllabus', 'Syllabus', ListTree],
+              ['donate', 'Donate', Heart],
+            ] as const).map(([name, label, Icon]) => (
+              <Link key={name} to={{ name }} className={`nav-link${active === name ? ' active' : ''}`} current={active === name}>
+                <Icon size={17} aria-hidden="true" />{label}
+              </Link>
+            ))}
+          </nav>
+          <button
+            className="theme-toggle"
+            onClick={theme.toggle}
+            aria-label={theme.dark ? 'Dùng giao diện sáng' : 'Dùng giao diện tối'}
+          >
+            {theme.dark ? <Sun size={18} /> : <Moon size={18} />}
+          </button>
         </div>
       </header>
-
-      <div className="screen-body">
-        <main className="content">{children}</main>
+      <div className={`screen-body${sideAds ? ' with-side-ads' : ''}`}>
+        {sideAds && <div className="ad-rail ad-rail-left"><AdSlot placement="side-left" /></div>}
+        <main className="content" id="main" tabIndex={-1}>
+          {children}
+        </main>
+        {sideAds && <div className="ad-rail ad-rail-right"><AdSlot placement="side-right" /></div>}
       </div>
-
-      <footer className="bottombar">
-        <p className={`statusline${message ? ` tone-${message.tone}` : ''}`} role="status" aria-live="polite">
-          {message?.text}
-        </p>
-        <KeyBar actions={actions} />
+      <footer className="site-footer">
+        <span>
+          Enyalië <span className="dim">/ không gian học tập của bạn</span>
+        </span>
+        <span>Chỉ trong phiên hiện tại. Tiến độ không được lưu.</span>
       </footer>
+      {actions.length > 0 && (
+        <div className="bottombar">
+          <KeyBar actions={actions} />
+        </div>
+      )}
     </div>
   );
 }

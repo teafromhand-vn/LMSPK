@@ -1,0 +1,176 @@
+{
+  "name": "The natural world",
+  "description": "A closer look at living things and the remarkable world around us.",
+  "questions": [
+    {
+      "type": "multiple_choice",
+      "prompt": "Which animal is the largest living species by mass?",
+      "choices": [
+        "Whale shark",
+        "Blue whale",
+        "African elephant",
+        "Colossal squid"
+      ],
+      "correctIndex": 1,
+      "difficulty": "easy",
+      "tags": [
+        "animals"
+      ],
+      "explanation": "Blue whales can reach about 30 m (100 ft) long and weigh around 150 tonnes.",
+      "id": "nature-1"
+    },
+    {
+      "type": "multiple_choice",
+      "prompt": "Which living land animal is known for the highest sprinting speed?",
+      "choices": [
+        "Cheetah",
+        "Pronghorn",
+        "Lion",
+        "Ostrich"
+      ],
+      "correctIndex": 0,
+      "difficulty": "easy",
+      "tags": [
+        "animals"
+      ],
+      "explanation": "Cheetahs can reach about 100 km/h (60 mph), but only in short sprints.",
+      "id": "nature-2"
+    },
+    {
+      "type": "multiple_choice",
+      "prompt": "Which group includes bats?",
+      "choices": [
+        "Birds",
+        "Reptiles",
+        "Amphibians",
+        "Mammals"
+      ],
+      "correctIndex": 3,
+      "explanation": "Bats are the only mammals capable of true powered flight.",
+      "difficulty": "easy",
+      "tags": [
+        "classification"
+      ],
+      "id": "nature-3"
+    },
+    {
+      "type": "multiple_choice",
+      "prompt": "Which mammal lays eggs?",
+      "choices": [
+        "Otter",
+        "Beaver",
+        "Platypus",
+        "Capybara"
+      ],
+      "correctIndex": 2,
+      "difficulty": "medium",
+      "tags": [
+        "animals"
+      ],
+      "explanation": "The platypus and the echidnas are the only egg-laying mammals, called monotremes.",
+      "id": "nature-4"
+    },
+    {
+      "type": "multiple_choice",
+      "prompt": "How many legs does a typical adult insect have?",
+      "choices": [
+        "Six",
+        "Four",
+        "Eight",
+        "Ten"
+      ],
+      "correctIndex": 0,
+      "explanation": "Insects have three body parts and six legs. Spiders have eight legs and are arachnids.",
+      "difficulty": "easy",
+      "tags": [
+        "invertebrates"
+      ],
+      "id": "nature-5"
+    },
+    {
+      "type": "multiple_choice",
+      "prompt": "How many legs does a typical spider have?",
+      "choices": [
+        "Eight",
+        "Six",
+        "Ten",
+        "Twelve"
+      ],
+      "correctIndex": 0,
+      "difficulty": "easy",
+      "tags": [
+        "invertebrates"
+      ],
+      "explanation": "Spiders are arachnids, not insects.",
+      "id": "nature-6"
+    },
+    {
+      "type": "multiple_choice",
+      "prompt": "Which group includes octopuses?",
+      "choices": [
+        "Crustaceans",
+        "Mollusks",
+        "Echinoderms",
+        "Cnidarians"
+      ],
+      "correctIndex": 1,
+      "difficulty": "medium",
+      "tags": [
+        "classification"
+      ],
+      "explanation": "Octopuses are mollusks, like snails and clams, even though they have no outer shell.",
+      "id": "nature-7"
+    },
+    {
+      "type": "multiple_choice",
+      "prompt": "What do butterflies emerge from during complete metamorphosis?",
+      "choices": [
+        "An egg",
+        "A larva",
+        "An adult",
+        "A pupa"
+      ],
+      "correctIndex": 3,
+      "explanation": "A butterfly's pupa is often called a chrysalis.",
+      "difficulty": "medium",
+      "tags": [
+        "life-cycles"
+      ],
+      "id": "nature-8"
+    },
+    {
+      "type": "multiple_choice",
+      "prompt": "Which animal group has feathers?",
+      "choices": [
+        "Mammals",
+        "Reptiles",
+        "Amphibians",
+        "Birds"
+      ],
+      "correctIndex": 3,
+      "explanation": "Birds are the only living animals with feathers.",
+      "difficulty": "easy",
+      "tags": [
+        "classification"
+      ],
+      "id": "nature-9"
+    },
+    {
+      "type": "multiple_choice",
+      "prompt": "What do we call an animal with a backbone?",
+      "choices": [
+        "Invertebrate",
+        "Arthropod",
+        "Mollusk",
+        "Vertebrate"
+      ],
+      "correctIndex": 3,
+      "explanation": "Fish, amphibians, reptiles, birds and mammals are vertebrates. Most animal species are invertebrates.",
+      "difficulty": "easy",
+      "tags": [
+        "classification"
+      ],
+      "id": "nature-10"
+    }
+  ]
+}

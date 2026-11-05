@@ -1,215 +1,102 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
-import { sourceRoute, useQuiz } from '../app/QuizContext';
+import { useState } from 'react';
+import { useQuiz } from '../app/QuizContext';
+import { Breadcrumbs } from '../components/Breadcrumbs';
 import { navigate } from '../app/router';
-import { useStatus } from '../app/StatusContext';
-import { BlockNumber } from '../components/BlockNumber';
 import { Box } from '../components/Box';
-import type { KeyAction } from '../components/KeyBar';
 import { Link } from '../components/Link';
-import { Meter } from '../components/Meter';
 import { Notice } from '../components/Notice';
-import { QuestionMeta } from '../components/QuestionMeta';
 import { Screen } from '../components/Screen';
-import { store } from '../db';
-import { errorMessage } from '../lib/errors';
-import { formatScore, plural, slugify } from '../lib/format';
-import { correctAnswerText, responseText, verdict } from '../quiz/describe';
-import { buildQuizItems, createSession, isFinished, mistakesSession, replaySession, summarize } from '../quiz/engine';
-import { recordResult } from '../quiz/personalBests';
+import { correctAnswerText, responseText } from '../quiz/describe';
+import { replaySession, summarize } from '../quiz/engine';
 
-export function ResultsView() {
+export function ResultsView({ subjectId }: { subjectId: string }) {
   const quiz = useQuiz();
-  const { session } = quiz;
-  const { notify } = useStatus();
-  const [starting, setStarting] = useState(false);
-  const pending = useRef(false);
-  // Recording is safe to repeat for the same quiz, so it can run while rendering.
-  const newBests = useMemo(() => (session && isFinished(session) ? recordResult(session) : []), [session]);
-
-  // Mastery counts each quiz once, so a reload or a second effect run changes nothing.
-  useEffect(() => {
-    if (!session || !isFinished(session)) return;
-    store
-      .recordQuiz(session)
-      .catch((failure) => notify(`Couldn't save your progress: ${errorMessage(failure)}`, 'error'));
-  }, [session, notify]);
-
-  useEffect(
-    () => () => {
-      pending.current = false;
-    },
-    [],
-  );
-
-  if (!session || !isFinished(session)) {
+  const session = quiz.session?.context?.subjectId === subjectId ? quiz.session : null;
+  const [incorrectOnly, setIncorrectOnly] = useState(false);
+  if (!session?.submitted)
     return (
-      <Screen path={['quiz', 'results']} title="Results">
-        <Notice title="No results to show.">
-          <p>
-            Finish a quiz to see your score here. <Link to={{ name: 'library' }}>Go to the library</Link>
-          </p>
+      <Screen path={['tests', 'results']} title="Kết quả">
+        <Notice title="Chưa có kết quả.">
+          <p>Hoàn thành bài kiểm tra để xem lại đáp án. Kết quả bị xóa khi tải lại trang.</p>
+          <Link to={{ name: 'subject', subjectId, section: 'tests' }}>Xem bài kiểm tra của môn học →</Link>
         </Notice>
       </Screen>
     );
-  }
-
   const summary = summarize(session);
-  const source = sourceRoute(session);
-  const mistakeCount = summary.mistakes.length;
-
-  const newQuiz = async () => {
-    if (pending.current) return;
-    pending.current = true;
-    setStarting(true);
-    try {
-      const [questions, decks, progress] =
-        session.source.kind === 'deck'
-          ? await Promise.all([
-              store.listQuestions(session.source.deckId),
-              store.getDeck(session.source.deckId).then((deck) => (deck ? [deck] : [])),
-              store.loadProgress(session.source.deckId),
-            ])
-          : await Promise.all([store.listAllQuestions(), store.listDecks(), undefined]);
-      if (!pending.current) return;
-      if (session.source.kind === 'deck' && decks.length === 0) {
-        notify('This deck no longer exists.', 'info');
-        return;
-      }
-      const items = buildQuizItems(questions, session.settings, { progress });
-      if (items.length === 0) {
-        notify('No questions match these quiz settings.', 'info');
-        return;
-      }
-      quiz.start(
-        createSession({
-          title: session.source.kind === 'deck' ? decks[0].name : 'quick play',
-          source: session.source,
-          settings: session.settings,
-          items,
-          deckNames: Object.fromEntries(decks.map((deck) => [deck.id, deck.name])),
-        }),
-      );
-      navigate({ name: 'quiz' }, { replace: true });
-    } catch (failure) {
-      if (pending.current) notify(`Couldn't start a new quiz: ${errorMessage(failure)}`, 'error');
-    } finally {
-      if (pending.current) {
-        pending.current = false;
-        setStarting(false);
-      }
-    }
-  };
-
-  const replay = () => {
+  const restart = () => {
     quiz.start(replaySession(session));
-    navigate({ name: 'quiz' }, { replace: true });
+    navigate({ name: 'quiz', subjectId }, { replace: true });
   };
-  const retryMistakes = () => {
-    const retry = mistakesSession(session);
-    if (!retry) return;
-    quiz.start(retry);
-    navigate({ name: 'quiz' }, { replace: true });
-  };
-
-  const actions: KeyAction[] = [
-    { label: 'new quiz', hotkey: 'n', onAction: newQuiz, disabled: starting, primary: true },
-    { label: 'retry as is', hotkey: 'r', onAction: replay, disabled: starting },
-    ...(mistakeCount > 0
-      ? [{ label: `retry ${plural(mistakeCount, 'mistake')}`, hotkey: 'm', onAction: retryMistakes, disabled: starting }]
-      : []),
-    {
-      label: 'exit',
-      hotkey: 'escape',
-      keyLabel: 'Esc',
-      onAction: () => navigate(source, { replace: true }),
-      disabled: starting,
-    },
-  ];
-
-  const score = formatScore(summary.score);
-
   return (
     <Screen
-      path={['quiz', slugify(session.title) || 'quiz', 'results']}
-      title={`Results – ${session.title}`}
-      actions={actions}
+      path={['tests', 'results']}
+      title="Xem lại đáp án"
+      actions={[
+        { label: 'Làm lại', hotkey: 'r', onAction: restart, primary: true },
+        {
+          label: 'Tất cả bài kiểm tra',
+          onAction: () => {
+            quiz.end();
+            navigate({ name: 'subject', subjectId, section: 'tests', chapterId: session.context?.chapterId });
+          },
+        },
+      ]}
     >
+      {session.context && <Breadcrumbs context={session.context} section="tests" title="Xem lại đáp án" />}
+      <Link
+        to={{ name: 'subject', subjectId, section: 'tests', chapterId: session.context?.chapterId }}
+        className="back-link"
+      >
+        ← Bài kiểm tra của môn học
+      </Link>
       <div className="view-head">
-        <h1>results</h1>
-        <p className="dim">
-          {session.title}
-          {session.retry ? ' (mistakes round)' : ''}
-        </p>
+        <p className="page-kicker">HIỂU THÊM MỖI NGÀY</p>
+        <h1>Xem lại đáp án của bạn</h1>
+        <p>{session.title}</p>
       </div>
-
-      <section className="scoreboard" aria-label="Score">
-        <BlockNumber text={score} label={`${score} points`} />
-        <p className="score-caption">points</p>
-        {newBests.length > 0 && (
-          <p className="new-best">
-            new best at {session.settings.count}: {newBests.join(', ')}
-          </p>
-        )}
+      <section className="result-summary" aria-label="Kết quả bài kiểm tra">
+        <span className="result-percent">
+          {summary.accuracy}
+          <small>%</small>
+        </span>
+        <div>
+          <h2>
+            Đúng {summary.correct} / {summary.total} câu
+          </h2>
+          <p>{summary.score} điểm · 100 điểm cho mỗi câu đúng</p>
+          <p className="dim">Mỗi lần làm bài là một cơ hội học hỏi. Kết quả này không được lưu.</p>
+        </div>
+        <button className="btn btn-primary" onClick={restart}>
+          Làm lại
+        </button>
       </section>
-
-      <dl className="stats">
-        <dt>correct</dt>
-        <dd>
-          {summary.correct} of {summary.total}
-        </dd>
-        <dt>incorrect</dt>
-        <dd>{summary.incorrect}</dd>
-        <dt>accuracy</dt>
-        <dd>
-          {summary.accuracy}%{' '}
-          <Meter
-            value={summary.correct}
-            max={summary.total}
-            tone="accuracy"
-            label={`${summary.accuracy} percent correct`}
-          />
-        </dd>
-        <dt>best streak</dt>
-        <dd>{summary.bestStreak}</dd>
-      </dl>
-
-      <p className="verdict-line">{verdict(summary.accuracy)}</p>
-
-      {mistakeCount === 0 ? (
-        <p className="dim">No mistakes to review.</p>
-      ) : (
-        <Box title={`review mistakes (${mistakeCount})`} className="mistakes">
-          <ol className="mistake-list">
-            {summary.mistakes.map(({ item, answer }) => {
-              const { question } = item;
-              return (
-                <li key={question.id} className="mistake">
-                  <p className="mistake-prompt">{question.prompt}</p>
-                  <dl className="mistake-answers">
-                    <dt>you said</dt>
-                    <dd className="is-wrong">{responseText(question, answer.response)}</dd>
-                    <dt>answer</dt>
-                    <dd className="is-correct">{correctAnswerText(question)}</dd>
-                  </dl>
-                  {question.explanation && <p className="explanation">{question.explanation}</p>}
-                  <div className="mistake-foot">
-                    <QuestionMeta
-                      question={question}
-                      deckName={session.source.kind === 'quick' ? session.deckNames[question.deckId] : undefined}
-                    />
-                    <Link
-                      to={{ name: 'editQuestion', deckId: question.deckId, questionId: question.id }}
-                      className="edit-link"
-                    >
-                      edit question
-                    </Link>
-                  </div>
-                </li>
-              );
-            })}
-          </ol>
-        </Box>
-      )}
+      <Box title="Đáp án và giải thích" className="review-box">
+        <label className="review-filter">
+          <input type="checkbox" checked={incorrectOnly} onChange={(e) => setIncorrectOnly(e.target.checked)} /> Chỉ xem câu trả lời sai
+        </label>
+        {incorrectOnly && summary.correct === summary.total && <p className="dim">Không có câu trả lời sai.</p>}
+        <ol className="review-list">
+          {summary.review.map(({ item, response, correct }, i) =>
+            incorrectOnly && correct ? null : (
+              <li key={item.question.id} className="review-card">
+                <span className={correct ? 'verdict is-correct' : 'verdict is-wrong'}>
+                  {correct ? '✓ Đúng' : response ? '✗ Sai' : '— Chưa trả lời'}
+                </span>
+                <h3>
+                  {i + 1}. {item.question.prompt}
+                </h3>
+                <dl>
+                  <dt>Câu trả lời của bạn</dt>
+                  <dd>{responseText(item.question, response)}</dd>
+                  <dt>Đáp án đúng</dt>
+                  <dd className="is-correct">{correctAnswerText(item.question)}</dd>
+                </dl>
+                {item.question.explanation && <p className="explanation">{item.question.explanation}</p>}
+              </li>
+            ),
+          )}
+        </ol>
+      </Box>
     </Screen>
   );
 }

@@ -1,0 +1,6 @@
+collectionId,id,type,prompt,answer,choices,correctIndices,explanation,image,imageAlt,backImage,backImageAlt
+database-cards,primary-key,flashcard,Khóa chính dùng để làm gì?,Định danh duy nhất mỗi hàng trong bảng.,,,Giá trị khóa chính phải duy nhất và không được NULL.,,,,
+database-test,table,multiple_choice,Một hàng trong bảng thường biểu diễn điều gì?,,"[""Một bản ghi"",""Toàn bộ cơ sở dữ liệu"",""Một màu giao diện""]",[0],Mỗi hàng chứa các giá trị thuộc tính của một bản ghi.,,,,
+database-test,key,true_false,Khóa chính có thể chứa giá trị NULL.,FALSE,,,Khóa chính không được chứa giá trị NULL.,,,,
+java-cards,primitive,flashcard,Kiểu int trong Java biểu diễn gì?,Số nguyên có dấu 32 bit.,,,int là một kiểu dữ liệu nguyên thủy trong Java.,,,,
+java-test,types,multiple_select,Chọn các kiểu dữ liệu nguyên thủy trong Java.,,"[""int"",""boolean"",""String""]","[0,1]",int và boolean là kiểu nguyên thủy; String là một lớp.,,,,

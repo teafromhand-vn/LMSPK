@@ -1,0 +1,196 @@
+{
+  "name": "German essentials",
+  "description": "Everyday words and simple ideas to start thinking in German.",
+  "questions": [
+    {
+      "type": "multiple_choice",
+      "prompt": "How is the letter A named in German?",
+      "choices": [
+        "/eː/ (“ay”)",
+        "/haː/ (“hah”)",
+        "/aː/ (“ah”)",
+        "/ɛʁ/ (“air”, with a German r)"
+      ],
+      "correctIndex": 2,
+      "explanation": "German letter names are conventionally written with the IPA form shown here; the plain-language guide is only an approximation.",
+      "difficulty": "easy",
+      "tags": [
+        "foundations",
+        "alphabet",
+        "pronunciation"
+      ],
+      "id": "german-foundations-1"
+    },
+    {
+      "type": "multiple_choice",
+      "prompt": "How is the letter B named in German?",
+      "choices": [
+        "/peː/ (“pay”)",
+        "/veː/ (“vay”)",
+        "/deː/ (“day”)",
+        "/beː/ (“bay”)"
+      ],
+      "correctIndex": 3,
+      "explanation": "German letter names are conventionally written with the IPA form shown here; the plain-language guide is only an approximation.",
+      "difficulty": "easy",
+      "tags": [
+        "foundations",
+        "alphabet",
+        "pronunciation"
+      ],
+      "id": "german-foundations-2"
+    },
+    {
+      "type": "multiple_choice",
+      "prompt": "How is the letter C named in German?",
+      "choices": [
+        "/tsɛt/ (“tset”)",
+        "/ɛs/ (“ess”)",
+        "/tseː/ (“tsay”)",
+        "/kaː/ (“kah”)"
+      ],
+      "correctIndex": 2,
+      "explanation": "German letter names are conventionally written with the IPA form shown here; the plain-language guide is only an approximation.",
+      "difficulty": "easy",
+      "tags": [
+        "foundations",
+        "alphabet",
+        "pronunciation"
+      ],
+      "id": "german-foundations-3"
+    },
+    {
+      "type": "multiple_choice",
+      "prompt": "How is the letter D named in German?",
+      "choices": [
+        "/teː/ (“tay”)",
+        "/beː/ (“bay”)",
+        "/ɡeː/ (“gay”)",
+        "/deː/ (“day”)"
+      ],
+      "correctIndex": 3,
+      "explanation": "German letter names are conventionally written with the IPA form shown here; the plain-language guide is only an approximation.",
+      "difficulty": "easy",
+      "tags": [
+        "foundations",
+        "alphabet",
+        "pronunciation"
+      ],
+      "id": "german-foundations-4"
+    },
+    {
+      "type": "multiple_choice",
+      "prompt": "How is the letter E named in German?",
+      "choices": [
+        "/eː/ (“ay”)",
+        "/iː/ (“ee”)",
+        "/aː/ (“ah”)",
+        "/ɡeː/ (“gay”)"
+      ],
+      "correctIndex": 0,
+      "explanation": "German letter names are conventionally written with the IPA form shown here; the plain-language guide is only an approximation.",
+      "difficulty": "easy",
+      "tags": [
+        "foundations",
+        "alphabet",
+        "pronunciation"
+      ],
+      "id": "german-foundations-5"
+    },
+    {
+      "type": "multiple_choice",
+      "prompt": "How is the letter F named in German?",
+      "choices": [
+        "/faʊ̯/ (“fow”)",
+        "/ɛf/ (“eff”)",
+        "/ɛs/ (“ess”)",
+        "/ɛl/ (“ell”)"
+      ],
+      "correctIndex": 1,
+      "explanation": "German letter names are conventionally written with the IPA form shown here; the plain-language guide is only an approximation.",
+      "difficulty": "easy",
+      "tags": [
+        "foundations",
+        "alphabet",
+        "pronunciation"
+      ],
+      "id": "german-foundations-6"
+    },
+    {
+      "type": "multiple_choice",
+      "prompt": "How is the letter G named in German?",
+      "choices": [
+        "/jɔt/ (“yot”)",
+        "/kaː/ (“kah”)",
+        "/ɡeː/ (“gay”)",
+        "/eː/ (“ay”)"
+      ],
+      "correctIndex": 2,
+      "explanation": "German letter names are conventionally written with the IPA form shown here; the plain-language guide is only an approximation.",
+      "difficulty": "easy",
+      "tags": [
+        "foundations",
+        "alphabet",
+        "pronunciation"
+      ],
+      "id": "german-foundations-7"
+    },
+    {
+      "type": "multiple_choice",
+      "prompt": "How is the letter H named in German?",
+      "choices": [
+        "/aː/ (“ah”)",
+        "/kaː/ (“kah”)",
+        "/ɛʁ/ (“air”, with a German r)",
+        "/haː/ (“hah”)"
+      ],
+      "correctIndex": 3,
+      "explanation": "German letter names are conventionally written with the IPA form shown here; the plain-language guide is only an approximation.",
+      "difficulty": "easy",
+      "tags": [
+        "foundations",
+        "alphabet",
+        "pronunciation"
+      ],
+      "id": "german-foundations-8"
+    },
+    {
+      "type": "multiple_choice",
+      "prompt": "How is the letter I named in German?",
+      "choices": [
+        "/iː/ (“ee”)",
+        "/eː/ (“ay”)",
+        "/ˈʏpsilɔn/ (“üpsilon”)",
+        "/jɔt/ (“yot”)"
+      ],
+      "correctIndex": 0,
+      "explanation": "German letter names are conventionally written with the IPA form shown here; the plain-language guide is only an approximation.",
+      "difficulty": "easy",
+      "tags": [
+        "foundations",
+        "alphabet",
+        "pronunciation"
+      ],
+      "id": "german-foundations-9"
+    },
+    {
+      "type": "multiple_choice",
+      "prompt": "How is the letter J named in German?",
+      "choices": [
+        "/ɡeː/ (“gay”)",
+        "/jɔt/ (“yot”)",
+        "/iː/ (“ee”)",
+        "/ˈʏpsilɔn/ (“üpsilon”)"
+      ],
+      "correctIndex": 1,
+      "explanation": "German letter names are conventionally written with the IPA form shown here; the plain-language guide is only an approximation.",
+      "difficulty": "easy",
+      "tags": [
+        "foundations",
+        "alphabet",
+        "pronunciation"
+      ],
+      "id": "german-foundations-10"
+    }
+  ]
+}

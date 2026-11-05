@@ -1,0 +1,17 @@
+import { chromium } from '@playwright/test';
+const browser = await chromium.launch();
+const page = await browser.newPage({ viewport: { width: 1440, height: 1100 }, colorScheme: 'light' });
+await page.goto('http://localhost:5173');
+await page.locator('.collection-card, [role="alert"]').first().waitFor();
+await page.screenshot({ path: 'docs/frontend-desktop.png', fullPage: true });
+await page.getByRole('button', { name: 'Dùng giao diện tối' }).click();
+await page.screenshot({ path: 'docs/frontend-dark.png', fullPage: true });
+await page.setViewportSize({ width: 390, height: 844 });
+await page.getByRole('button', { name: 'Dùng giao diện sáng' }).click();
+await page.screenshot({ path: 'docs/frontend-mobile.png', fullPage: true });
+await page.goto('http://localhost:5173/#/subjects/database/flashcards');
+await page.locator('.resource-row, [role="alert"]').first().waitFor();
+await page.screenshot({ path: 'docs/subject-mobile.png', fullPage: true });
+await page.setViewportSize({ width: 1440, height: 1100 });
+await page.screenshot({ path: 'docs/subject-desktop.png', fullPage: true });
+await browser.close();

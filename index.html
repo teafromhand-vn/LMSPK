@@ -1,30 +1,19 @@
 <!doctype html>
-<html lang="en">
+<html lang="vi">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <meta name="description" content="Enyalië: local-first flashcards and quizzes." />
-    <meta name="theme-color" content="#62e0ea" />
-    <meta name="color-scheme" content="dark" />
+    <meta name="description" content="Khám phá từng môn học cùng Enyalië. Đọc tài liệu, ôn thẻ ghi nhớ và luyện tập qua bài kiểm tra." />
+    <meta name="theme-color" content="#f7f8fa" />
+    <meta name="color-scheme" content="light" />
     <meta name="apple-mobile-web-app-title" content="Enyalië" />
     <link rel="icon" href="./icons/icon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="./icons/apple-touch-icon.png" />
-    <link rel="manifest" href="./manifest.webmanifest" />
     <title>Enyalië</title>
-    <script>
-      // Apply the saved colour palette before the first paint (see src/lib/palette.ts).
-      try {
-        const palette = localStorage.getItem('enyalie.palette');
-        const palettes = ['classic', 'sycamore', 'cloud'];
-        if (palette && palette !== 'classic' && palettes.includes(palette)) {
-          document.documentElement.dataset.palette = palette;
-        }
-      } catch {}
-    </script>
   </head>
   <body>
     <div id="root"></div>
-    <noscript>Enyalië needs JavaScript to run.</noscript>
+    <noscript>Enyalië cần JavaScript để hoạt động.</noscript>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

@@ -1,0 +1,49 @@
+{
+  "name": "Querying with SQL",
+  "description": "Ask useful questions of your data.",
+  "questions": [
+    {
+      "id": "sql-choice",
+      "type": "multiple_choice",
+      "prompt": "Which clause filters rows before grouping?",
+      "choices": [
+        "WHERE",
+        "A visual theme for an application.",
+        "A temporary browser preference."
+      ],
+      "correctIndex": 0,
+      "explanation": "WHERE filters individual rows before GROUP BY is applied.",
+      "tags": [
+        "sql"
+      ]
+    },
+    {
+      "id": "sql-true",
+      "type": "true_false",
+      "prompt": "SELECT specifies the expressions or columns returned by a query.",
+      "answer": true,
+      "explanation": "SELECT specifies the expressions or columns returned by a query.",
+      "tags": [
+        "sql"
+      ]
+    },
+    {
+      "id": "sql-select",
+      "type": "multiple_select",
+      "prompt": "Which statements are correct?",
+      "choices": [
+        "WHERE filters individual rows before GROUP BY is applied.",
+        "Rows without a match are excluded by an inner join.",
+        "All information in this subject is stored only as images."
+      ],
+      "correctIndices": [
+        0,
+        1
+      ],
+      "explanation": "WHERE filters individual rows before GROUP BY is applied. Rows without a match are excluded by an inner join.",
+      "tags": [
+        "sql"
+      ]
+    }
+  ]
+}

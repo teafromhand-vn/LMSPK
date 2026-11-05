@@ -1,0 +1,5 @@
+id,subjectId,chapterId,kind,name,description,category
+database-cards,database,introduction,flashcards,Ôn tập cơ sở dữ liệu,Ghi nhớ khái niệm bảng và khóa chính.,Nhập môn
+database-test,database,introduction,tests,Kiểm tra cơ sở dữ liệu,Tự kiểm tra kiến thức về bảng và khóa.,Nhập môn
+java-cards,java,foundations,flashcards,Ôn tập Java,Ghi nhớ kiểu dữ liệu cơ bản.,Nền tảng
+java-test,java,foundations,tests,Kiểm tra Java,Nhận biết các kiểu dữ liệu nguyên thủy.,Nền tảng

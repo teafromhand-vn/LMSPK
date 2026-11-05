@@ -1,0 +1,176 @@
+{
+  "name": "World geography",
+  "description": "Places, landscapes, and the connections that shape our world.",
+  "questions": [
+    {
+      "type": "multiple_choice",
+      "prompt": "What is the largest ocean on Earth?",
+      "choices": [
+        "Indian",
+        "Atlantic",
+        "Arctic",
+        "Pacific"
+      ],
+      "correctIndex": 3,
+      "difficulty": "easy",
+      "tags": [
+        "oceans"
+      ],
+      "explanation": "The Pacific covers more area than all of Earth's land combined.",
+      "id": "world-geography-1"
+    },
+    {
+      "type": "multiple_choice",
+      "prompt": "What is the tallest mountain above sea level?",
+      "choices": [
+        "Denali",
+        "K2",
+        "Kangchenjunga",
+        "Mount Everest"
+      ],
+      "correctIndex": 3,
+      "explanation": "It stands about 8,849 m (29,032 ft) high.",
+      "difficulty": "easy",
+      "tags": [
+        "mountains"
+      ],
+      "id": "world-geography-2"
+    },
+    {
+      "type": "multiple_choice",
+      "prompt": "Which river is usually listed as the longest in the world?",
+      "choices": [
+        "Nile",
+        "Mississippi",
+        "Yangtze",
+        "Amazon"
+      ],
+      "correctIndex": 0,
+      "explanation": "Some studies argue the Amazon is longer; the answer depends on how the source is measured.",
+      "difficulty": "medium",
+      "tags": [
+        "rivers"
+      ],
+      "id": "world-geography-3"
+    },
+    {
+      "type": "multiple_choice",
+      "prompt": "What is the smallest country in the world by area?",
+      "choices": [
+        "Monaco",
+        "San Marino",
+        "Liechtenstein",
+        "Vatican City"
+      ],
+      "correctIndex": 3,
+      "difficulty": "easy",
+      "tags": [
+        "countries"
+      ],
+      "explanation": "Vatican City covers less than half a square kilometer, about a fifth of a square mile.",
+      "id": "world-geography-4"
+    },
+    {
+      "type": "multiple_choice",
+      "prompt": "What is the largest country in the world by area?",
+      "choices": [
+        "China",
+        "United States",
+        "Russia",
+        "Canada"
+      ],
+      "correctIndex": 2,
+      "difficulty": "easy",
+      "tags": [
+        "countries"
+      ],
+      "explanation": "Russia covers about 17 million km², more than a ninth of Earth's land.",
+      "id": "world-geography-5"
+    },
+    {
+      "type": "multiple_choice",
+      "prompt": "Which country has had the largest population since 2023?",
+      "choices": [
+        "India",
+        "China",
+        "United States",
+        "Indonesia"
+      ],
+      "correctIndex": 0,
+      "explanation": "UN estimates show India passing China in 2023.",
+      "difficulty": "medium",
+      "tags": [
+        "countries"
+      ],
+      "id": "world-geography-6"
+    },
+    {
+      "type": "multiple_choice",
+      "prompt": "What is the capital of Australia?",
+      "choices": [
+        "Melbourne",
+        "Canberra",
+        "Perth",
+        "Sydney"
+      ],
+      "correctIndex": 1,
+      "difficulty": "easy",
+      "tags": [
+        "capitals"
+      ],
+      "explanation": "Canberra was built as the capital as a compromise between rivals Sydney and Melbourne.",
+      "id": "world-geography-7"
+    },
+    {
+      "type": "multiple_choice",
+      "prompt": "What is the capital of Canada?",
+      "choices": [
+        "Montreal",
+        "Vancouver",
+        "Ottawa",
+        "Toronto"
+      ],
+      "correctIndex": 2,
+      "difficulty": "easy",
+      "tags": [
+        "capitals"
+      ],
+      "explanation": "Ottawa, not Toronto, is the capital. Queen Victoria chose it in 1857.",
+      "id": "world-geography-8"
+    },
+    {
+      "type": "multiple_choice",
+      "prompt": "What is the capital of Brazil?",
+      "choices": [
+        "Rio de Janeiro",
+        "Brasília",
+        "Salvador",
+        "São Paulo"
+      ],
+      "correctIndex": 1,
+      "explanation": "Brasília replaced Rio de Janeiro as the capital in 1960.",
+      "difficulty": "medium",
+      "tags": [
+        "capitals"
+      ],
+      "id": "world-geography-9"
+    },
+    {
+      "type": "multiple_choice",
+      "prompt": "What is the capital of Turkey?",
+      "choices": [
+        "Istanbul",
+        "Antalya",
+        "Ankara",
+        "Izmir"
+      ],
+      "correctIndex": 2,
+      "difficulty": "medium",
+      "tags": [
+        "capitals"
+      ],
+      "explanation": "Ankara replaced Istanbul as the capital in 1923, when the Republic of Turkey was founded.",
+      "id": "world-geography-10"
+    }
+  ]
+}

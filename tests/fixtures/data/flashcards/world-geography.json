@@ -1,0 +1,133 @@
+{
+  "name": "World geography",
+  "description": "Places, landscapes, and the connections that shape our world.",
+  "questions": [
+    {
+      "type": "flashcard",
+      "prompt": "Which country is crossed by both the Equator and the Tropic of Capricorn?",
+      "answer": "Brazil",
+      "difficulty": "hard",
+      "tags": [
+        "maps"
+      ],
+      "explanation": "Brazil is the only country crossed by both lines.",
+      "id": "world-geography-1"
+    },
+    {
+      "type": "flashcard",
+      "prompt": "What is a drainage divide?",
+      "answer": "High ground that separates runoff flowing into neighboring river basins.",
+      "difficulty": "medium",
+      "tags": [
+        "landforms",
+        "rivers"
+      ],
+      "explanation": "Rain falling on opposite sides of a divide flows toward different drainage systems.",
+      "id": "world-geography-2"
+    },
+    {
+      "type": "flashcard",
+      "prompt": "What is a strait?",
+      "answer": "A narrow waterway connecting two larger bodies of water.",
+      "difficulty": "easy",
+      "tags": [
+        "waterways"
+      ],
+      "explanation": "A strait can also separate two land areas, as the Strait of Malacca separates Sumatra from the Malay Peninsula.",
+      "id": "world-geography-3"
+    },
+    {
+      "type": "flashcard",
+      "prompt": "What is an alluvial fan?",
+      "answer": "A fan-shaped deposit of sediment where a stream leaves steep terrain and spreads onto flatter ground.",
+      "difficulty": "hard",
+      "tags": [
+        "landforms"
+      ],
+      "explanation": "As a stream loses speed at the base of a mountain, it drops sediment in a widening fan.",
+      "id": "world-geography-4"
+    },
+    {
+      "type": "flashcard",
+      "prompt": "What is a rain shadow?",
+      "answer": "A relatively dry area on the leeward side of a mountain range after moist air loses precipitation on the windward side.",
+      "difficulty": "medium",
+      "tags": [
+        "climate",
+        "landforms"
+      ],
+      "explanation": "Descending air on the leeward side is often warmer and drier, producing a rain-shadow effect.",
+      "id": "world-geography-5"
+    },
+    {
+      "type": "flashcard",
+      "prompt": "What does a choropleth map use to show geographic data?",
+      "answer": "Shading or color intensity across areas to represent a value or category.",
+      "difficulty": "medium",
+      "tags": [
+        "maps"
+      ],
+      "explanation": "A choropleth map commonly shades countries, states, or districts according to a statistical measure.",
+      "id": "world-geography-6"
+    },
+    {
+      "type": "flashcard",
+      "prompt": "What is a continental shelf?",
+      "answer": "The gently sloping, submerged edge of a continent extending from the coast to the continental slope.",
+      "difficulty": "medium",
+      "tags": [
+        "oceans",
+        "landforms"
+      ],
+      "explanation": "The shelf is shallow compared with the deep ocean basin and is part of the continent’s submerged margin.",
+      "id": "world-geography-7"
+    },
+    {
+      "type": "flashcard",
+      "prompt": "What is an atoll?",
+      "answer": "A ring-shaped coral reef or island surrounding a lagoon, commonly built around a subsiding volcanic island.",
+      "difficulty": "hard",
+      "tags": [
+        "islands",
+        "oceans"
+      ],
+      "explanation": "Atolls develop as coral continues growing near sea level while the volcanic island beneath it subsides.",
+      "id": "world-geography-8"
+    },
+    {
+      "type": "flashcard",
+      "prompt": "What does “landlocked” mean for a country?",
+      "answer": "It has no coastline along an open sea or ocean.",
+      "difficulty": "easy",
+      "tags": [
+        "political-geography"
+      ],
+      "explanation": "A landlocked state may still border lakes or rivers but lacks direct ocean access.",
+      "id": "world-geography-9"
+    },
+    {
+      "type": "flashcard",
+      "prompt": "What is an estuary?",
+      "answer": "A coastal area where river freshwater mixes with seawater.",
+      "difficulty": "medium",
+      "tags": [
+        "rivers",
+        "oceans"
+      ],
+      "explanation": "Estuaries are influenced by tides and provide habitat where fresh and salt water mix.",
+      "id": "world-geography-10"
+    },
+    {
+      "type": "flashcard",
+      "prompt": "What is a geodetic datum?",
+      "answer": "A reference model and coordinate framework used to locate positions on Earth.",
+      "difficulty": "expert",
+      "tags": [
+        "maps",
+        "coordinates"
+      ],
+      "explanation": "A datum specifies an Earth model and origin so geographic coordinates can be interpreted consistently.",
+      "id": "world-geography-11"
+    }
+  ]
+}

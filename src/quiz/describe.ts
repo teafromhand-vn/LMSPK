@@ -3,13 +3,15 @@ import type { Question } from '../models/types';
 import type { QuizResponse } from './engine';
 
 function trueFalseLabel(value: boolean): string {
-  return value ? 'True' : 'False';
+  return value ? 'Đúng' : 'Sai';
 }
 
 export function correctAnswerText(question: Question): string {
   switch (question.type) {
     case 'multiple_choice':
       return question.choices[question.correctIndex] ?? '';
+    case 'multiple_select':
+      return question.correctIndices.map((i) => question.choices[i]).join('; ');
     case 'true_false':
       return trueFalseLabel(question.answer);
     case 'flashcard':
@@ -17,16 +19,19 @@ export function correctAnswerText(question: Question): string {
   }
 }
 
-export function responseText(question: Question, response: QuizResponse): string {
+export function responseText(question: Question, response: QuizResponse | null): string {
+  if (!response) return 'Chưa trả lời';
   switch (response.type) {
+    case 'timeout':
+      return 'Hết giờ';
     case 'multiple_choice':
       return question.type === 'multiple_choice' ? (question.choices[response.choice] ?? '—') : '—';
     case 'true_false':
       return trueFalseLabel(response.answer);
-    case 'flashcard':
-      return response.recalled ? 'Recalled it' : "Didn't recall it";
-    case 'timeout':
-      return 'Out of time';
+    case 'multiple_select':
+      return question.type === 'multiple_select'
+        ? response.choices.map((i) => question.choices[i]).join('; ') || 'Chưa trả lời'
+        : '—';
   }
 }
 

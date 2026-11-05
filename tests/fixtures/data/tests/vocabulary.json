@@ -1,0 +1,176 @@
+{
+  "name": "Words worth knowing",
+  "description": "Find the right words. Explore meanings, nuances, and new expressions.",
+  "questions": [
+    {
+      "type": "multiple_choice",
+      "prompt": "What does \"ubiquitous\" mean?",
+      "choices": [
+        "Confined to one region",
+        "Present only for a season",
+        "Commonly found everywhere",
+        "Difficult to find anywhere"
+      ],
+      "correctIndex": 2,
+      "difficulty": "easy",
+      "tags": [
+        "definitions"
+      ],
+      "explanation": "Merriam-Webster defines ubiquitous as existing everywhere at the same time. Example: Smartphones are ubiquitous in the city.",
+      "id": "vocabulary-1"
+    },
+    {
+      "type": "multiple_choice",
+      "prompt": "What does \"ephemeral\" mean?",
+      "choices": [
+        "Continuing without interruption",
+        "Recurring at regular intervals",
+        "Developing over many decades",
+        "Lasting a very short time"
+      ],
+      "correctIndex": 3,
+      "difficulty": "easy",
+      "tags": [
+        "definitions"
+      ],
+      "explanation": "Merriam-Webster: \"lasting a very short time\". Example: The rainbow was an ephemeral sight.",
+      "id": "vocabulary-2"
+    },
+    {
+      "type": "multiple_choice",
+      "prompt": "What does \"benevolent\" mean?",
+      "choices": [
+        "Cruel and vindictive",
+        "Kind and well-meaning",
+        "Proud and self-important",
+        "Wary and distrustful"
+      ],
+      "correctIndex": 1,
+      "difficulty": "easy",
+      "tags": [
+        "definitions"
+      ],
+      "explanation": "Merriam-Webster: \"marked by kindness or generosity\". Example: A benevolent donor paid the fees.",
+      "id": "vocabulary-3"
+    },
+    {
+      "type": "multiple_choice",
+      "prompt": "What does \"pragmatic\" mean?",
+      "choices": [
+        "Guided by idealistic theories",
+        "Practical about real situations",
+        "Concerned with social prestige",
+        "Rigid about traditional rules"
+      ],
+      "correctIndex": 1,
+      "difficulty": "easy",
+      "tags": [
+        "definitions"
+      ],
+      "explanation": "Merriam-Webster contrasts pragmatic with idealistic. Example: They chose the cheaper repair as a pragmatic solution.",
+      "id": "vocabulary-4"
+    },
+    {
+      "type": "multiple_choice",
+      "prompt": "What does \"meticulous\" mean?",
+      "choices": [
+        "Careless about small errors",
+        "Impatient with slow progress",
+        "Uncertain about basic facts",
+        "Extremely careful about details"
+      ],
+      "correctIndex": 3,
+      "difficulty": "easy",
+      "tags": [
+        "definitions"
+      ],
+      "explanation": "Merriam-Webster: \"showing or requiring extreme care and attention to detail\". Example: She kept meticulous records.",
+      "id": "vocabulary-5"
+    },
+    {
+      "type": "multiple_choice",
+      "prompt": "What does \"laconic\" mean?",
+      "choices": [
+        "Speaking at great length",
+        "Using very few words",
+        "Avoiding direct statements",
+        "Repeating the same point"
+      ],
+      "correctIndex": 1,
+      "explanation": "Merriam-Webster describes using a minimum of words. Example: His laconic reply was a single sentence.",
+      "difficulty": "medium",
+      "tags": [
+        "definitions"
+      ],
+      "id": "vocabulary-6"
+    },
+    {
+      "type": "multiple_choice",
+      "prompt": "What does \"gregarious\" mean?",
+      "choices": [
+        "Preferring a solitary routine",
+        "Distrusting unfamiliar people",
+        "Avoiding casual conversation",
+        "Enjoying the company of others"
+      ],
+      "correctIndex": 3,
+      "difficulty": "medium",
+      "tags": [
+        "definitions"
+      ],
+      "explanation": "Merriam-Webster: \"enjoying the company of others\". Example: The gregarious host greeted everyone.",
+      "id": "vocabulary-7"
+    },
+    {
+      "type": "multiple_choice",
+      "prompt": "What does \"obfuscate\" mean?",
+      "choices": [
+        "To make something less severe",
+        "To make something more compact",
+        "To make something more visible",
+        "To make something less clear"
+      ],
+      "correctIndex": 3,
+      "difficulty": "medium",
+      "tags": [
+        "definitions"
+      ],
+      "explanation": "Merriam-Webster includes the sense \"to make obscure\". Example: Jargon can obfuscate a simple explanation.",
+      "id": "vocabulary-8"
+    },
+    {
+      "type": "multiple_choice",
+      "prompt": "What does \"ameliorate\" mean?",
+      "choices": [
+        "To make a situation worse",
+        "To make a situation better",
+        "To describe a situation briefly",
+        "To avoid a situation entirely"
+      ],
+      "correctIndex": 1,
+      "difficulty": "medium",
+      "tags": [
+        "definitions"
+      ],
+      "explanation": "Merriam-Webster: \"to make better or more tolerable\". Example: The changes ameliorated working conditions.",
+      "id": "vocabulary-9"
+    },
+    {
+      "type": "multiple_choice",
+      "prompt": "What does \"capricious\" mean?",
+      "choices": [
+        "Following a consistent routine",
+        "Changing unpredictably with whims",
+        "Remaining calm under pressure",
+        "Acting only after careful study"
+      ],
+      "correctIndex": 1,
+      "difficulty": "medium",
+      "tags": [
+        "definitions"
+      ],
+      "explanation": "Merriam-Webster links capricious to sudden unpredictable impulses. Example: Capricious weather disrupted the picnic.",
+      "id": "vocabulary-10"
+    }
+  ]
+}
