@@ -4,7 +4,6 @@ import { Screen } from '../components/Screen';
 import { Link } from '../components/Link';
 import { ResourceLink } from '../components/ResourceLink';
 import { Notice } from '../components/Notice';
-import { SubjectCode } from '../components/SubjectCode';
 import { useAsync } from '../hooks/useAsync';
 import { loadSubject, loadDeck, resourceContext } from '../lib/content';
 import { errorMessage } from '../lib/errors';
@@ -61,14 +60,25 @@ function SubjectResources({
   const [query, setQuery] = useState('');
   const [category, setCategory] = useState('');
   const [timer, setTimer] = useState<number | null>(null);
+  const [selectedTest, setSelectedTest] = useState<Collection | null>(null);
+  const [mode, setMode] = useState<'practice' | 'test'>('test');
+  const [infinite, setInfinite] = useState(false);
+  const [questionCount, setQuestionCount] = useState(1);
   const [starting, setStarting] = useState<string | null>(null);
   const [error, setError] = useState('');
   const pending = useRef(false);
+  const setup = useRef<HTMLFormElement>(null);
   const mounted = useRef(true);
   useEffect(() => {
     mounted.current = true;
     return () => { mounted.current = false; };
   }, []);
+  useEffect(() => {
+    if (selectedTest) {
+      setup.current?.scrollIntoView({ block: 'center' });
+      setup.current?.querySelector('select')?.focus({ preventScroll: true });
+    }
+  }, [selectedTest]);
   const quiz = useQuiz();
   const selectedChapter = subject.chapters.find((c) => c.id === chapterId);
   const tabs = [
@@ -82,11 +92,11 @@ function SubjectResources({
     (r) =>
       (!chapterId || r.chapterId === chapterId) &&
       (!category || r.category === category) &&
-      `${r.name} ${r.description} ${r.category}`.toLowerCase().includes(query.trim().toLowerCase()),
+      r.name.toLowerCase().includes(query.trim().toLowerCase()),
   );
   const groups = [
     ...subject.chapters,
-    { id: '', name: 'Kiến thức chung', description: 'Tài nguyên dùng chung cho môn học.' },
+    { id: '', name: '' },
   ].filter((c) => (!chapterId || c.id === chapterId) && filtered.some((r) => (r.chapterId ?? '') === c.id));
   async function startTest(resource: Collection) {
     if (pending.current) return;
@@ -96,13 +106,19 @@ function SubjectResources({
     try {
       const deck = await loadDeck(resource.id, 'tests');
       if (!mounted.current) return;
+      const pool = buildQuizItems(deck.questions);
+      if (!infinite && (!Number.isInteger(questionCount) || questionCount < 1 || questionCount > pool.length))
+        throw new Error(`Nhập số câu từ 1 đến ${pool.length}.`);
       quiz.start(
         createSession({
           title: resource.name,
           deckId: resource.id,
           timer,
+          mode,
+          infinite,
+          pool,
           context: resourceContext(subject, resource),
-          items: buildQuizItems(deck.questions),
+          items: infinite ? pool : pool.slice(0, questionCount),
         }),
       );
       navigate({ name: 'quiz', subjectId: subject.id });
@@ -128,21 +144,8 @@ function SubjectResources({
         <ChevronRight size={13} />
         <span aria-current="page">{subject.name}</span>
       </nav>
-      <header className={`subject-heading ${subject.color}`}>
-        <div className="subject-heading-icon">
-          <SubjectCode subject={subject} />
-        </div>
-        <div>
-          <p className="page-kicker">Kỳ {subject.semester}</p>
-          <h1>{subject.name}</h1>
-          <p>{subject.description}</p>
-          <div className="subject-heading-meta">
-            {subject.chapters.length} chương <span>·</span> Đọc. Ghi nhớ. Luyện tập.
-          </div>
-        </div>
-      </header>
-      <div className="subject-layout">
-        <aside className="chapter-sidebar">
+      <div className={subject.chapters.length ? 'subject-layout' : ''}>
+        {subject.chapters.length > 0 && <aside className="chapter-sidebar">
           <p className="page-kicker">CHƯƠNG & CHỦ ĐỀ</p>
           <Link
             to={{ name: 'subject', subjectId: subject.id, section }}
@@ -164,11 +167,7 @@ function SubjectResources({
               <ChevronRight size={14} />
             </Link>
           ))}
-          <div className="chapter-sidebar-note">
-            <p>Học theo nhịp độ của bạn.</p>
-            <span>Đọc tài liệu, ôn thẻ ghi nhớ hoặc làm bài kiểm tra.</span>
-          </div>
-        </aside>
+        </aside>}
         <section className="subject-resources" aria-label="Tài nguyên môn học">
           <nav className="resource-tabs" aria-label="Các mục môn học">
             {tabs.map(({ id, label, icon: Icon }) => (
@@ -184,13 +183,6 @@ function SubjectResources({
               </Link>
             ))}
           </nav>
-          <div className="resource-section-heading">
-            <h2>{selectedChapter?.name ?? 'Tất cả chương'}</h2>
-            <p>
-              {selectedChapter?.description ??
-                'Khám phá từng chương với đầy đủ tài nguyên học tập.'}
-            </p>
-          </div>
           <div className="subject-search resource-search">
             <div className="search-field">
               <Search size={17} />
@@ -202,7 +194,7 @@ function SubjectResources({
                 onChange={(e) => setQuery(e.target.value)}
               />
             </div>
-            <select
+            {subject.chapters.length > 0 && <select
               aria-label="Chương"
               value={chapterId ?? ''}
               onChange={(e) =>
@@ -220,7 +212,7 @@ function SubjectResources({
                   {c.name}
                 </option>
               ))}
-            </select>
+            </select>}
             {section === 'documents' && (
               <select aria-label="Loại tài liệu" value={category} onChange={(e) => setCategory(e.target.value)}>
                 <option value="">Tất cả loại</option>
@@ -230,7 +222,17 @@ function SubjectResources({
               </select>
             )}
           </div>
-          {section === 'tests' && (
+          {section === 'tests' && selectedTest && (
+            <form ref={setup} className="quiz-setup" aria-label="Chọn chế độ kiểm tra" onSubmit={(event) => { event.preventDefault(); void startTest(selectedTest); }}>
+              <h2>{selectedTest.name}</h2>
+              <label>Chế độ
+                <select aria-label="Chế độ" value={mode} onChange={(e) => setMode(e.target.value as 'practice' | 'test')}>
+                  <option value="test">Xem đáp án sau khi kết thúc</option>
+                  <option value="practice">Xem đáp án sau từng câu</option>
+                </select>
+              </label>
+              <label><input type="checkbox" checked={infinite} onChange={(e) => setInfinite(e.target.checked)} />Vô hạn</label>
+              {!infinite && <label>Số câu<input type="number" min={1} max={selectedTest.count} required value={questionCount} onChange={(e) => setQuestionCount(Number(e.target.value))} /></label>}
             <label className="timer-setting">
               Thời gian mỗi câu{' '}
               <select
@@ -246,6 +248,8 @@ function SubjectResources({
                 ))}
               </select>
             </label>
+              <div><button className="btn btn-primary" type="submit" disabled={starting !== null}>Bắt đầu</button>{' '}<button className="btn" type="button" disabled={starting !== null} onClick={() => setSelectedTest(null)}>Hủy</button></div>
+            </form>
           )}
           {error && (
             <Notice title="Không thể bắt đầu bài kiểm tra." tone="error">
@@ -254,7 +258,7 @@ function SubjectResources({
           )}
           {groups.map((chapter) => (
             <section className="chapter-group" key={chapter.id} aria-label={chapter.name}>
-              <div className="chapter-group-heading">
+              {chapter.id && <div className="chapter-group-heading">
                 <span>
                   {chapter.id
                     ? String(subject.chapters.findIndex((c) => c.id === chapter.id) + 1).padStart(2, '0')
@@ -262,9 +266,8 @@ function SubjectResources({
                 </span>
                 <div>
                   <h3>{chapter.name}</h3>
-                  <p>{chapter.description}</p>
                 </div>
-              </div>
+              </div>}
               <div className="resource-list">
                 {filtered
                   .filter((r) => (r.chapterId ?? '') === chapter.id)
@@ -282,10 +285,9 @@ function SubjectResources({
                         </span>
                         <span className="resource-info">
                           <strong>{r.name}</strong>
-                          <span>{r.description}</span>
                           <small>
                             {'format' in r
-                              ? `${(r as LearningDocument).format.toUpperCase()} · ${(r as LearningDocument).detail}`
+                              ? (r as LearningDocument).format.toUpperCase()
                               : `${(r as Collection).count} ${section === 'tests' ? 'câu hỏi' : 'thẻ'}`}
                           </small>
                         </span>
@@ -306,7 +308,7 @@ function SubjectResources({
                         className="resource-row"
                         key={r.id}
                         disabled={starting !== null}
-                        onClick={() => void startTest(r as Collection)}
+                        onClick={() => { setSelectedTest(r as Collection); setQuestionCount((r as Collection).count); setError(''); }}
                       >
                         {body}
                       </button>

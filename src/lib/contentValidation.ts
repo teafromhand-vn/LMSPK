@@ -25,7 +25,7 @@ export function validateIndex(value: unknown, documents = false): Collection[] |
   for (const entry of value) {
     if (
       !record(entry) ||
-      !['id', 'name', 'description', 'category', 'subject', 'subjectId'].every((key) => text(entry[key])) ||
+      !['id', 'name', 'category', 'subject', 'subjectId'].every((key) => text(entry[key])) ||
       (entry.chapterId !== undefined && !text(entry.chapterId)) ||
       !['blue', 'green', 'purple', 'amber'].includes(String(entry.color))
     )
@@ -35,7 +35,6 @@ export function validateIndex(value: unknown, documents = false): Collection[] |
     if (
       documents
         ? !['pdf', 'docx', 'md', 'txt'].includes(String(entry.format)) ||
-          !text(entry.detail) ||
           !(path(entry.file) || isDocumentUrl(entry.file))
         : !Number.isInteger(entry.count) || Number(entry.count) < 1
     )
@@ -47,7 +46,6 @@ export function validateDeck(value: unknown, module: 'flashcards' | 'tests'): De
   if (
     !record(value) ||
     !text(value.name) ||
-    typeof value.description !== 'string' ||
     !Array.isArray(value.questions) ||
     !value.questions.length
   )
@@ -100,7 +98,7 @@ export function matches(item: Collection | LearningDocument, query: string, cate
   return (
     (!category || item.category === category) &&
     (!subject || item.subject === subject) &&
-    `${item.name} ${item.description} ${item.category} ${item.subject}`
+    `${item.name} ${item.category} ${item.subject}`
       .toLowerCase()
       .includes(query.trim().toLowerCase())
   );
@@ -114,7 +112,7 @@ export function validateSubjects(value: unknown): Subject[] {
   for (const s of value) {
     if (
       !record(s) ||
-      !['id', 'name', 'description', 'category'].every((key) => text(s[key])) ||
+      !['id', 'name', 'category'].every((key) => text(s[key])) ||
       !/^[a-z0-9-]+$/.test(String(s.id)) ||
       !Number.isInteger(s.semester) ||
       Number(s.semester) < 1 ||
@@ -133,7 +131,6 @@ export function validateSubjects(value: unknown): Subject[] {
         !text(c.id) ||
         !/^[a-z0-9-]+$/.test(c.id) ||
         !text(c.name) ||
-        typeof c.description !== 'string' ||
         chapters.has(c.id)
       )
         throw new Error(`Invalid or duplicate chapter in ${s.id}.`);

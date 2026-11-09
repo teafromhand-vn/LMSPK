@@ -92,7 +92,10 @@ Mọi thay đổi nội dung thực hiện trong Sheets hoặc repository, khôn
 
 - Thẻ: lật bằng F/dấu cách, di chuyển bằng ←/→, xáo trộn bằng S; ảnh trước/sau tùy chọn.
 - Bài kiểm tra: một đáp án, nhiều đáp án, đúng/sai. Nhiều đáp án phải chọn đúng toàn bộ tập. Mỗi câu đúng 100 điểm; sai/chưa trả lời/hết giờ 0 điểm.
-- Thời gian mỗi câu tùy chọn 10/20/30 giây. Có đồng hồ thì cần xác nhận và đáp án bị khóa; không đồng hồ thì sửa được đến khi nộp bài. Kết quả có giải thích, lọc câu sai và làm lại.
+- Chọn bộ bài trước khi thiết lập chế độ: nhập số câu hoặc Vô hạn; xem đáp án sau từng câu hoặc sau khi kết thúc. Bài hữu hạn hiện lấy không lặp, tối đa số câu trong bộ (quy tắc tạm thời chờ chủ dự án xác nhận).
+- Vô hạn chọn ngẫu nhiên có lặp trong bộ; mỗi lần trả lời tính một lượt riêng. Nhấn Kết thúc để chấm các lượt đã trả lời, bỏ lượt đang trống.
+- Thời gian mỗi câu tùy chọn 10/20/30 giây. Có đồng hồ hoặc xem đáp án từng câu thì cần xác nhận và khóa đáp án; chế độ cuối bài không đồng hồ cho sửa đến khi nộp. Kết quả có giải thích, lọc câu sai, làm lại toàn bộ hoặc riêng câu sai.
+- Courses chỉ tìm theo mã môn. Documents/Flashcards tìm theo tên học liệu và lọc mã môn. Mô tả giới thiệu đã bỏ khỏi schema/mẫu; cột cũ được bỏ qua khi đọc. Syllabus tạm tắt, hiển thị SOON và không yêu cầu tab dữ liệu.
 - Documents: nhấn tài liệu để mở URL ở tab mới; việc đọc, tải xuống và quyền truy cập do trang đích (ví dụ Google Drive) quản lý. Website không nhúng trình đọc.
 - Tải lại/đóng tab xóa toàn bộ tiến độ và kết quả. URL chỉ giữ điều hướng nội dung, không lưu trạng thái học.
 

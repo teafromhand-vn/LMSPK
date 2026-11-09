@@ -51,7 +51,11 @@ export function Screen({ title, actions = [], children, sideAds = false }: Scree
               ['flashcards', 'Flashcards', Layers],
               ['syllabus', 'Syllabus', ListTree],
               ['donate', 'Donate', Heart],
-            ] as const).map(([name, label, Icon]) => (
+            ] as const).map(([name, label, Icon]) => name === 'syllabus' ? (
+              <span key={name} className="nav-link nav-soon" aria-disabled="true">
+                <Icon size={17} aria-hidden="true" />{label}<small className="soon-badge">SOON</small>
+              </span>
+            ) : (
               <Link key={name} to={{ name }} className={`nav-link${active === name ? ' active' : ''}`} current={active === name}>
                 <Icon size={17} aria-hidden="true" />{label}
               </Link>
@@ -73,12 +77,6 @@ export function Screen({ title, actions = [], children, sideAds = false }: Scree
         </main>
         {sideAds && <div className="ad-rail ad-rail-right"><AdSlot placement="side-right" /></div>}
       </div>
-      <footer className="site-footer">
-        <span>
-          Enyalië <span className="dim">/ không gian học tập của bạn</span>
-        </span>
-        <span>Chỉ trong phiên hiện tại. Tiến độ không được lưu.</span>
-      </footer>
       {actions.length > 0 && (
         <div className="bottombar">
           <KeyBar actions={actions} />

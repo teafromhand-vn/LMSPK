@@ -14,7 +14,6 @@ import { QuizView } from './views/QuizView';
 import { ResultsView } from './views/ResultsView';
 import { ResourcesView } from './views/ResourcesView';
 import { DonateView } from './views/DonateView';
-import { SyllabusView } from './views/SyllabusView';
 
 export function App() {
   return (
@@ -43,7 +42,7 @@ function CurrentScreen() {
     case 'donate':
       return <DonateView />;
     case 'syllabus':
-      return <SyllabusView />;
+      return <Screen path={['syllabus']} title="Syllabus"><Notice title="Syllabus — SOON"><Link to={{ name: 'library' }}>Courses</Link></Notice></Screen>;
     case 'library':
       return <LibraryView />;
     case 'deck':

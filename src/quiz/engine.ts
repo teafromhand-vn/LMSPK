@@ -46,6 +46,9 @@ export function isCorrect(question: Question, response: QuizResponse): boolean {
   }
 }
 export interface QuizSession {
+  mode: 'practice' | 'test';
+  infinite: boolean;
+  pool: QuizItem[];
   context?: ResourceContext;
   title: string;
   deckId: string;
@@ -57,6 +60,9 @@ export interface QuizSession {
   questionStartedAt: number;
 }
 export function createSession(params: {
+  mode?: 'practice' | 'test';
+  infinite?: boolean;
+  pool?: QuizItem[];
   context?: ResourceContext;
   title: string;
   deckId: string;
@@ -66,9 +72,13 @@ export function createSession(params: {
   if (!params.items.length) throw new Error('A test needs at least one question.');
   return {
     ...params,
+    mode: params.mode ?? 'test',
+    infinite: params.infinite ?? false,
+    pool: params.pool ?? params.items,
+    items: params.infinite ? [params.items[Math.floor(Math.random() * params.items.length)]] : params.items,
     timer: params.timer ?? null,
     questionStartedAt: Date.now(),
-    answers: params.items.map(() => null),
+    answers: params.infinite ? [null] : params.items.map(() => null),
     current: 0,
     submitted: false,
   };
@@ -84,15 +94,20 @@ export function deadline(session: QuizSession): number | null {
 }
 export function answerCurrent(session: QuizSession, response: QuizResponse, now = Date.now()): QuizSession {
   if (session.submitted) return session;
-  if (session.timer !== null && session.answers[session.current] !== null) return session;
+  if ((session.timer !== null || session.mode === 'practice') && session.answers[session.current] !== null) return session;
   const end = deadline(session);
   if (response.type === 'timeout' && (end === null || now < end)) return session;
   const answers = session.answers.slice();
   answers[session.current] = end !== null && now >= end ? { type: 'timeout' } : response;
   return { ...session, answers };
 }
-export function moveTo(session: QuizSession, position: number): QuizSession {
-  if (session.timer !== null && !session.answers[session.current]) return session;
+export function moveTo(session: QuizSession, position: number, random: Random = Math.random): QuizSession {
+  if (session.submitted) return session;
+  if ((session.timer !== null || session.mode === 'practice' || session.infinite) && !session.answers[session.current]) return session;
+  if (session.infinite && position === session.items.length) {
+    const item = session.pool[Math.floor(random() * session.pool.length)];
+    return { ...session, items: [...session.items, item], answers: [...session.answers, null], current: position, questionStartedAt: Date.now() };
+  }
   return {
     ...session,
     current: Math.max(0, Math.min(session.items.length - 1, position)),
@@ -107,22 +122,28 @@ export function summarize(session: QuizSession) {
     item,
     response: session.answers[i],
     correct: !!session.answers[i] && isCorrect(item.question, session.answers[i]!),
-  }));
+  })).filter((entry) => !session.infinite || entry.response !== null);
   const correct = review.filter((entry) => entry.correct).length;
   return {
     total: review.length,
     correct,
     score: correct * 100,
-    accuracy: Math.round((correct / review.length) * 100),
+    accuracy: review.length ? Math.round((correct / review.length) * 100) : 0,
     review,
   };
 }
-export function replaySession(session: QuizSession): QuizSession {
+export function replaySession(session: QuizSession, incorrectOnly = false): QuizSession {
+  const source = incorrectOnly
+    ? summarize(session).review.filter((entry) => !entry.correct).map((entry) => entry.item)
+    : session.infinite ? session.pool : session.items;
+  const questions = [...new Map(source.map((item) => [item.question.id, item.question])).values()];
   return createSession({
     context: session.context,
     title: session.title,
     deckId: session.deckId,
     timer: session.timer,
-    items: buildQuizItems(session.items.map((i) => i.question)),
+    mode: session.mode,
+    infinite: !incorrectOnly && session.infinite,
+    items: buildQuizItems(questions),
   });
 }

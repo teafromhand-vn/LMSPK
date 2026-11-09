@@ -747,9 +747,17 @@ kbd {
   box-shadow: 0 12px 35px #25374f06;
 }
 .flashcard.flipped {
-  border-color: #b8c8f7;
-  background: var(--accent-soft);
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 22%, var(--surface));
 }
+
+.nav-link.nav-soon { color: var(--dim); cursor: default; }
+.soon-badge { font-size: 9px; line-height: 1.4; padding: 2px 4px; border: 1px solid var(--line); border-radius: 4px; }
+.quiz-setup { display: grid; gap: 16px; padding: 20px; margin: 16px 0; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); }
+.quiz-setup label { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+.quiz-setup input, .quiz-setup select { padding: 8px; max-width: 100%; background: var(--surface); color: var(--text); border: 1px solid var(--line); border-radius: 6px; }
+.quiz-setup input[type='number'] { width: 110px; }
+.study-controls { display: flex; justify-content: center; gap: 16px; margin-top: 16px; }
 .card-side {
   font-size: 10px;
   letter-spacing: 2px;

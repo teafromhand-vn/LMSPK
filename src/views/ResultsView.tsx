@@ -23,8 +23,8 @@ export function ResultsView({ subjectId }: { subjectId: string }) {
       </Screen>
     );
   const summary = summarize(session);
-  const restart = () => {
-    quiz.start(replaySession(session));
+  const restart = (incorrectOnly = false) => {
+    quiz.start(replaySession(session, incorrectOnly));
     navigate({ name: 'quiz', subjectId }, { replace: true });
   };
   return (
@@ -32,7 +32,7 @@ export function ResultsView({ subjectId }: { subjectId: string }) {
       path={['tests', 'results']}
       title="Xem lại đáp án"
       actions={[
-        { label: 'Làm lại', hotkey: 'r', onAction: restart, primary: true },
+        { label: 'Làm lại', hotkey: 'r', onAction: () => restart(), primary: true },
         {
           label: 'Tất cả bài kiểm tra',
           onAction: () => {
@@ -64,11 +64,11 @@ export function ResultsView({ subjectId }: { subjectId: string }) {
             Đúng {summary.correct} / {summary.total} câu
           </h2>
           <p>{summary.score} điểm · 100 điểm cho mỗi câu đúng</p>
-          <p className="dim">Mỗi lần làm bài là một cơ hội học hỏi. Kết quả này không được lưu.</p>
         </div>
-        <button className="btn btn-primary" onClick={restart}>
+        <button className="btn btn-primary" onClick={() => restart()}>
           Làm lại
         </button>
+        {summary.correct < summary.total && <button className="btn" onClick={() => restart(true)}>Làm lại câu sai</button>}
       </section>
       <Box title="Đáp án và giải thích" className="review-box">
         <label className="review-filter">
@@ -78,7 +78,7 @@ export function ResultsView({ subjectId }: { subjectId: string }) {
         <ol className="review-list">
           {summary.review.map(({ item, response, correct }, i) =>
             incorrectOnly && correct ? null : (
-              <li key={item.question.id} className="review-card">
+              <li key={i} className="review-card">
                 <span className={correct ? 'verdict is-correct' : 'verdict is-wrong'}>
                   {correct ? '✓ Đúng' : response ? '✗ Sai' : '— Chưa trả lời'}
                 </span>

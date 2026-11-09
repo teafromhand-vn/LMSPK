@@ -79,4 +79,32 @@ describe('Enyalië quiz engine: adapted original grading and session invariants'
     expect(answerCurrent(answered, { type: 'multiple_choice', choice: 0 })).toBe(answered);
     expect(summarize(answered).score).toBe(100);
   });
+  it('locks practice answers once revealed, including multiple-select responses', () => {
+    const session = createSession({ title: 'Practice', deckId: 'practice', mode: 'practice', items: buildQuizItems([questions[1]]) });
+    expect(moveTo(session, 1)).toBe(session);
+    const answered = answerCurrent(session, { type: 'multiple_select', choices: [0, 2] });
+    expect(answerCurrent(answered, { type: 'multiple_select', choices: [1] })).toBe(answered);
+    expect(summarize(answered).correct).toBe(1);
+    expect(replaySession(answered).mode).toBe('practice');
+  });
+  it('counts repeated infinite attempts separately and excludes the unanswered last turn', () => {
+    let session = createSession({ title: 'Infinite', deckId: 'infinite', infinite: true, items: buildQuizItems([questions[0]]) });
+    expect(summarize(session)).toMatchObject({ total: 0, accuracy: 0 });
+    expect(moveTo(session, 1)).toBe(session);
+    session = answerCurrent(session, { type: 'multiple_choice', choice: 1 });
+    session = moveTo(session, 1, () => 0);
+    session = answerCurrent(session, { type: 'multiple_choice', choice: 0 });
+    session = moveTo(session, 2, () => 0);
+    const submitted = submitSession(session);
+    expect(summarize(submitted)).toMatchObject({ total: 2, correct: 1, score: 100, accuracy: 50 });
+    expect(moveTo(submitted, 3)).toBe(submitted);
+    const replay = replaySession(submitted);
+    expect(replay.infinite).toBe(true);
+    expect(replay.answers).toEqual([null]);
+    expect(summarize(replay).total).toBe(0);
+    const mistakes = replaySession(submitted, true);
+    expect(mistakes.infinite).toBe(false);
+    expect(mistakes.items).toHaveLength(1);
+    expect(mistakes.answers).toEqual([null]);
+  });
 });

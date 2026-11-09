@@ -1,7 +1,7 @@
 import type { Collection, Deck, LearningDocument, SubjectContent, Syllabus } from '../models/types';
 import { assembleCatalog, validateDeck, validateIndex, validateSubjects } from './contentValidation';
 
-export const SHEET_NAMES = ['Subjects', 'Chapters', 'Collections', 'Questions', 'Documents', 'Syllabus'] as const;
+export const SHEET_NAMES = ['Subjects', 'Chapters', 'Collections', 'Questions', 'Documents'] as const;
 type SheetName = (typeof SHEET_NAMES)[number];
 export interface SheetContent {
   catalog: SubjectContent[];
@@ -14,9 +14,9 @@ export interface SheetsConfig {
 }
 type Row = Record<string, string>;
 const headers: Record<SheetName, string[]> = {
-  Subjects: ['id', 'courseId', 'name', 'description', 'semester', 'category', 'color'],
-  Chapters: ['subjectId', 'id', 'name', 'description'],
-  Collections: ['id', 'subjectId', 'chapterId', 'kind', 'name', 'description', 'category'],
+  Subjects: ['id', 'courseId', 'name', 'semester', 'category', 'color'],
+  Chapters: ['subjectId', 'id', 'name'],
+  Collections: ['id', 'subjectId', 'chapterId', 'kind', 'name', 'category'],
   Questions: [
     'collectionId',
     'id',
@@ -26,8 +26,7 @@ const headers: Record<SheetName, string[]> = {
     'choices',
     'correctIndices',
   ],
-  Documents: ['id', 'subjectId', 'chapterId', 'name', 'description', 'category', 'format', 'file', 'detail'],
-  Syllabus: ['subjectId', 'syllabusId', 'syllabusName', 'courseName', 'courseNameEnglish', 'subjectCode', 'teachingLearningMethod', 'noCredit', 'degree', 'timeAllocation', 'prerequisite', 'description', 'studentTasks', 'tools', 'scoringScale', 'decisionNo', 'approvedDate'],
+  Documents: ['id', 'subjectId', 'chapterId', 'name', 'category', 'format', 'file'],
 };
 
 /** Anonymous GET only. No OAuth, credentials, proxy, service account or write endpoint. */
@@ -83,7 +82,8 @@ function table(value: unknown, name: SheetName): Row[] {
     .slice(1)
     .filter((row: unknown) => Array.isArray(row) && row.some((cell) => String(cell ?? '').trim()))
     .map((row: unknown[]) =>
-      Object.fromEntries(cells.map((header: string, i: number) => [header, String(row[i] ?? '').trim()])),
+      Object.fromEntries(cells.flatMap((header: string, i: number) =>
+        header === 'description' || header === 'detail' ? [] : [[header, String(row[i] ?? '').trim()]])),
     );
 }
 function integer(value: string, field: string): number {
@@ -115,10 +115,9 @@ export function parseWorkbook(payload: unknown): SheetContent {
       courseId: s.courseId || undefined,
       semester: integer(s.semester, `${s.id}.semester`),
       icon: 'book',
-      chapters: tables.Chapters.filter((c) => c.subjectId === s.id).map(({ id, name, description }) => ({
+      chapters: tables.Chapters.filter((c) => c.subjectId === s.id).map(({ id, name }) => ({
         id,
         name,
-        description,
       })),
     })),
   );
@@ -156,7 +155,7 @@ export function parseWorkbook(payload: unknown): SheetContent {
         ...(q.type === 'multiple_choice' ? { correctIndex: indices[0] } : { correctIndices: indices }),
       };
     });
-    const deck = validateDeck({ name: c.name, description: c.description, questions }, c.kind);
+    const deck = validateDeck({ name: c.name, questions }, c.kind);
     const subject = subjects.find((s) => s.id === c.subjectId);
     const entry = {
       ...c,
@@ -169,7 +168,7 @@ export function parseWorkbook(payload: unknown): SheetContent {
     (c.kind === 'flashcards' ? cards : tests).push(valid[0]);
     decks.set(`${c.kind}/${c.id}`, deck);
   }
-  for (const q of tables.Questions.filter((row) => ids.has(row.collectionId)))
+  for (const q of tables.Questions)
     if (!ids.has(q.collectionId)) throw new Error(`Câu ${q.id} tham chiếu bộ câu hỏi không tồn tại.`);
   const documents = validateIndex(
     tables.Documents.map((d) => {
@@ -179,7 +178,5 @@ export function parseWorkbook(payload: unknown): SheetContent {
     }),
     true,
   ) as LearningDocument[];
-  const syllabus = tables.Syllabus.map((row) => row as unknown as Syllabus);
-  for (const item of syllabus) if (!subjects.some((subject) => subject.id === item.subjectId)) throw new Error(`Syllabus ${item.syllabusId} tham chiếu môn học không tồn tại.`);
-  return { catalog: assembleCatalog(subjects, cards, documents, tests), decks, syllabus };
+  return { catalog: assembleCatalog(subjects, cards, documents, tests), decks, syllabus: [] };
 }

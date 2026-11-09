@@ -35,7 +35,6 @@ export function DocumentView({ documentId, subjectId }: { documentId: string; su
               {data.subject} / {data.format.toUpperCase()}
             </p>
             <h1>{data.name}</h1>
-            <p>{data.description}</p>
           </div>
           <a className="btn btn-primary" href={documentUrl(data.file)} target="_blank" rel="noopener noreferrer">Mở tài liệu trong tab mới ↗</a>
         </>

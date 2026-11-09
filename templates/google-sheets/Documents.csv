@@ -1,2 +1,2 @@
-id,subjectId,chapterId,name,description,category,format,file,detail
-database-notes,database,introduction,Ghi chú cơ sở dữ liệu,Tóm tắt bảng và khóa chính.,Ghi chú,md,documents/template/database.md,2 phần
+id,subjectId,chapterId,name,category,format,file
+database-notes,database,introduction,Ghi chú cơ sở dữ liệu,Ghi chú,md,documents/template/database.md

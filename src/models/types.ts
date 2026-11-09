@@ -36,7 +36,6 @@ export interface Collection {
   chapterId?: string;
   id: string;
   name: string;
-  description: string;
   category: string;
   subject: string;
   count: number;
@@ -46,14 +45,12 @@ export type ResourceSection = 'flashcards' | 'documents' | 'tests';
 export interface Chapter {
   id: string;
   name: string;
-  description: string;
 }
 export interface Subject {
   semester: number;
   courseId?: string;
   id: string;
   name: string;
-  description: string;
   category: string;
   color: Collection['color'];
   icon: 'database' | 'code' | 'globe' | 'flask' | 'leaf' | 'languages' | 'book';
@@ -92,14 +89,12 @@ export interface ResourceContext {
 }
 export interface Deck {
   name: string;
-  description: string;
   questions: Question[];
 }
 export type DocumentFormat = 'pdf' | 'docx' | 'md' | 'txt';
 export interface LearningDocument extends Omit<Collection, 'count'> {
   file: string;
   format: DocumentFormat;
-  detail: string;
 }
 export const QUESTION_TYPE_LABELS: Record<QuestionType, string> = {
   multiple_choice: 'Một đáp án',

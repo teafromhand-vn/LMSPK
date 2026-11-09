@@ -66,7 +66,7 @@ describe('public Google Sheets', () => {
         p.valueRanges[2].values[2][0] = p.valueRanges[2].values[1][0];
       },
       (p: ReturnType<typeof template>) => {
-        p.valueRanges[0].values[1][4] = '0';
+        p.valueRanges[0].values[1][p.valueRanges[0].values[0].indexOf('semester')] = '0';
       },
       (p: ReturnType<typeof template>) => {
         p.valueRanges[3].values[1][0] = 'missing';
@@ -94,6 +94,14 @@ describe('public Google Sheets', () => {
     expect(options).toMatchObject({ method: 'GET', credentials: 'omit', cache: 'no-store' });
     expect(options?.body).toBeUndefined();
     expect(options?.headers).toBeUndefined();
+  });
+  it('ignores legacy descriptions and does not require a Syllabus tab', () => {
+    const result = parseWorkbook(fixtureWorkbook());
+    expect(result.catalog[0].subject).not.toHaveProperty('description');
+    expect(result.catalog[0].flashcards[0]).not.toHaveProperty('description');
+    expect(result.catalog[0].documents[0]).not.toHaveProperty('detail');
+    expect(result.syllabus).toEqual([]);
+    expect(SHEET_NAMES).not.toContain('Syllabus');
   });
   it('reports missing configuration, permissions and quota failures', async () => {
     const request = vi.fn<typeof fetch>();

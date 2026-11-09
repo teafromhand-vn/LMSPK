@@ -18,7 +18,7 @@ export function LibraryView() {
   const shown = (data ?? []).filter(
     ({ subject }) =>
       (!category || String(subject.semester) === category) &&
-      `${subject.courseId ?? subject.id} ${subject.name} ${subject.description} ${subject.category}`.toLowerCase().includes(query.trim().toLowerCase()),
+      (subject.courseId ?? subject.id).toLowerCase().includes(query.trim().toLowerCase()),
   );
   return (
     <Screen path={['subjects']} title="Môn học" sideAds>
@@ -26,7 +26,6 @@ export function LibraryView() {
       <div className="section-heading">
         <div>
           <h2>Khám phá môn học</h2>
-          <p>Chọn môn học để bắt đầu hành trình của bạn.</p>
         </div>
         <span className="count-label">{data?.length ?? 0} môn học</span>
       </div>
@@ -36,7 +35,7 @@ export function LibraryView() {
           <input
             aria-label="Tìm môn học"
             type="search"
-            placeholder="Tìm mã môn, tên môn hoặc chủ đề…"
+            placeholder="Tìm mã môn…"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
           />
@@ -77,11 +76,10 @@ export function LibraryView() {
                   <h3>{subject.name}</h3>
                   <ArrowUpRight size={18} />
                 </div>
-                <p>{subject.description}</p>
                 <div className="resource-counts">
                   <span>
                     <Layers size={14} />
-                    {flashcards.length} bộ thẻ
+                    {flashcards.length} flashcard set
                   </span>
                   <span>
                     <BookOpen size={14} />
@@ -91,10 +89,6 @@ export function LibraryView() {
                     <ListChecks size={14} />
                     {tests.length} bài kiểm tra
                   </span>
-                </div>
-                <div className="subject-card-foot">
-                  <span>{subject.chapters.length} chương</span>
-                  <span>Vào học →</span>
                 </div>
               </div>
             </Link>

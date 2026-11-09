@@ -102,7 +102,6 @@ function FlashcardStudy({
         <div>
           <p className="page-kicker">{subject}</p>
           <h1>{title}</h1>
-          <p>Dành chút thời gian suy nghĩ trước khi lật thẻ.</p>
         </div>
         <button className="btn" onClick={reshuffle}>
           <Shuffle size={16} /> Xáo trộn thẻ
@@ -130,7 +129,10 @@ function FlashcardStudy({
             <RotateCw size={15} /> Nhấn để lật <span>hoặc nhấn F</span>
           </span>
         </button>
-        <p className="study-note">Tự do ôn tập. Không chấm điểm, không lưu vị trí.</p>
+        <div className="study-controls">
+          <button className="btn" aria-label="Thẻ trước" disabled={position === 0} onClick={() => move(-1)}>← Trước</button>
+          <button className="btn" aria-label="Thẻ sau" disabled={position === ordered.length - 1} onClick={() => move(1)}>Sau →</button>
+        </div>
       </div>
     </Screen>
   );

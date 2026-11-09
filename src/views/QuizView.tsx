@@ -8,7 +8,8 @@ import { Screen } from '../components/Screen';
 import { Breadcrumbs } from '../components/Breadcrumbs';
 import { useHotkeys, type Hotkeys } from '../hooks/useHotkeys';
 import { QUESTION_TYPE_LABELS } from '../models/types';
-import { currentAnswer, currentItem, deadline, type QuizItem, type QuizResponse } from '../quiz/engine';
+import { currentAnswer, currentItem, deadline, isCorrect, type QuizItem, type QuizResponse } from '../quiz/engine';
+import { correctAnswerText } from '../quiz/describe';
 
 export function QuizView({ subjectId }: { subjectId: string }) {
   const quiz = useQuiz();
@@ -41,8 +42,8 @@ export function QuizView({ subjectId }: { subjectId: string }) {
     );
   if (session.submitted) return null;
   const count = session.answers.filter((a) => a !== null).length;
-  const locked = session.timer !== null && answer !== null;
-  const canMove = session.timer === null || answer !== null;
+  const locked = (session.timer !== null || session.mode === 'practice') && answer !== null;
+  const canMove = (session.timer === null && session.mode !== 'practice' && !session.infinite) || answer !== null;
   return (
     <Screen
       path={['tests', session.title]}
@@ -60,9 +61,9 @@ export function QuizView({ subjectId }: { subjectId: string }) {
           hotkey: 'arrowright',
           keyLabel: '→',
           onAction: () => quiz.move(session.current + 1),
-          disabled: session.current === session.items.length - 1 || !canMove,
+          disabled: (!session.infinite && session.current === session.items.length - 1) || !canMove,
         },
-        { label: 'Nộp bài', onAction: quiz.submit, primary: true },
+        { label: session.infinite ? 'Kết thúc' : 'Nộp bài', onAction: quiz.submit, primary: true },
       ]}
     >
       {session.context && <Breadcrumbs context={session.context} section="tests" title={session.title} />}
@@ -74,15 +75,13 @@ export function QuizView({ subjectId }: { subjectId: string }) {
       </Link>
       <div className="study-heading">
         <div>
-          <p className="page-kicker">CÙNG SUY NGHĨ</p>
           <h1>{session.title}</h1>
-          <p>Chọn đáp án và nộp bài để xem giải thích chi tiết.</p>
         </div>
       </div>
       <div className="quiz-layout">
         <div className="quiz-head">
           <span>
-            Câu {session.current + 1} / {session.items.length}
+            Câu {session.current + 1} / {session.infinite ? '∞' : session.items.length}
           </span>
           <span>
             Đã trả lời {count} câu <Meter value={count} max={session.items.length} label={`Đã trả lời ${count} câu`} />
@@ -102,13 +101,20 @@ export function QuizView({ subjectId }: { subjectId: string }) {
           item={currentItem(session)}
           response={answer}
           locked={locked}
-          timed={session.timer !== null}
+          timed={session.timer !== null || session.mode === 'practice'}
           onAnswer={quiz.answer}
         />
+        {session.mode === 'practice' && answer && <div className="question-feedback" role="status">
+          <strong className={isCorrect(currentItem(session).question, answer) ? 'is-correct' : 'is-wrong'}>
+            {isCorrect(currentItem(session).question, answer) ? 'Đúng' : 'Sai'}
+          </strong>
+          <p>Đáp án: {correctAnswerText(currentItem(session).question)}</p>
+          {currentItem(session).question.explanation && <p className="explanation">{currentItem(session).question.explanation}</p>}
+        </div>}
         <div className="question-nav" aria-label="Chuyển câu hỏi">
-          {session.items.map((item, i) => (
+          {session.items.map((_, i) => (
             <button
-              key={item.question.id}
+              key={i}
               className={`question-dot ${i === session.current ? 'current' : ''} ${session.answers[i] ? 'answered' : ''}`}
               aria-label={`Câu ${i + 1}${session.answers[i] ? ', đã trả lời' : ''}`}
               aria-current={i === session.current ? 'step' : undefined}
@@ -119,7 +125,6 @@ export function QuizView({ subjectId }: { subjectId: string }) {
             </button>
           ))}
         </div>
-        <p className="study-note">Câu chưa trả lời được 0 điểm. Kết quả chỉ tồn tại trong phiên hiện tại.</p>
       </div>
     </Screen>
   );
