@@ -95,6 +95,9 @@ select:focus-visible {
   flex: 1;
 }
 .titlebar {
+  position: sticky;
+  top: 0;
+  z-index: 30;
   background: var(--surface);
   border-bottom: 1px solid var(--line);
 }
@@ -1649,8 +1652,8 @@ kbd {
 }
 .resource-toolbar {
   position: sticky;
-  top: 0;
-  z-index: 10;
+  top: 85px;
+  z-index: 20;
   padding-top: 1px;
   background: var(--bg);
   box-shadow: 0 8px 12px -12px var(--text);
