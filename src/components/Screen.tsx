@@ -1,4 +1,4 @@
-import { useEffect, type ReactNode } from 'react';
+import { useEffect, useRef, type ReactNode } from 'react';
 import { BookOpen, FileText, Layers, ListTree, Heart, Sprout, Sun, Moon } from 'lucide-react';
 import { useRoute } from '../app/router';
 import { useTheme } from '../app/ThemeContext';
@@ -20,12 +20,30 @@ export function scrollScreenToTop(): void {
 export function Screen({ title, actions = [], children, sideAds = false }: ScreenProps) {
   const theme = useTheme();
   const route = useRoute();
+  const screenRef = useRef<HTMLDivElement>(null);
+  const titlebarRef = useRef<HTMLElement>(null);
   const active = route.name === 'document' ? 'documents' : route.name === 'deck' ? 'flashcards' : route.name;
   useEffect(() => {
     document.title = `${title} · Enyalië`;
   }, [title]);
+  useEffect(() => {
+    const screen = screenRef.current;
+    const titlebar = titlebarRef.current;
+    if (!screen || !titlebar) return;
+    const updateHeight = () => {
+      screen.style.setProperty('--titlebar-height', `${titlebar.getBoundingClientRect().height}px`);
+    };
+    updateHeight();
+    const observer = new ResizeObserver(updateHeight);
+    observer.observe(titlebar);
+    window.addEventListener('resize', updateHeight);
+    return () => {
+      observer.disconnect();
+      window.removeEventListener('resize', updateHeight);
+    };
+  }, []);
   return (
-    <div className="screen">
+    <div className="screen" ref={screenRef}>
       <a
         className="skip-link"
         href="#main"
@@ -36,7 +54,7 @@ export function Screen({ title, actions = [], children, sideAds = false }: Scree
       >
         Chuyển đến nội dung
       </a>
-      <header className="titlebar">
+      <header className="titlebar" ref={titlebarRef}>
         <div className="bar-inner">
           <Link to={{ name: 'library' }} className="brand">
             <span className="brand-symbol">

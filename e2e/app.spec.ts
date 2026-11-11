@@ -193,6 +193,28 @@ test('subject → chapter → all three resources with scoped breadcrumbs and de
   await expect(page.getByLabel('Chương', { exact: true })).toHaveValue('sql');
   await expect(page.locator('.resource-row')).toHaveCount(1);
 });
+test('shared header and subject resource controls remain fixed while scrolling', async ({ page }) => {
+  await page.goto('/#/subjects/database/documents');
+  const header = page.locator('.titlebar');
+  const toolbar = page.locator('.resource-toolbar');
+  await expect(header).toHaveCSS('position', 'fixed');
+  await expect(toolbar).toHaveCSS('position', 'sticky');
+  const initial = await page.evaluate(() => {
+    const header = document.querySelector('.titlebar')!.getBoundingClientRect();
+    const toolbar = document.querySelector('.resource-toolbar')!.getBoundingClientRect();
+    return { headerTop: header.top, headerBottom: header.bottom, toolbarTop: toolbar.top };
+  });
+  await page.evaluate(() => window.scrollTo(0, 600));
+  const scrolled = await page.evaluate(() => {
+    const header = document.querySelector('.titlebar')!.getBoundingClientRect();
+    const toolbar = document.querySelector('.resource-toolbar')!.getBoundingClientRect();
+    return { headerTop: header.top, headerBottom: header.bottom, toolbarTop: toolbar.top };
+  });
+  expect(scrolled.headerTop).toBe(0);
+  expect(scrolled.toolbarTop).toBeGreaterThanOrEqual(scrolled.headerBottom - 1);
+  expect(scrolled.toolbarTop).toBeLessThan(initial.toolbarTop + 5);
+  await clean(page);
+});
 test('missing subjects/chapters and subject-specific empty sections are explicit', async ({ page }) => {
   await page.goto('/#/subjects/missing/flashcards');
   await expect(page.getByRole('alert')).toContainText('Không tìm thấy');

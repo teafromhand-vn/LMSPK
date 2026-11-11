@@ -90,16 +90,21 @@ select:focus-visible {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  --titlebar-height: 84px;
 }
 .screen-body {
   flex: 1;
+  padding-top: var(--titlebar-height);
 }
 .titlebar {
-  position: sticky;
+  position: fixed;
   top: 0;
+  left: 0;
+  right: 0;
   z-index: 30;
   background: var(--surface);
   border-bottom: 1px solid var(--line);
+  box-shadow: 0 2px 12px rgba(39, 49, 66, 0.04);
 }
 .bar-inner {
   max-width: 1280px;
@@ -1652,14 +1657,15 @@ kbd {
 }
 .resource-toolbar {
   position: sticky;
-  top: 85px;
+  top: var(--titlebar-height);
   z-index: 20;
-  padding-top: 1px;
+  padding-top: 8px;
   background: var(--bg);
+  border-bottom: 1px solid var(--line);
   box-shadow: 0 8px 12px -12px var(--text);
 }
 .resource-toolbar .resource-search {
-  margin-bottom: 18px;
+  margin-bottom: 16px;
   padding-bottom: 1px;
 }
 .chapter-sidebar > .page-kicker {
