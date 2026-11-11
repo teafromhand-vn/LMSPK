@@ -168,8 +168,11 @@ export function parseWorkbook(payload: unknown): SheetContent {
     (c.kind === 'flashcards' ? cards : tests).push(valid[0]);
     decks.set(`${c.kind}/${c.id}`, deck);
   }
-  for (const q of tables.Questions)
-    if (!ids.has(q.collectionId)) throw new Error(`Câu ${q.id} tham chiếu bộ câu hỏi không tồn tại.`);
+  // A sheet can retain questions from a collection that was removed or renamed.
+  // Those stale rows must not make the whole library unavailable: they are not
+  // included in any deck above because questions are selected by collection ID.
+  // Keep the validation for collection rows themselves, but safely ignore these
+  // orphan question rows so the remaining subjects can still be loaded.
   const documents = validateIndex(
     tables.Documents.map((d) => {
       if (!/^[a-z0-9-]+$/.test(d.id)) throw new Error(`Mã tài liệu không hợp lệ: ${d.id}`);
