@@ -65,18 +65,18 @@ for (const [index, cells] of raw.entries()) {
   const jp = rawJp.trim();
   const romaji = rawRomaji.trim();
   const vi = rawVi.trim();
-  if (!vi) {
-    skipped.push({ line: index + 1, reason: 'missing Vietnamese meaning', cells: [jp, romaji] });
+  if (!jp) {
+    skipped.push({ line: index + 1, reason: 'missing Japanese term (romaji not stored)', cells: [romaji, vi] });
     continue;
   }
-  if (!jp && !romaji) {
-    skipped.push({ line: index + 1, reason: 'empty term', cells });
+  if (!vi) {
+    skipped.push({ line: index + 1, reason: 'missing Vietnamese meaning', cells: [jp, romaji] });
     continue;
   }
   entries.push({ jp, romaji, vi });
 }
 
-const label = (entry) => (entry.jp ? (entry.romaji ? `${entry.jp} (${entry.romaji})` : entry.jp) : entry.romaji);
+const label = (entry) => entry.jp;
 
 const flashcards = entries.map((entry, index) => [
   flashcardsId,
@@ -109,6 +109,7 @@ const tests = entries.map((entry, index) => {
 const report = {
   sourceFile,
   entries: entries.length,
+  entriesWithoutJapanese: entries.filter((entry) => !entry.jp).length,
   skipped: skipped.length,
   flashcards: flashcards.length,
   testQuestions: tests.length,
