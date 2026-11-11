@@ -1643,12 +1643,17 @@ kbd {
   grid-template-columns: 230px minmax(0, 1fr);
   gap: 35px;
 }
+.subject-resources {
+  align-self: start;
+  min-width: 0;
+}
 .resource-toolbar {
   position: sticky;
   top: 0;
   z-index: 10;
   padding-top: 1px;
   background: var(--bg);
+  box-shadow: 0 8px 12px -12px var(--text);
 }
 .resource-toolbar .resource-search {
   margin-bottom: 18px;
