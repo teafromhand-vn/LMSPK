@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.1.0",
   "license": "MIT",
-  "description": "Enyalië subject library: chapter-organized flashcards, documents and tests with memory-only sessions.",
+  "description": "LMSPK subject library: chapter-organized flashcards, documents and tests with memory-only sessions.",
   "type": "module",
   "scripts": {
     "dev": "vite",

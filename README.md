@@ -1,6 +1,6 @@
-# Enyalië · Không gian học tập mở
+# LMSPK · Không gian học tập mở
 
-Nền tảng học tập công khai, mã nguồn mở, được tùy chỉnh **trên repository [Enyalië](https://github.com/adidoppalapudi/enyalie)**. Giữ React, TypeScript, Vite, hash router, thẻ ghi nhớ và quiz engine gốc. Lịch sử Git và giấy phép MIT gốc được giữ lại.
+Nền tảng học tập công khai, mã nguồn mở, được tùy chỉnh **trên repository [LMSPK](https://github.com/adidoppalapudi/enyalie)**. Giữ React, TypeScript, Vite, hash router, thẻ ghi nhớ và quiz engine gốc. Lịch sử Git và giấy phép MIT gốc được giữ lại.
 
 **Môn học → Chương → Thẻ ghi nhớ / Tài liệu / Bài kiểm tra.** Giao diện tiếng Việt, có tìm kiếm, lọc học kỳ, giao diện sáng/tối và bố cục di động. Trang chủ `/` mở ngay danh sách môn học. Nhãn **Kỳ n** lấy từ cột `semester` trong bảng tính.
 
@@ -26,7 +26,7 @@ Public GitHub repository → Vite build → static frontend (Pages / Vercel)
 
 ### 1. Fork thành repository công khai
 
-Fork repository chứa bản tùy chỉnh này vào tài khoản GitHub của bạn và giữ visibility **Public**. Nếu bắt đầu từ thư mục cục bộ, tạo repository Public mới rồi push bản tùy chỉnh vào đó; không push vào repository Enyalië gốc nếu bạn không phải maintainer.
+Fork repository chứa bản tùy chỉnh này vào tài khoản GitHub của bạn và giữ visibility **Public**. Nếu bắt đầu từ thư mục cục bộ, tạo repository Public mới rồi push bản tùy chỉnh vào đó; không push vào repository LMSPK gốc nếu bạn không phải maintainer.
 
 Trong lần tùy chỉnh này chưa tạo/push repository GitHub hoặc Google Spreadsheet trực tuyến: chủ dự án chọn cấu hình sau. File mẫu sẵn sàng bên dưới; khi đã có bảng tính công khai, maintainer nên thêm URL `/copy` của nó vào README để người fork sao chép bằng một lần nhấn.
 
@@ -92,9 +92,9 @@ Mọi thay đổi nội dung thực hiện trong Sheets hoặc repository, khôn
 
 - Thẻ: lật bằng F/dấu cách, di chuyển bằng ←/→, xáo trộn bằng S; ảnh trước/sau tùy chọn.
 - Bài kiểm tra: một đáp án, nhiều đáp án, đúng/sai. Nhiều đáp án phải chọn đúng toàn bộ tập. Mỗi câu đúng 100 điểm; sai/chưa trả lời/hết giờ 0 điểm.
-- Chọn bộ bài trước khi thiết lập chế độ: nhập số câu hoặc Vô hạn; xem đáp án sau từng câu hoặc sau khi kết thúc. Bài hữu hạn hiện lấy không lặp, tối đa số câu trong bộ (quy tắc tạm thời chờ chủ dự án xác nhận).
+- Chọn bộ bài trước khi thiết lập chế độ: nhập số câu hoặc Vô hạn; chuyển câu tự do hoặc trả lời tuần tự. Đáp án bị khóa và phản hồi đúng/sai hiện ngay sau khi xác nhận. Bài hữu hạn hiện lấy không lặp, tối đa số câu trong bộ (quy tắc tạm thời chờ chủ dự án xác nhận).
 - Vô hạn chọn ngẫu nhiên có lặp trong bộ; mỗi lần trả lời tính một lượt riêng. Nhấn Kết thúc để chấm các lượt đã trả lời, bỏ lượt đang trống.
-- Thời gian mỗi câu tùy chọn 10/20/30 giây. Có đồng hồ hoặc xem đáp án từng câu thì cần xác nhận và khóa đáp án; chế độ cuối bài không đồng hồ cho sửa đến khi nộp. Kết quả có giải thích, lọc câu sai, làm lại toàn bộ hoặc riêng câu sai.
+- Thời gian mỗi câu tùy chọn 10/20/30 giây. Mọi chế độ đều cần xác nhận đáp án; sau khi trả lời, đáp án bị khóa và phản hồi đúng/sai hiện ngay kèm đáp án đúng và lời giải. Kết quả có giải thích, lọc câu sai, làm lại toàn bộ hoặc riêng câu sai.
 - Courses chỉ tìm theo mã môn. Documents/Flashcards tìm theo tên học liệu và lọc mã môn. Mô tả giới thiệu đã bỏ khỏi schema/mẫu; cột cũ được bỏ qua khi đọc. Syllabus tạm tắt, hiển thị SOON và không yêu cầu tab dữ liệu.
 - Documents: nhấn tài liệu để mở URL ở tab mới; việc đọc, tải xuống và quyền truy cập do trang đích (ví dụ Google Drive) quản lý. Website không nhúng trình đọc.
 - Tải lại/đóng tab xóa toàn bộ tiến độ và kết quả. URL chỉ giữ điều hướng nội dung, không lưu trạng thái học.
@@ -152,4 +152,4 @@ Chỉ đưa vào repository/Sheets các tài liệu mà chủ dự án có quy�
 
 Ứng dụng không triển khai cơ chế che giấu học liệu. Các biện pháp hiển thị thông thường (React text escaping, sandbox DOCX, kiểm tra đường dẫn) giúp đọc tệp ổn định, không dùng để giấu đáp án.
 
-Upstream Enyalië: Aditya Doppalapudi, MIT, baseline `a13be9791b52a71f603a016a9a721ab4bfa608ef`. Xem [LICENSE](LICENSE), [dependencies](docs/DEPENDENCIES.md), [nguồn lịch sử](docs/CONTENT-SOURCES.md). Các tài liệu customization trước đây ghi lại giai đoạn JSON; README và GOOGLE-SHEETS.md mô tả kiến trúc hiện tại. Không chạy các script migration cũ lên nội dung tùy chỉnh.
+Upstream LMSPK: Aditya Doppalapudi, MIT, baseline `a13be9791b52a71f603a016a9a721ab4bfa608ef`. Xem [LICENSE](LICENSE), [dependencies](docs/DEPENDENCIES.md), [nguồn lịch sử](docs/CONTENT-SOURCES.md). Các tài liệu customization trước đây ghi lại giai đoạn JSON; README và GOOGLE-SHEETS.md mô tả kiến trúc hiện tại. Không chạy các script migration cũ lên nội dung tùy chỉnh.

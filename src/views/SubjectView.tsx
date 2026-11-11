@@ -229,8 +229,8 @@ function SubjectResources({
               <h2>{selectedTest.name}</h2>
               <label>Chế độ
                 <select aria-label="Chế độ" value={mode} onChange={(e) => setMode(e.target.value as 'practice' | 'test')}>
-                  <option value="test">Xem đáp án sau khi kết thúc</option>
-                  <option value="practice">Xem đáp án sau từng câu</option>
+                  <option value="test">Tự do chuyển câu, xem đáp án ngay sau khi trả lời</option>
+                  <option value="practice">Trả lời tuần tự, xem đáp án ngay sau từng câu</option>
                 </select>
               </label>
               <label><input type="checkbox" checked={infinite} onChange={(e) => setInfinite(e.target.checked)} />Vô hạn</label>

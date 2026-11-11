@@ -24,7 +24,7 @@ const make = (timer: number | null = null) =>
     timer,
     items: buildQuizItems(questions, { shuffleQuestions: false, shuffleChoices: false }),
   });
-describe('Enyalië quiz engine: adapted original grading and session invariants', () => {
+describe('LMSPK quiz engine: adapted original grading and session invariants', () => {
   it('preserves Fisher–Yates contents without mutating source', () => {
     const copy = structuredClone(questions);
     const result = shuffle(questions, seededRandom(5));
@@ -43,14 +43,21 @@ describe('Enyalië quiz engine: adapted original grading and session invariants'
       expect(isCorrect(questions[1], { type: 'multiple_select', choices })).toBe(false);
     expect(isCorrect(questions[1], { type: 'multiple_select', choices: [2, 0] })).toBe(true);
   });
-  it('keeps source immutable, permits untimed revision, grades unanswered as zero, freezes after submit', () => {
+  it('keeps source immutable, allows one attempt per question, grades unanswered as zero, freezes after submit', () => {
     const initial = make();
     let s = answerCurrent(initial, { type: 'multiple_choice', choice: 0 });
     s = answerCurrent(s, { type: 'multiple_choice', choice: 1 });
     s = submitSession(s);
     expect(initial.answers).toEqual([null, null, null]);
-    expect(summarize(s)).toMatchObject({ correct: 1, total: 3, score: 100, accuracy: 33 });
+    expect(s.answers[0]).toEqual({ type: 'multiple_choice', choice: 0 });
+    expect(summarize(s)).toMatchObject({ correct: 0, total: 3, score: 0, accuracy: 0 });
     expect(answerCurrent(s, { type: 'multiple_choice', choice: 0 })).toBe(s);
+  });
+  it('locks an answered question in every mode so feedback cannot be used to revise', () => {
+    const session = make();
+    const answered = answerCurrent(session, { type: 'multiple_choice', choice: 0 });
+    expect(answerCurrent(answered, { type: 'multiple_choice', choice: 1 })).toBe(answered);
+    expect(answerCurrent(answered, { type: 'timeout' })).toBe(answered);
   });
   it('clamps navigation and resets answers on restart while preserving timer choice', () => {
     let s = answerCurrent(make(), { type: 'multiple_choice', choice: 1 });

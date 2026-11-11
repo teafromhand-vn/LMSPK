@@ -1,4 +1,4 @@
-/** Enyalië's pure quiz engine. Sessions live only in the React provider. */
+/** LMSPK's pure quiz engine. Sessions live only in the React provider. */
 import { shuffle, type Random } from '../lib/random';
 import type { Question, ResourceContext } from '../models/types';
 
@@ -94,7 +94,7 @@ export function deadline(session: QuizSession): number | null {
 }
 export function answerCurrent(session: QuizSession, response: QuizResponse, now = Date.now()): QuizSession {
   if (session.submitted) return session;
-  if ((session.timer !== null || session.mode === 'practice') && session.answers[session.current] !== null) return session;
+  if (session.answers[session.current] !== null) return session;
   const end = deadline(session);
   if (response.type === 'timeout' && (end === null || now < end)) return session;
   const answers = session.answers.slice();

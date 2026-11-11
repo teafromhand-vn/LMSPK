@@ -16,7 +16,7 @@ interface ScreenProps {
 export function scrollScreenToTop(): void {
   window.scrollTo(0, 0);
 }
-/** Enyalië's shared frame and keyboard bar, restyled for a quiet study library. */
+/** LMSPK's shared frame and keyboard bar, restyled for a quiet study library. */
 export function Screen({ title, actions = [], children, sideAds = false }: ScreenProps) {
   const theme = useTheme();
   const route = useRoute();
@@ -24,7 +24,7 @@ export function Screen({ title, actions = [], children, sideAds = false }: Scree
   const titlebarRef = useRef<HTMLElement>(null);
   const active = route.name === 'document' ? 'documents' : route.name === 'deck' ? 'flashcards' : route.name;
   useEffect(() => {
-    document.title = `${title} · Enyalië`;
+    document.title = `${title} · LMSPK`;
   }, [title]);
   useEffect(() => {
     const screen = screenRef.current;
@@ -60,7 +60,7 @@ export function Screen({ title, actions = [], children, sideAds = false }: Scree
             <span className="brand-symbol">
               <Sprout size={23} />
             </span>
-            Enyalië<span className="brand-dot">.</span>
+            LMSPK<span className="brand-dot">.</span>
           </Link>
           <nav className="main-nav" aria-label="Điều hướng chính">
             {([

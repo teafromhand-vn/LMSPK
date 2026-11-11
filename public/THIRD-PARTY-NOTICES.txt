@@ -1,4 +1,4 @@
-Third-party notices for Enyalië Study library
+Third-party notices for LMSPK Study library
 Upstream application copyright: see LICENSE.
 
 

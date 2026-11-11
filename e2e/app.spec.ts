@@ -82,9 +82,11 @@ test('all question types, exact grading, explanations, restart and result reset'
     const q = deck.questions.find((q) => q.prompt === prompt)!;
     if (q.type === 'multiple_choice')
       await page.getByRole('radio').filter({ hasText: q.choices[q.correctIndex] }).click();
-    if (q.type === 'multiple_select')
+    if (q.type === 'multiple_select') {
       for (const index of q.correctIndices)
         await page.getByRole('checkbox').filter({ hasText: q.choices[index] }).click();
+      await page.getByRole('button', { name: 'Xác nhận đáp án', exact: true }).click();
+    }
     if (q.type === 'true_false')
       await page
         .getByRole('radio')
@@ -254,8 +256,9 @@ test('quiz setup, immediate feedback and infinite finish count answered turns', 
   await expect(page.locator('.quiz-head')).toContainText('Câu 1 / ∞');
   for (let turn = 0; turn < 2; turn++) {
     await page.locator('.answer').first().click();
-    await page.getByRole('button', { name: 'Xác nhận đáp án', exact: true }).click();
-    await expect(page.locator('.question-feedback')).toContainText('Đáp án:');
+    const confirm = page.getByRole('button', { name: 'Xác nhận đáp án', exact: true });
+    if (await confirm.count()) await confirm.click();
+    await expect(page.locator('.question-feedback')).toContainText('Đáp án đúng:');
     await expect(page.locator('.answer').first()).toBeDisabled();
     await page.getByRole('button', { name: 'Tiếp', exact: true }).click();
   }

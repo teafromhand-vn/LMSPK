@@ -100,7 +100,7 @@ function array(value: string, field: string): unknown[] {
   throw new Error(`${field} phải là mảng JSON, ví dụ ["A","B"].`);
 }
 
-/** Convert public worksheet rows into Enyalië's existing engine model. */
+/** Convert public worksheet rows into LMSPK's existing engine model. */
 export function parseWorkbook(payload: unknown): SheetContent {
   if (!object(payload) || !Array.isArray(payload.valueRanges) || payload.valueRanges.length !== SHEET_NAMES.length)
     throw new Error('Google Sheets phải trả về đủ 5 tab theo mẫu.');

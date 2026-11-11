@@ -41,7 +41,7 @@ export function DeckView({ deckId, subjectId }: { deckId: string; subjectId: str
     </Screen>
   );
 }
-/** Dedicated version of Enyalië's revealable flashcard interaction, without self-grading. */
+/** Dedicated version of LMSPK's revealable flashcard interaction, without self-grading. */
 function FlashcardStudy({
   title,
   subject,

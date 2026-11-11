@@ -1,4 +1,4 @@
-/** Enyalië's question model, stripped of database and progress bookkeeping. */
+/** LMSPK's question model, stripped of database and progress bookkeeping. */
 export const QUESTION_TYPES = ['multiple_choice', 'multiple_select', 'true_false', 'flashcard'] as const;
 export type QuestionType = (typeof QUESTION_TYPES)[number];
 export const DIFFICULTIES = ['easy', 'medium', 'hard', 'expert'] as const;

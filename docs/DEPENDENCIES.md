@@ -14,4 +14,4 @@ Development dependencies: TypeScript (Apache-2.0), Vite and React plugin (MIT), 
 
 Removed fake-indexeddb because the database and its tests no longer exist. No database, authentication, telemetry, payment or backend SDK remains. npm audit reported zero known vulnerabilities after updating the upstream Vitest lockfile to 4.1.12. This is a point-in-time check, not a guarantee about future advisories.
 
-Exact versions and transitive license identifiers are recorded in package-lock.json. Package license/notice files remain in node_modules on installation; upstream Enyalië's LICENSE is retained unchanged. A distributable third-party notice is generated into public/THIRD-PARTY-NOTICES.txt by scripts/third-party-notices.mjs.
+Exact versions and transitive license identifiers are recorded in package-lock.json. Package license/notice files remain in node_modules on installation; upstream LMSPK's LICENSE is retained unchanged. A distributable third-party notice is generated into public/THIRD-PARTY-NOTICES.txt by scripts/third-party-notices.mjs.

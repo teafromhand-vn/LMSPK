@@ -13,7 +13,7 @@ export class ErrorBoundary extends Component<{ children: ReactNode }, State> {
   }
 
   componentDidCatch(error: Error, info: ErrorInfo) {
-    console.error('Enyalië hit an error while rendering:', error, info.componentStack);
+    console.error('LMSPK hit an error while rendering:', error, info.componentStack);
   }
 
   render() {

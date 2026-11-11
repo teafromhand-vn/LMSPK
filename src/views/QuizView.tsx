@@ -1,4 +1,5 @@
-import { useEffect, useId, useRef, useState } from 'react';
+import { useEffect, useId, useRef, useState, type ReactNode } from 'react';
+import { CheckCircle2, Clock, XCircle } from 'lucide-react';
 import { useQuiz } from '../app/QuizContext';
 import { navigate } from '../app/router';
 import { Link } from '../components/Link';
@@ -42,7 +43,9 @@ export function QuizView({ subjectId }: { subjectId: string }) {
     );
   if (session.submitted) return null;
   const count = session.answers.filter((a) => a !== null).length;
-  const locked = (session.timer !== null || session.mode === 'practice') && answer !== null;
+  const item = currentItem(session);
+  const locked = answer !== null;
+  const correct = answer !== null && answer.type !== 'timeout' && isCorrect(item.question, answer);
   const canMove = (session.timer === null && session.mode !== 'practice' && !session.infinite) || answer !== null;
   return (
     <Screen
@@ -98,19 +101,34 @@ export function QuizView({ subjectId }: { subjectId: string }) {
         </div>
         <QuestionCard
           key={`${session.deckId}-${session.current}`}
-          item={currentItem(session)}
+          item={item}
           response={answer}
           locked={locked}
-          timed={session.timer !== null || session.mode === 'practice'}
           onAnswer={quiz.answer}
-        />
-        {session.mode === 'practice' && answer && <div className="question-feedback" role="status">
-          <strong className={isCorrect(currentItem(session).question, answer) ? 'is-correct' : 'is-wrong'}>
-            {isCorrect(currentItem(session).question, answer) ? 'Đúng' : 'Sai'}
-          </strong>
-          <p>Đáp án: {correctAnswerText(currentItem(session).question)}</p>
-          {currentItem(session).question.explanation && <p className="explanation">{currentItem(session).question.explanation}</p>}
-        </div>}
+        >
+          {answer && (
+            <div
+              className={`question-feedback ${correct ? 'feedback-correct' : 'feedback-wrong'}`}
+              role="status"
+              aria-live="polite"
+            >
+              <p className="feedback-head">
+                {answer.type === 'timeout' ? (
+                  <Clock size={18} aria-hidden="true" />
+                ) : correct ? (
+                  <CheckCircle2 size={18} aria-hidden="true" />
+                ) : (
+                  <XCircle size={18} aria-hidden="true" />
+                )}
+                <strong className={correct ? 'is-correct' : 'is-wrong'}>
+                  {answer.type === 'timeout' ? 'Hết giờ' : correct ? 'Đúng' : 'Sai'}
+                </strong>
+              </p>
+              <p>Đáp án đúng: {correctAnswerText(item.question)}</p>
+              {item.question.explanation && <p className="explanation">{item.question.explanation}</p>}
+            </div>
+          )}
+        </QuestionCard>
         <div className="question-nav" aria-label="Chuyển câu hỏi">
           {session.items.map((_, i) => (
             <button
@@ -135,25 +153,25 @@ function QuestionCard({
   item,
   response,
   locked,
-  timed,
   onAnswer,
+  children,
 }: {
   item: QuizItem;
   response: QuizResponse | null;
   locked: boolean;
-  timed: boolean;
   onAnswer: (response: QuizResponse) => void;
+  children?: ReactNode;
 }) {
   const { question } = item;
   const promptId = useId();
   const ref = useRef<HTMLElement>(null);
   const [draft, setDraft] = useState<QuizResponse | null>(response);
-  const selected = timed ? draft : response;
   useEffect(() => {
     ref.current?.focus({ preventScroll: true });
   }, []);
   const choices = question.type === 'true_false' ? ['Đúng', 'Sai'] : 'choices' in question ? question.choices : [];
   const order = question.type === 'true_false' ? [0, 1] : item.choiceOrder;
+  const selected = draft ?? response;
   const isChosen = (choice: number) =>
     selected?.type === 'multiple_choice'
       ? selected.choice === choice
@@ -162,6 +180,18 @@ function QuestionCard({
         : selected?.type === 'true_false'
           ? selected.answer === (choice === 0)
           : false;
+  const revealed = response !== null;
+  const correctChoices = !revealed
+    ? []
+    : question.type === 'multiple_choice'
+      ? [question.correctIndex]
+      : question.type === 'multiple_select'
+        ? question.correctIndices
+        : question.type === 'true_false'
+          ? [question.answer ? 0 : 1]
+          : [];
+  const isCorrectChoice = (choice: number) => correctChoices.includes(choice);
+  const isWrongChoice = (choice: number) => revealed && isChosen(choice) && !isCorrectChoice(choice);
   function pick(choice: number) {
     if (locked) return;
     let next: QuizResponse;
@@ -171,10 +201,11 @@ function QuestionCard({
         type: 'multiple_select',
         choices: old.includes(choice) ? old.filter((c) => c !== choice) : [...old, choice],
       };
-    } else if (question.type === 'true_false') next = { type: 'true_false', answer: choice === 0 };
-    else next = { type: 'multiple_choice', choice };
-    if (timed) setDraft(next);
-    else onAnswer(next);
+      setDraft(next);
+    } else {
+      next = question.type === 'true_false' ? { type: 'true_false', answer: choice === 0 } : { type: 'multiple_choice', choice };
+      onAnswer(next);
+    }
   }
   const hotkeys: Hotkeys = {};
   if (!locked)
@@ -201,7 +232,7 @@ function QuestionCard({
         {order.map((choice, position) => (
           <button
             key={choice}
-            className={`answer ${isChosen(choice) ? 'is-selected' : ''}`}
+            className={`answer ${isChosen(choice) ? 'is-selected' : ''} ${isCorrectChoice(choice) ? 'is-correct' : ''} ${isWrongChoice(choice) ? 'is-wrong' : ''}`}
             role={question.type === 'multiple_select' ? 'checkbox' : 'radio'}
             aria-checked={isChosen(choice)}
             disabled={locked}
@@ -210,25 +241,23 @@ function QuestionCard({
             <kbd className="answer-key">{position + 1}</kbd>
             <span className="answer-text">{choices[choice]}</span>
             <span className={`choice-mark ${question.type === 'multiple_select' ? 'square' : ''}`}>
-              {isChosen(choice) ? '✓' : ''}
+              {revealed ? (isCorrectChoice(choice) ? '✓' : isWrongChoice(choice) ? '✗' : '') : isChosen(choice) ? '✓' : ''}
+              {revealed && isCorrectChoice(choice) && <span className="sr-only"> (đáp án đúng)</span>}
+              {isWrongChoice(choice) && <span className="sr-only"> (bạn chọn sai)</span>}
             </span>
           </button>
         ))}
       </div>
-      {timed && (
+      {!locked && question.type === 'multiple_select' && (
         <button
           className="btn btn-primary confirm-answer"
-          disabled={locked || !draft || (draft.type === 'multiple_select' && !draft.choices.length)}
+          disabled={!draft || (draft.type === 'multiple_select' && !draft.choices.length)}
           onClick={() => draft && onAnswer(draft)}
         >
           Xác nhận đáp án
         </button>
       )}
-      {response?.type === 'timeout' && (
-        <p role="status" className="is-wrong">
-          Hết giờ. Tiếp tục đến câu hỏi tiếp theo.
-        </p>
-      )}
+      {children}
     </article>
   );
 }

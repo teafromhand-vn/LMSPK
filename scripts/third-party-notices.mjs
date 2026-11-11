@@ -1,6 +1,6 @@
 import { readFile, writeFile, readdir } from 'node:fs/promises';
 const lock = JSON.parse(await readFile('package-lock.json', 'utf8'));
-const sections = ['Third-party notices for Enyalië Study library\nUpstream application copyright: see LICENSE.\n'];
+const sections = ['Third-party notices for LMSPK Study library\nUpstream application copyright: see LICENSE.\n'];
 for (const [path, entry] of Object.entries(lock.packages)) {
   if (!path || entry.dev || entry.optional) continue;
   const name = path.split('node_modules/').at(-1);

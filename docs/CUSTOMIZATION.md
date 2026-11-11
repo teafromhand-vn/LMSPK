@@ -4,7 +4,7 @@ Evaluated 4 November 2026 using GitHub repository search and upstream source/REA
 
 | Candidate | License / activity observed | Fit and modification cost |
 | --- | --- | --- |
-| [Enyalië](https://github.com/adidoppalapudi/enyalie) | MIT; 2026-10-30; [demo](https://adidoppalapudi.github.io/enyalie/) | Selected. React 19 + TypeScript + Vite, only two runtime dependencies. Existing flashcards, MCQ/TF, explanations, shuffle, accessible keyboard controls and JSON starter decks. Remove isolated storage/editor features; add documents and multi-select. |
+| [LMSPK](https://github.com/adidoppalapudi/enyalie) | MIT; 2026-10-30; [demo](https://adidoppalapudi.github.io/enyalie/) | Selected. React 19 + TypeScript + Vite, only two runtime dependencies. Existing flashcards, MCQ/TF, explanations, shuffle, accessible keyboard controls and JSON starter decks. Remove isolated storage/editor features; add documents and multi-select. |
 | [StudyCompanion](https://github.com/MartinSA04/StudyCompanion) | MIT in GitHub search; 2026-11-01; course demo available | Static YAML/MDX, flashcards and quiz widgets, but Astro integration/course framework rather than React application; more architectural changes for requested React state. |
 | [Quizmill](https://github.com/quizmill/quizmill) | MIT; 2026-11-03; quizmill.dev | Static JSON and tests, but Next.js engine/CLI with persistence, sync, analytics, license unlocks, payments links and multiple practice modes. Much larger removal surface. |
 | [Quizaroni](https://github.com/yusufaf/quizaroni) | MIT in search; 2026-11-04; published demo | React plus AWS Lambda/DynamoDB/S3/Cognito monorepo. Unnecessary infrastructure. |
@@ -12,7 +12,7 @@ Evaluated 4 November 2026 using GitHub repository search and upstream source/REA
 
 ## Provenance
 
-Cloned full Git history, not a new scaffold. Origin: `https://github.com/adidoppalapudi/enyalie.git`. Baseline: `a13be9791b52a71f603a016a9a721ab4bfa608ef`. Upstream MIT copyright remains in LICENSE. This derivative is **Enyalië / Study library**.
+Cloned full Git history, not a new scaffold. Origin: `https://github.com/adidoppalapudi/enyalie.git`. Baseline: `a13be9791b52a71f603a016a9a721ab4bfa608ef`. Upstream MIT copyright remains in LICENSE. This derivative is **LMSPK / Study library**.
 
 ## Inspection before modification
 
@@ -29,7 +29,7 @@ Cloned full Git history, not a new scaffold. Origin: `https://github.com/adidopp
 
 ## Retain / modify / remove
 
-1. Retain Vite/TypeScript/React toolchain, hash routing, Link, KeyBar, useHotkeys, useAsync, Notice, ErrorBoundary, Box, Meter and Fisher–Yates shuffle. Keep Enyalië branding and its bottom keyboard-action bar.
+1. Retain Vite/TypeScript/React toolchain, hash routing, Link, KeyBar, useHotkeys, useAsync, Notice, ErrorBoundary, Box, Meter and Fisher–Yates shuffle. Keep LMSPK branding and its bottom keyboard-action bar.
 2. Adapt existing question schema and pure quiz engine to read-only content, add multi-select exact-set grading, remove streak/mastery bookkeeping while retaining the per-question timer. Keep session provider exclusively in React state. Adapt QuizView/ResultsView to deferred submission and full answer review.
 3. Adapt LibraryView/DeckFilters to static collections and subject filtering. Extract flashcard studying from the original quiz/reveal interaction into a dedicated DeckView with flip/previous/next/shuffle/images.
 4. Replace the IndexedDB loading boundary with validated same-origin JSON fetches under public/data. Keep selected original question wording, answers and references; split flashcards and tests into separate indexes.
