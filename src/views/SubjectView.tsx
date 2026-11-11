@@ -169,21 +169,22 @@ function SubjectResources({
           ))}
         </aside>}
         <section className="subject-resources" aria-label="Tài nguyên môn học">
-          <nav className="resource-tabs" aria-label="Các mục môn học">
-            {tabs.map(({ id, label, icon: Icon }) => (
-              <Link
-                key={id}
-                to={{ name: 'subject', subjectId: subject.id, section: id, chapterId }}
-                className={section === id ? 'resource-tab active' : 'resource-tab'}
-                current={section === id}
-              >
-                <Icon size={17} />
-                {label}
-                <span>{content[id].filter((r) => !chapterId || r.chapterId === chapterId).length}</span>
-              </Link>
-            ))}
-          </nav>
-          <div className="subject-search resource-search">
+          <div className="resource-toolbar">
+            <nav className="resource-tabs" aria-label="Các mục môn học">
+              {tabs.map(({ id, label, icon: Icon }) => (
+                <Link
+                  key={id}
+                  to={{ name: 'subject', subjectId: subject.id, section: id, chapterId }}
+                  className={section === id ? 'resource-tab active' : 'resource-tab'}
+                  current={section === id}
+                >
+                  <Icon size={17} />
+                  {label}
+                  <span>{content[id].filter((r) => !chapterId || r.chapterId === chapterId).length}</span>
+                </Link>
+              ))}
+            </nav>
+            <div className="subject-search resource-search">
             <div className="search-field">
               <Search size={17} />
               <input
@@ -221,6 +222,7 @@ function SubjectResources({
                 ))}
               </select>
             )}
+            </div>
           </div>
           {section === 'tests' && selectedTest && (
             <form ref={setup} className="quiz-setup" aria-label="Chọn chế độ kiểm tra" onSubmit={(event) => { event.preventDefault(); void startTest(selectedTest); }}>

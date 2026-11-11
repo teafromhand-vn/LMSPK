@@ -1643,6 +1643,17 @@ kbd {
   grid-template-columns: 230px minmax(0, 1fr);
   gap: 35px;
 }
+.resource-toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  padding-top: 1px;
+  background: var(--bg);
+}
+.resource-toolbar .resource-search {
+  margin-bottom: 18px;
+  padding-bottom: 1px;
+}
 .chapter-sidebar > .page-kicker {
   margin: 13px 12px 18px;
   font-size: 9px;
