@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ArrowLeft, RotateCw, Shuffle } from 'lucide-react';
+import { ArrowLeft, Check, RotateCw, Shuffle } from 'lucide-react';
 import { Screen } from '../components/Screen';
 import { Link } from '../components/Link';
 import { Notice } from '../components/Notice';
@@ -7,7 +7,8 @@ import { useAsync } from '../hooks/useAsync';
 import { assetUrl, flashcards, loadSubject, loadDeck, resourceContext } from '../lib/content';
 import { Breadcrumbs } from '../components/Breadcrumbs';
 import { shuffle } from '../lib/random';
-import { errorMessage } from '../lib/errors';
+import { createFlashcardQueue, markKnown, markUnknown, shuffleQueue } from '../lib/flashcardQueue';
+import { classifyContentError } from '../lib/errors';
 import type { FlashcardContent, ResourceContext } from '../models/types';
 
 export function DeckView({ deckId, subjectId }: { deckId: string; subjectId: string }) {
@@ -23,14 +24,20 @@ export function DeckView({ deckId, subjectId }: { deckId: string; subjectId: str
   }, [deckId, subjectId]);
   if (data)
     return (
-      <FlashcardStudy title={data.entry.name} subject={data.entry.subject} context={data.context} cards={data.cards} />
+      <FlashcardStudy
+        key={deckId}
+        title={data.entry.name}
+        subject={data.entry.subject}
+        context={data.context}
+        cards={data.cards}
+      />
     );
   return (
     <Screen path={['flashcards']} title="Thẻ ghi nhớ">
       <Link to={{ name: 'subject', subjectId, section: 'flashcards' }}>← Thẻ ghi nhớ của môn học</Link>
       {error ? (
         <Notice title="Không thể mở bộ thẻ." tone="error">
-          <p>{errorMessage(error)}</p>
+          <p>{classifyContentError(error)}</p>
           <button className="btn" onClick={reload}>
             Thử lại
           </button>
@@ -41,7 +48,11 @@ export function DeckView({ deckId, subjectId }: { deckId: string; subjectId: str
     </Screen>
   );
 }
-/** Dedicated version of LMSPK's revealable flashcard interaction, without self-grading. */
+/**
+ * Review loop for one deck: cards the learner has not memorised yet stay in
+ * the queue until they answer "Đã nhớ". All progress lives in component state,
+ * so reloading the page starts the deck from the beginning.
+ */
 function FlashcardStudy({
   title,
   subject,
@@ -53,43 +64,49 @@ function FlashcardStudy({
   cards: FlashcardContent[];
   context: ResourceContext;
 }) {
-  const [ordered, setOrdered] = useState(cards);
-  const [position, setPosition] = useState(0);
+  const [session, setSession] = useState(() => createFlashcardQueue(cards));
   const [flipped, setFlipped] = useState(false);
-  const card = ordered[position];
-  const image = flipped ? card.backImage : card.image;
-  const move = (delta: number) => {
-    setPosition((p) => Math.max(0, Math.min(ordered.length - 1, p + delta)));
+  const done = session.queue.length === 0;
+  const card = session.queue[0];
+  const image = card && (flipped ? card.backImage : card.image);
+
+  const grade = (known: boolean) => {
+    setSession((state) => (known ? markKnown(state) : markUnknown(state)));
     setFlipped(false);
   };
-  const reshuffle = () => {
-    setOrdered(shuffle(cards));
-    setPosition(0);
+  const start = (shuffled: boolean) => {
+    setSession(createFlashcardQueue(shuffled ? shuffle(cards) : cards));
     setFlipped(false);
   };
+  const reshuffle = () => setSession((state) => shuffleQueue(state));
+
   return (
     <Screen
       path={['flashcards', title]}
       title={title}
-      actions={[
-        { label: 'Trước', hotkey: 'arrowleft', keyLabel: '←', onAction: () => move(-1), disabled: position === 0 },
-        {
-          label: 'Lật thẻ',
-          hotkey: 'space',
-          alsoKeys: ['f'],
-          keyLabel: 'Dấu cách',
-          onAction: () => setFlipped((v) => !v),
-          primary: true,
-        },
-        {
-          label: 'Tiếp',
-          hotkey: 'arrowright',
-          keyLabel: '→',
-          onAction: () => move(1),
-          disabled: position === ordered.length - 1,
-        },
-        { label: 'Xáo trộn', hotkey: 's', onAction: reshuffle },
-      ]}
+      actions={
+        done
+          ? [
+              { label: 'Học lại từ đầu', hotkey: 'r', onAction: () => start(false), primary: true },
+              { label: 'Xáo trộn & học lại', hotkey: 's', onAction: () => start(true) },
+            ]
+          : [
+              // 1/2 stay active on both faces so the learner can grade right
+              // after revealing. They do not clash with F, Space or S; arrow
+              // keys are intentionally unbound now that there is no "previous".
+              { label: 'Chưa nhớ', hotkey: '1', keyLabel: '1', onAction: () => grade(false) },
+              {
+                label: 'Lật thẻ',
+                hotkey: 'space',
+                alsoKeys: ['f'],
+                keyLabel: 'Dấu cách',
+                onAction: () => setFlipped((v) => !v),
+                primary: true,
+              },
+              { label: 'Đã nhớ', hotkey: '2', keyLabel: '2', onAction: () => grade(true) },
+              { label: 'Xáo trộn', hotkey: 's', onAction: reshuffle },
+            ]
+      }
     >
       <Breadcrumbs context={context} section="flashcards" title={title} />
       <Link
@@ -103,36 +120,70 @@ function FlashcardStudy({
           <p className="page-kicker">{subject}</p>
           <h1>{title}</h1>
         </div>
-        <button className="btn" onClick={reshuffle}>
-          <Shuffle size={16} /> Xáo trộn thẻ
-        </button>
+        {!done && (
+          <button className="btn" onClick={reshuffle}>
+            <Shuffle size={16} /> Xáo trộn thẻ
+          </button>
+        )}
       </div>
       <div className="study-area">
-        <div className="study-counter">
-          <span>THẺ GHI NHỚ</span>
-          <span aria-live="polite">
-            Thẻ {position + 1} / {ordered.length}
-          </span>
-        </div>
-        <button
-          className={`flashcard ${flipped ? 'flipped' : ''}`}
-          onClick={() => setFlipped((v) => !v)}
-          aria-label={`Lật thẻ. ${flipped ? 'Mặt sau' : 'Mặt trước'}: ${flipped ? card.answer : card.prompt}`}
-        >
-          <span className="card-side">{flipped ? 'ĐÁP ÁN' : 'CÂU HỎI'}</span>
-          <span key={`${position}-${flipped}`} className="flashcard-text flip-content" aria-live="polite">
-            {flipped ? card.answer : card.prompt}
-          </span>
-          {image && <img className="flashcard-image" src={assetUrl(image.src)} alt={image.alt} />}
-          {flipped && card.explanation && <span className="flashcard-explanation">{card.explanation}</span>}
-          <span className="flip-hint">
-            <RotateCw size={15} /> Nhấn để lật <span>hoặc nhấn F</span>
-          </span>
-        </button>
-        <div className="study-controls">
-          <button className="btn" aria-label="Thẻ trước" disabled={position === 0} onClick={() => move(-1)}>← Trước</button>
-          <button className="btn" aria-label="Thẻ sau" disabled={position === ordered.length - 1} onClick={() => move(1)}>Sau →</button>
-        </div>
+        {done ? (
+          <div className="study-summary">
+            <p className="page-kicker">ÔN TẬP XONG</p>
+            <h2>Hoàn thành!</h2>
+            <p>Bạn đã đi hết {cards.length} thẻ trong bộ này.</p>
+            <dl className="study-summary-stats">
+              <div>
+                <dt>Tổng số thẻ</dt>
+                <dd>{cards.length}</dd>
+              </div>
+              <div>
+                <dt>Lượt “chưa nhớ”</dt>
+                <dd>{session.laps}</dd>
+              </div>
+            </dl>
+            <div className="study-controls">
+              <button className="btn btn-primary" onClick={() => start(false)}>
+                Học lại từ đầu
+              </button>
+              <button className="btn" onClick={() => start(true)}>
+                Xáo trộn &amp; học lại
+              </button>
+            </div>
+          </div>
+        ) : (
+          <>
+            <div className="study-counter">
+              <span>THẺ GHI NHỚ</span>
+              <span aria-live="polite">
+                Còn {session.queue.length} thẻ cần ôn · Đã nhớ {session.known.size} / {cards.length}
+              </span>
+            </div>
+            <button
+              className={`flashcard ${flipped ? 'flipped' : ''}`}
+              onClick={() => setFlipped((v) => !v)}
+              aria-label={`Lật thẻ. ${flipped ? 'Mặt sau' : 'Mặt trước'}: ${flipped ? card.answer : card.prompt}`}
+            >
+              <span className="card-side">{flipped ? 'ĐÁP ÁN' : 'CÂU HỎI'}</span>
+              <span key={`${card.id}-${flipped}`} className="flashcard-text flip-content" aria-live="polite">
+                {flipped ? card.answer : card.prompt}
+              </span>
+              {image && <img className="flashcard-image" src={assetUrl(image.src)} alt={image.alt} />}
+              {flipped && card.explanation && <span className="flashcard-explanation">{card.explanation}</span>}
+              <span className="flip-hint">
+                <RotateCw size={15} /> Nhấn để lật <span>hoặc nhấn F</span>
+              </span>
+            </button>
+            <div className="study-controls">
+              <button className="btn" aria-label="Chưa nhớ" onClick={() => grade(false)}>
+                <RotateCw size={16} /> Chưa nhớ
+              </button>
+              <button className="btn" aria-label="Đã nhớ" onClick={() => grade(true)}>
+                <Check size={16} /> Đã nhớ
+              </button>
+            </div>
+          </>
+        )}
       </div>
     </Screen>
   );

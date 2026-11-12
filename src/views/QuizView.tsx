@@ -9,26 +9,33 @@ import { Screen } from '../components/Screen';
 import { Breadcrumbs } from '../components/Breadcrumbs';
 import { useHotkeys, type Hotkeys } from '../hooks/useHotkeys';
 import { QUESTION_TYPE_LABELS } from '../models/types';
-import { currentAnswer, currentItem, deadline, isCorrect, type QuizItem, type QuizResponse } from '../quiz/engine';
+import {
+  currentAnswer,
+  currentItem,
+  isCorrect,
+  sessionDeadline,
+  type QuizItem,
+  type QuizResponse,
+} from '../quiz/engine';
 import { correctAnswerText } from '../quiz/describe';
 
 export function QuizView({ subjectId }: { subjectId: string }) {
   const quiz = useQuiz();
   const session = quiz.session?.context?.subjectId === subjectId ? quiz.session : null;
   const [now, setNow] = useState(Date.now());
-  const end = session && deadline(session);
+  const end = session ? sessionDeadline(session) : null;
   const answer = session ? currentAnswer(session) : null;
   useEffect(() => {
-    if (end === null || end === undefined || answer || session?.submitted) return;
+    if (end === null || session?.submitted) return;
     const tick = () => {
       const time = Date.now();
       setNow(time);
-      if (time >= end) quiz.answer({ type: 'timeout' });
+      if (time >= end) quiz.expire();
     };
     tick();
-    const timer = setInterval(tick, 200);
+    const timer = setInterval(tick, 500);
     return () => clearInterval(timer);
-  }, [end, answer, session?.submitted, quiz.answer]);
+  }, [end, session?.submitted, quiz.expire]);
   useEffect(() => {
     if (session?.submitted) navigate({ name: 'results', subjectId }, { replace: true });
   }, [session?.submitted, subjectId]);
@@ -36,7 +43,7 @@ export function QuizView({ subjectId }: { subjectId: string }) {
     return (
       <Screen path={['tests']} title="Bài kiểm tra">
         <Notice title="Sẵn sàng bắt đầu?">
-          <p>Chọn bài kiểm tra để bắt đầu. Tải lại trang sẽ xóa mọi câu trả lời.</p>
+          <p>Chọn bài kiểm tra để bắt đầu.</p>
           <Link to={{ name: 'subject', subjectId, section: 'tests' }}>Xem bài kiểm tra của môn học →</Link>
         </Notice>
       </Screen>
@@ -46,7 +53,10 @@ export function QuizView({ subjectId }: { subjectId: string }) {
   const item = currentItem(session);
   const locked = answer !== null;
   const correct = answer !== null && answer.type !== 'timeout' && isCorrect(item.question, answer);
-  const canMove = (session.timer === null && session.mode !== 'practice' && !session.infinite) || answer !== null;
+  const canMove = (session.mode !== 'practice' && !session.infinite) || answer !== null;
+  const remaining = end === null ? null : Math.max(0, end - now);
+  const almostUp =
+    remaining !== null && session.timeLimit !== null && remaining <= session.timeLimit * 1000 * 0.2;
   return (
     <Screen
       path={['tests', session.title]}
@@ -89,13 +99,19 @@ export function QuizView({ subjectId }: { subjectId: string }) {
           <span>
             Đã trả lời {count} câu <Meter value={count} max={session.items.length} label={`Đã trả lời ${count} câu`} />
           </span>
-          {end !== null && (
-            <span className="timer" role="timer" aria-label="Thời gian còn lại">
+          {remaining !== null && (
+            <span
+              className={`timer ${almostUp ? 'timer-warning' : ''}`}
+              role="timer"
+              aria-label="Thời gian còn lại"
+            >
               {locked
                 ? answer?.type === 'timeout'
                   ? 'Hết giờ'
                   : 'Đã khóa đáp án'
-                : `Còn ${Math.max(0, Math.ceil((end - now) / 1000))} giây`}
+                : remaining > 0
+                  ? formatClock(remaining)
+                  : 'Hết giờ'}
             </span>
           )}
         </div>
@@ -146,6 +162,11 @@ export function QuizView({ subjectId }: { subjectId: string }) {
       </div>
     </Screen>
   );
+}
+
+function formatClock(ms: number): string {
+  const total = Math.max(0, Math.ceil(ms / 1000));
+  return `${String(Math.floor(total / 60)).padStart(2, '0')}:${String(total % 60).padStart(2, '0')}`;
 }
 
 /** Retains the original question card, numbered answers and keyboard selection. */

@@ -1,5 +1,6 @@
 import type { Collection, Deck, LearningDocument, SubjectContent, Syllabus } from '../models/types';
 import { assembleCatalog, validateDeck, validateIndex, validateSubjects } from './contentValidation';
+import { ContentDataError, errorMessage } from './errors';
 
 export const SHEET_NAMES = ['Subjects', 'Chapters', 'Collections', 'Questions', 'Documents'] as const;
 type SheetName = (typeof SHEET_NAMES)[number];
@@ -100,8 +101,20 @@ function array(value: string, field: string): unknown[] {
   throw new Error(`${field} phải là mảng JSON, ví dụ ["A","B"].`);
 }
 
-/** Convert public worksheet rows into LMSPK's existing engine model. */
+/**
+ * Convert public worksheet rows into LMSPK's existing engine model.
+ * Any parse/validation failure is tagged as ContentDataError so the UI can hide
+ * technical details while the raw message stays available for logs.
+ */
 export function parseWorkbook(payload: unknown): SheetContent {
+  try {
+    return parseWorkbookData(payload);
+  } catch (error) {
+    throw error instanceof ContentDataError ? error : new ContentDataError(errorMessage(error));
+  }
+}
+
+function parseWorkbookData(payload: unknown): SheetContent {
   if (!object(payload) || !Array.isArray(payload.valueRanges) || payload.valueRanges.length !== SHEET_NAMES.length)
     throw new Error('Google Sheets phải trả về đủ 5 tab theo mẫu.');
   const ranges = payload.valueRanges;

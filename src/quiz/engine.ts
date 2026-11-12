@@ -56,8 +56,9 @@ export interface QuizSession {
   answers: (QuizResponse | null)[];
   current: number;
   submitted: boolean;
-  timer: number | null;
-  questionStartedAt: number;
+  /** Whole-quiz limit in seconds. `null` means unlimited. */
+  timeLimit: number | null;
+  startedAt: number;
 }
 export function createSession(params: {
   mode?: 'practice' | 'test';
@@ -67,7 +68,7 @@ export function createSession(params: {
   title: string;
   deckId: string;
   items: QuizItem[];
-  timer?: number | null;
+  timeLimit?: number | null;
 }): QuizSession {
   if (!params.items.length) throw new Error('A test needs at least one question.');
   return {
@@ -76,8 +77,8 @@ export function createSession(params: {
     infinite: params.infinite ?? false,
     pool: params.pool ?? params.items,
     items: params.infinite ? [params.items[Math.floor(Math.random() * params.items.length)]] : params.items,
-    timer: params.timer ?? null,
-    questionStartedAt: Date.now(),
+    timeLimit: params.timeLimit ?? null,
+    startedAt: Date.now(),
     answers: params.infinite ? [null] : params.items.map(() => null),
     current: 0,
     submitted: false,
@@ -89,29 +90,44 @@ export function currentItem(session: QuizSession): QuizItem {
 export function currentAnswer(session: QuizSession): QuizResponse | null {
   return session.answers[session.current] ?? null;
 }
-export function deadline(session: QuizSession): number | null {
-  return session.timer === null ? null : session.questionStartedAt + session.timer * 1000;
+/** Clamps a requested question count to the pool size, keeping at least one question. */
+export function clampQuestionCount(total: number, requested: number): number {
+  const maximum = Math.max(0, Math.trunc(total));
+  if (!Number.isFinite(requested)) return maximum;
+  return Math.min(maximum, Math.max(1, Math.trunc(requested)));
+}
+/** Deadline for the whole quiz, or `null` when the quiz is untimed. */
+export function sessionDeadline(session: QuizSession): number | null {
+  return session.timeLimit === null ? null : session.startedAt + session.timeLimit * 1000;
+}
+/** Marks every unanswered question as timed out and submits once the deadline has passed. */
+export function finalizeExpired(session: QuizSession, now = Date.now()): QuizSession {
+  if (session.submitted) return session;
+  const end = sessionDeadline(session);
+  if (end === null || now < end) return session;
+  const answers = session.answers.map((answer) => answer ?? { type: 'timeout' as const });
+  return submitSession({ ...session, answers });
 }
 export function answerCurrent(session: QuizSession, response: QuizResponse, now = Date.now()): QuizSession {
   if (session.submitted) return session;
+  const end = sessionDeadline(session);
+  if (end !== null && now >= end) return finalizeExpired(session, now);
   if (session.answers[session.current] !== null) return session;
-  const end = deadline(session);
-  if (response.type === 'timeout' && (end === null || now < end)) return session;
+  if (response.type === 'timeout') return session;
   const answers = session.answers.slice();
-  answers[session.current] = end !== null && now >= end ? { type: 'timeout' } : response;
+  answers[session.current] = response;
   return { ...session, answers };
 }
 export function moveTo(session: QuizSession, position: number, random: Random = Math.random): QuizSession {
   if (session.submitted) return session;
-  if ((session.timer !== null || session.mode === 'practice' || session.infinite) && !session.answers[session.current]) return session;
+  if ((session.mode === 'practice' || session.infinite) && !session.answers[session.current]) return session;
   if (session.infinite && position === session.items.length) {
     const item = session.pool[Math.floor(random() * session.pool.length)];
-    return { ...session, items: [...session.items, item], answers: [...session.answers, null], current: position, questionStartedAt: Date.now() };
+    return { ...session, items: [...session.items, item], answers: [...session.answers, null], current: position };
   }
   return {
     ...session,
     current: Math.max(0, Math.min(session.items.length - 1, position)),
-    questionStartedAt: Date.now(),
   };
 }
 export function submitSession(session: QuizSession): QuizSession {
@@ -141,7 +157,7 @@ export function replaySession(session: QuizSession, incorrectOnly = false): Quiz
     context: session.context,
     title: session.title,
     deckId: session.deckId,
-    timer: session.timer,
+    timeLimit: session.timeLimit,
     mode: session.mode,
     infinite: !incorrectOnly && session.infinite,
     items: buildQuizItems(questions),

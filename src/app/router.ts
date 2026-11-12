@@ -11,6 +11,7 @@ export type Route =
   | { name: 'subject'; subjectId: string; section: ResourceSection; chapterId?: string }
   | { name: 'deck'; subjectId: string; deckId: string }
   | { name: 'document'; subjectId: string; documentId: string }
+  | { name: 'quizSetup'; subjectId: string; collectionId: string }
   | { name: 'quiz'; subjectId: string }
   | { name: 'results'; subjectId: string }
   | { name: 'notFound' };
@@ -38,6 +39,7 @@ export function parseRoute(hash: string): Route {
       return { name: 'subject', subjectId, section: kind as ResourceSection, ...(chapterId ? { chapterId } : {}) };
     if (parts.length === 4 && kind === 'deck') return { name: 'deck', subjectId, deckId: id };
     if (parts.length === 4 && kind === 'document') return { name: 'document', subjectId, documentId: id };
+    if (parts.length === 4 && kind === 'quiz-setup') return { name: 'quizSetup', subjectId, collectionId: id };
     if (parts.length === 3 && (kind === 'quiz' || kind === 'results')) return { name: kind, subjectId };
   }
   return { name: 'notFound' };
@@ -59,6 +61,8 @@ export function routeToHash(route: Route): string {
       return `#/subjects/${encodeURIComponent(route.subjectId)}/deck/${encodeURIComponent(route.deckId)}`;
     case 'document':
       return `#/subjects/${encodeURIComponent(route.subjectId)}/document/${encodeURIComponent(route.documentId)}`;
+    case 'quizSetup':
+      return `#/subjects/${encodeURIComponent(route.subjectId)}/quiz-setup/${encodeURIComponent(route.collectionId)}`;
     case 'quiz':
       return `#/subjects/${encodeURIComponent(route.subjectId)}/quiz`;
     case 'results':

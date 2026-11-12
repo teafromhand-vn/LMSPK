@@ -34,7 +34,7 @@ async function clean(page: Page) {
   ).toEqual({ local: 0, session: 0, cookie: '' });
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
 }
-test('static collections, keyboard flip/navigation/shuffle, reload and new tab reset', async ({ page, context }) => {
+test('static collections, keyboard flip/grading/shuffle, reload and new tab reset', async ({ page, context }) => {
   await page.goto('/');
   await expect(page.locator('.titlebar').getByRole('link', { name: 'Subjects', exact: true })).toHaveCount(0);
   await expect(page.locator('.subject-card').filter({ hasText: 'Database Systems' }).locator('.course-id')).toHaveText(
@@ -52,30 +52,73 @@ test('static collections, keyboard flip/navigation/shuffle, reload and new tab r
   await page.getByLabel('Học kỳ', { exact: true }).selectOption('');
   await page.locator('.subject-card').filter({ hasText: 'Geography' }).click();
   await page.getByRole('link', { name: /World geography/ }).click();
-  await expect(page.getByText('Thẻ 1 / 11')).toBeVisible();
+  await expect(page.locator('.study-counter')).toContainText('Còn 11 thẻ cần ôn · Đã nhớ 0 / 11');
   await page.keyboard.press('f');
   await expect(page.locator('.card-side')).toHaveText('ĐÁP ÁN');
-  await page.keyboard.press('ArrowRight');
-  await expect(page.getByText('Thẻ 2 / 11')).toBeVisible();
+  await page.keyboard.press('1');
+  await expect(page.locator('.study-counter')).toContainText('Còn 11 thẻ cần ôn · Đã nhớ 0 / 11');
+  await expect(page.locator('.card-side')).toHaveText('CÂU HỎI');
   await page.keyboard.press('s');
-  await expect(page.getByText('Thẻ 1 / 11')).toBeVisible();
-  await page.keyboard.press('ArrowRight');
+  await expect(page.locator('.study-counter')).toContainText('Còn 11 thẻ cần ôn · Đã nhớ 0 / 11');
+  await page.keyboard.press('2');
+  await expect(page.locator('.study-counter')).toContainText('Còn 10 thẻ cần ôn · Đã nhớ 1 / 11');
   await page.reload();
-  await expect(page.getByText('Thẻ 1 / 11')).toBeVisible();
+  await expect(page.locator('.study-counter')).toContainText('Còn 11 thẻ cần ôn · Đã nhớ 0 / 11');
   await expect(page.locator('.card-side')).toHaveText('CÂU HỎI');
   await clean(page);
   const url = page.url();
   await page.close();
   const reopened = await context.newPage();
   await reopened.goto(url);
-  await expect(reopened.getByText('Thẻ 1 / 11')).toBeVisible();
+  await expect(reopened.locator('.study-counter')).toContainText('Còn 11 thẻ cần ôn · Đã nhớ 0 / 11');
+});
+test('flashcard review loop recycles unknown cards and ends with a summary', async ({ page }) => {
+  await page.goto('/#/subjects/database/deck/flashcards-database-sql');
+  await expect(page.locator('.study-counter')).toContainText('Còn 3 thẻ cần ôn · Đã nhớ 0 / 3');
+  await expect(page.locator('.flashcard-text')).toHaveText('Which clause filters rows before grouping?');
+  await page.locator('.study-controls').getByRole('button', { name: 'Chưa nhớ' }).click();
+  await expect(page.locator('.study-counter')).toContainText('Còn 3 thẻ cần ôn · Đã nhớ 0 / 3');
+  await page.locator('.study-controls').getByRole('button', { name: 'Đã nhớ' }).click();
+  await expect(page.locator('.study-counter')).toContainText('Còn 2 thẻ cần ôn · Đã nhớ 1 / 3');
+  await page.locator('.study-controls').getByRole('button', { name: 'Đã nhớ' }).click();
+  await expect(page.locator('.study-counter')).toContainText('Còn 1 thẻ cần ôn · Đã nhớ 2 / 3');
+  await expect(page.locator('.flashcard-text')).toHaveText('Which clause filters rows before grouping?');
+  await page.locator('.study-controls').getByRole('button', { name: 'Đã nhớ' }).click();
+  await expect(page.getByRole('heading', { name: 'Hoàn thành!' })).toBeVisible();
+  await expect(page.locator('.study-summary-stats')).toContainText('Lượt “chưa nhớ”1');
+  await page.locator('.study-controls').getByRole('button', { name: 'Học lại từ đầu' }).click();
+  await expect(page.locator('.study-counter')).toContainText('Còn 3 thẻ cần ôn · Đã nhớ 0 / 3');
+  await expect(page.locator('.flashcard-text')).toHaveText('Which clause filters rows before grouping?');
+  await clean(page);
+});
+
+test('session banner appears once on every route without a dismiss control', async ({ page }) => {
+  const routes = [
+    '/',
+    '/#/subjects',
+    '/#/subjects/geography/flashcards',
+    '/#/subjects/geography/deck/world-geography',
+    '/#/subjects/geography/quiz',
+    '/#/subjects/geography/results',
+    '/#/subjects/chemistry/documents',
+    '/#/donate',
+  ];
+  for (const route of routes) {
+    await page.goto(route);
+    const banner = page.locator('.session-banner');
+    await expect(banner).toHaveCount(1);
+    await expect(banner).toContainText('Tiến độ chỉ tồn tại trong phiên này');
+    await expect(banner).toContainText('Tải lại hoặc đóng tab sẽ xóa câu trả lời, kết quả và vị trí đang học.');
+    await expect(banner.getByRole('button')).toHaveCount(0);
+  }
+  await clean(page);
 });
 test('all question types, exact grading, explanations, restart and result reset', async ({ page }) => {
   const deck = JSON.parse(readFileSync('tests/fixtures/data/tests/chemistry-foundations.json', 'utf8')) as {
     questions: Question[];
   };
   await page.goto('/#/subjects/chemistry/tests');
-  await page.getByRole('button', { name: /Chemistry foundations/ }).click();
+  await page.locator('.resource-row').filter({ hasText: 'Chemistry foundations' }).click();
   await page.getByRole('button', { name: 'Bắt đầu', exact: true }).click();
   for (let i = 0; i < deck.questions.length; i++) {
     const prompt = await page.locator('.prompt').innerText();
@@ -96,6 +139,8 @@ test('all question types, exact grading, explanations, restart and result reset'
   }
   await page.getByRole('button', { name: 'Nộp bài' }).click();
   await expect(page.getByRole('heading', { name: 'Đúng 11 / 11 câu' })).toBeVisible();
+  await expect(page.locator('.result-summary')).toContainText('Sai 0 câu · Chưa trả lời 0 câu');
+  await expect(page.locator('.result-summary')).not.toContainText('điểm');
   await expect(page.locator('.review-card')).toHaveCount(11);
   await expect(page.locator('.explanation').first()).toBeVisible();
   await page.getByLabel('Chỉ xem câu trả lời sai').check();
@@ -108,20 +153,19 @@ test('all question types, exact grading, explanations, restart and result reset'
   await expect(page.getByText('Chưa có kết quả.')).toBeVisible();
   await clean(page);
 });
-test('timer expiration locks answers and resets on reload', async ({ page }) => {
+test('whole-quiz timer expires, submits timeouts and resets on reload', async ({ page }) => {
   await page.clock.install();
   await page.goto('/#/subjects/geography/tests');
-  await page.getByRole('button', { name: /World geography/ }).click();
-  await page.getByLabel('Thời gian làm bài').selectOption('10');
+  await page.getByRole('link', { name: /World geography/ }).click();
+  await page.getByRole('radio', { name: '15 phút' }).check();
   await page.getByRole('button', { name: 'Bắt đầu', exact: true }).click();
-  await expect(page.getByRole('timer')).toContainText('Còn');
-  await page.clock.fastForward(11_000);
-  await expect(page.getByRole('timer')).toHaveText('Hết giờ');
-  await expect(page.getByRole('radio').first()).toBeDisabled();
-  await page.getByRole('button', { name: 'Tiếp', exact: true }).click();
-  await expect(page.locator('.quiz-head')).toContainText('Câu 2');
+  await expect(page.getByRole('timer')).toHaveText(/^\d{2}:\d{2}$/);
+  await page.clock.fastForward(15 * 60 * 1000 + 1_000);
+  await expect(page.getByRole('heading', { name: /Đúng 0 \/ \d+ câu/ })).toBeVisible();
+  await expect(page.locator('.result-summary')).toContainText('Chưa trả lời 0 câu');
+  await expect(page.locator('.review-card').first()).toContainText('Hết giờ');
   await page.reload();
-  await expect(page.getByText('Sẵn sàng bắt đầu?')).toBeVisible();
+  await expect(page.getByText('Chưa có kết quả.')).toBeVisible();
   await clean(page);
 });
 for (const [subject, id, format] of [
@@ -158,6 +202,20 @@ test('document search/category, themes, read-only UI, failed content recovery', 
   await page.unroute('https://sheets.googleapis.com/**');
   await page.getByRole('button', { name: 'Thử lại' }).click();
   await expect(page.locator('.subject-card')).toHaveCount(8);
+});
+test('malformed worksheet data shows a friendly source error and can retry', async ({ page }) => {
+  const broken = fixtureWorkbook();
+  broken.valueRanges[0].values[0][0] = 'wrong';
+  await page.route('https://sheets.googleapis.com/**', (route) => route.fulfill({ json: broken }));
+  await page.goto('/#/subjects');
+  const alert = page.getByRole('alert');
+  await expect(alert).toContainText('Dữ liệu học liệu đang có lỗi ở nguồn (Google Sheets).');
+  await expect(alert).toContainText('hãy báo cho quản trị viên');
+  await expect(alert).not.toContainText('Tiêu đề cột');
+  await page.unroute('https://sheets.googleapis.com/**');
+  await page.getByRole('button', { name: 'Thử lại' }).click();
+  await expect(page.locator('.subject-card')).toHaveCount(8);
+  await clean(page);
 });
 test('subject → chapter → all three resources with scoped breadcrumbs and deep links', async ({ page }) => {
   await page.goto('/');
@@ -248,10 +306,10 @@ test('code-only search, global document filter and disabled Syllabus', async ({ 
 
 test('quiz setup, immediate feedback and infinite finish count answered turns', async ({ page }) => {
   await page.goto('/#/subjects/chemistry/tests');
-  await page.getByRole('button', { name: /Chemistry foundations/ }).click();
-  await expect(page.getByRole('form', { name: 'Chọn chế độ kiểm tra' })).toBeVisible();
-  await page.getByLabel('Chế độ', { exact: true }).selectOption('practice');
-  await page.getByLabel('Vô hạn', { exact: true }).check();
+  await page.locator('.resource-row').filter({ hasText: 'Chemistry foundations' }).click();
+  await expect(page.getByRole('form', { name: 'Thiết lập bài kiểm tra' })).toBeVisible();
+  await page.getByRole('radio', { name: 'Tự do chuyển câu' }).check();
+  await page.getByRole('checkbox', { name: 'Vô hạn (random có lặp)' }).check();
   await page.getByRole('button', { name: 'Bắt đầu', exact: true }).click();
   await expect(page.locator('.quiz-head')).toContainText('Câu 1 / ∞');
   for (let turn = 0; turn < 2; turn++) {

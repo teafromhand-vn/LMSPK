@@ -1,15 +1,13 @@
-import { useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 import { BookOpen, Layers, ListChecks, ChevronRight, Search, FileText, ArrowUpRight } from 'lucide-react';
 import { Screen } from '../components/Screen';
 import { Link } from '../components/Link';
 import { ResourceLink } from '../components/ResourceLink';
 import { Notice } from '../components/Notice';
 import { useAsync } from '../hooks/useAsync';
-import { loadSubject, loadDeck, resourceContext } from '../lib/content';
-import { errorMessage } from '../lib/errors';
+import { loadSubject } from '../lib/content';
+import { classifyContentError } from '../lib/errors';
 import { navigate } from '../app/router';
-import { useQuiz } from '../app/QuizContext';
-import { buildQuizItems, createSession } from '../quiz/engine';
 import type { Collection, LearningDocument, ResourceSection, SubjectContent } from '../models/types';
 
 export function SubjectView({
@@ -36,7 +34,7 @@ export function SubjectView({
       <Link to={{ name: 'library' }}>← Tất cả môn học</Link>
       {error ? (
         <Notice title="Không thể mở môn học." tone="error">
-          <p>{errorMessage(error)}</p>
+          <p>{classifyContentError(error)}</p>
           <button className="btn" onClick={reload}>
             Thử lại
           </button>
@@ -59,27 +57,6 @@ function SubjectResources({
   const { subject } = content;
   const [query, setQuery] = useState('');
   const [category, setCategory] = useState('');
-  const [timer, setTimer] = useState<number | null>(null);
-  const [selectedTest, setSelectedTest] = useState<Collection | null>(null);
-  const [mode, setMode] = useState<'practice' | 'test'>('test');
-  const [infinite, setInfinite] = useState(false);
-  const [questionCount, setQuestionCount] = useState(1);
-  const [starting, setStarting] = useState<string | null>(null);
-  const [error, setError] = useState('');
-  const pending = useRef(false);
-  const setup = useRef<HTMLFormElement>(null);
-  const mounted = useRef(true);
-  useEffect(() => {
-    mounted.current = true;
-    return () => { mounted.current = false; };
-  }, []);
-  useEffect(() => {
-    if (selectedTest) {
-      setup.current?.scrollIntoView({ block: 'center' });
-      setup.current?.querySelector('select')?.focus({ preventScroll: true });
-    }
-  }, [selectedTest]);
-  const quiz = useQuiz();
   const selectedChapter = subject.chapters.find((c) => c.id === chapterId);
   const tabs = [
     { id: 'flashcards', label: 'Thẻ ghi nhớ', icon: Layers },
@@ -98,37 +75,6 @@ function SubjectResources({
     ...subject.chapters,
     { id: '', name: '' },
   ].filter((c) => (!chapterId || c.id === chapterId) && filtered.some((r) => (r.chapterId ?? '') === c.id));
-  async function startTest(resource: Collection) {
-    if (pending.current) return;
-    pending.current = true;
-    setStarting(resource.id);
-    setError('');
-    try {
-      const deck = await loadDeck(resource.id, 'tests');
-      if (!mounted.current) return;
-      const pool = buildQuizItems(deck.questions);
-      if (!infinite && (!Number.isInteger(questionCount) || questionCount < 1 || questionCount > pool.length))
-        throw new Error(`Nhập số câu từ 1 đến ${pool.length}.`);
-      quiz.start(
-        createSession({
-          title: resource.name,
-          deckId: resource.id,
-          timer,
-          mode,
-          infinite,
-          pool,
-          context: resourceContext(subject, resource),
-          items: infinite ? pool : pool.slice(0, questionCount),
-        }),
-      );
-      navigate({ name: 'quiz', subjectId: subject.id });
-    } catch (e) {
-      setError(errorMessage(e));
-    } finally {
-      pending.current = false;
-      setStarting(null);
-    }
-  }
   if (chapterId && !selectedChapter)
     return (
       <Screen path={['subjects']} title="Không tìm thấy chương">
@@ -224,40 +170,6 @@ function SubjectResources({
             )}
             </div>
           </div>
-          {section === 'tests' && selectedTest && (
-            <form ref={setup} className="quiz-setup" aria-label="Chọn chế độ kiểm tra" onSubmit={(event) => { event.preventDefault(); void startTest(selectedTest); }}>
-              <h2>{selectedTest.name}</h2>
-              <label>Chế độ
-                <select aria-label="Chế độ" value={mode} onChange={(e) => setMode(e.target.value as 'practice' | 'test')}>
-                  <option value="test">Tự do chuyển câu, xem đáp án ngay sau khi trả lời</option>
-                  <option value="practice">Trả lời tuần tự, xem đáp án ngay sau từng câu</option>
-                </select>
-              </label>
-              <label><input type="checkbox" checked={infinite} onChange={(e) => setInfinite(e.target.checked)} />Vô hạn</label>
-              {!infinite && <label>Số câu<input type="number" min={1} max={selectedTest.count} required value={questionCount} onChange={(e) => setQuestionCount(Number(e.target.value))} /></label>}
-            <label className="timer-setting">
-              Thời gian mỗi câu{' '}
-              <select
-                aria-label="Thời gian làm bài"
-                value={timer ?? 'off'}
-                onChange={(e) => setTimer(e.target.value === 'off' ? null : Number(e.target.value))}
-              >
-                <option value="off">Không giới hạn</option>
-                {[10, 20, 30].map((n) => (
-                  <option key={n} value={n}>
-                    {n} giây
-                  </option>
-                ))}
-              </select>
-            </label>
-              <div><button className="btn btn-primary" type="submit" disabled={starting !== null}>Bắt đầu</button>{' '}<button className="btn" type="button" disabled={starting !== null} onClick={() => setSelectedTest(null)}>Hủy</button></div>
-            </form>
-          )}
-          {error && (
-            <Notice title="Không thể bắt đầu bài kiểm tra." tone="error">
-              {error}
-            </Notice>
-          )}
           {groups.map((chapter) => (
             <section className="chapter-group" key={chapter.id} aria-label={chapter.name}>
               {chapter.id && <div className="chapter-group-heading">
@@ -294,26 +206,23 @@ function SubjectResources({
                           </small>
                         </span>
                         <span className="resource-open">
-                          {starting === r.id
-                            ? 'Đang tải…'
-                            : section === 'documents'
-                              ? 'Mở tab mới'
-                              : section === 'tests'
-                                ? 'Làm bài'
-                                : 'Ôn tập'}
+                          {section === 'documents'
+                            ? 'Mở tab mới'
+                            : section === 'tests'
+                              ? 'Làm bài'
+                              : 'Ôn tập'}
                           <ArrowUpRight size={16} />
                         </span>
                       </>
                     );
                     return section === 'tests' ? (
-                      <button
+                      <Link
+                        to={{ name: 'quizSetup', subjectId: subject.id, collectionId: r.id }}
                         className="resource-row"
                         key={r.id}
-                        disabled={starting !== null}
-                        onClick={() => { setSelectedTest(r as Collection); setQuestionCount((r as Collection).count); setError(''); }}
                       >
                         {body}
-                      </button>
+                      </Link>
                     ) : (
                       <ResourceLink
                         key={r.id}

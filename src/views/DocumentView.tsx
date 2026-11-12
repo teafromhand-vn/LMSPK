@@ -5,7 +5,7 @@ import { Notice } from '../components/Notice';
 import { useAsync } from '../hooks/useAsync';
 import { loadSubject, resourceContext } from '../lib/content';
 import { Breadcrumbs } from '../components/Breadcrumbs';
-import { errorMessage } from '../lib/errors';
+import { classifyContentError } from '../lib/errors';
 export function DocumentView({ documentId, subjectId }: { documentId: string; subjectId: string }) {
   const { data, error, reload } = useAsync(async () => {
     const catalog = await loadSubject(subjectId);
@@ -21,7 +21,7 @@ export function DocumentView({ documentId, subjectId }: { documentId: string; su
       </Link>
       {error ? (
         <Notice title="Không thể mở tài liệu." tone="error">
-          <p>{errorMessage(error)}</p>
+          <p>{classifyContentError(error)}</p>
           <button className="btn" onClick={reload}>
             Thử lại
           </button>

@@ -7,7 +7,7 @@ import { Notice } from '../components/Notice';
 import { SubjectCode } from '../components/SubjectCode';
 import { useAsync } from '../hooks/useAsync';
 import { loadCatalog } from '../lib/content';
-import { errorMessage } from '../lib/errors';
+import { classifyContentError } from '../lib/errors';
 
 /** The existing library now discovers subjects rather than global tool collections. */
 export function LibraryView() {
@@ -49,7 +49,7 @@ export function LibraryView() {
       </div>
       {error ? (
         <Notice title="Không thể tải danh sách môn học." tone="error">
-          <p>{errorMessage(error)}</p>
+          <p>{classifyContentError(error)}</p>
           <button className="btn" onClick={reload}>
             Thử lại
           </button>

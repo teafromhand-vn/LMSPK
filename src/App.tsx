@@ -11,6 +11,7 @@ import { LibraryView } from './views/LibraryView';
 import { SubjectView } from './views/SubjectView';
 import { DocumentView } from './views/DocumentView';
 import { QuizView } from './views/QuizView';
+import { QuizSetupView } from './views/QuizSetupView';
 import { ResultsView } from './views/ResultsView';
 import { ResourcesView } from './views/ResourcesView';
 import { DonateView } from './views/DonateView';
@@ -62,6 +63,14 @@ function CurrentScreen() {
           key={`${route.subjectId}-${route.documentId}`}
           subjectId={route.subjectId}
           documentId={route.documentId}
+        />
+      );
+    case 'quizSetup':
+      return (
+        <QuizSetupView
+          key={`${route.subjectId}-${route.collectionId}`}
+          subjectId={route.subjectId}
+          collectionId={route.collectionId}
         />
       );
     case 'quiz':

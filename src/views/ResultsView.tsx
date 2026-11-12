@@ -23,6 +23,8 @@ export function ResultsView({ subjectId }: { subjectId: string }) {
       </Screen>
     );
   const summary = summarize(session);
+  const unanswered = summary.review.filter((entry) => !entry.correct && entry.response === null).length;
+  const wrong = summary.review.filter((entry) => !entry.correct && entry.response !== null).length;
   const restart = (incorrectOnly = false) => {
     quiz.start(replaySession(session, incorrectOnly));
     navigate({ name: 'quiz', subjectId }, { replace: true });
@@ -63,7 +65,9 @@ export function ResultsView({ subjectId }: { subjectId: string }) {
           <h2>
             Đúng {summary.correct} / {summary.total} câu
           </h2>
-          <p>{summary.score} điểm · 100 điểm cho mỗi câu đúng</p>
+          <p className="dim">
+            Sai {wrong} câu · Chưa trả lời {unanswered} câu
+          </p>
         </div>
         <button className="btn btn-primary" onClick={() => restart()}>
           Làm lại

@@ -5,6 +5,7 @@ import { useTheme } from '../app/ThemeContext';
 import { KeyBar, type KeyAction } from './KeyBar';
 import { Link } from './Link';
 import { AdSlot } from './AdSlot';
+import { SessionBanner } from './SessionBanner';
 
 interface ScreenProps {
   path: string[];
@@ -91,6 +92,7 @@ export function Screen({ title, actions = [], children, sideAds = false }: Scree
       <div className={`screen-body${sideAds ? ' with-side-ads' : ''}`}>
         {sideAds && <div className="ad-rail ad-rail-left"><AdSlot placement="side-left" /></div>}
         <main className="content" id="main" tabIndex={-1}>
+          <SessionBanner />
           {children}
         </main>
         {sideAds && <div className="ad-rail ad-rail-right"><AdSlot placement="side-right" /></div>}

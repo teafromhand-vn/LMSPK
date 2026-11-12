@@ -4,10 +4,12 @@ import { Screen } from '../components/Screen';
 import { Notice } from '../components/Notice';
 import { useAsync } from '../hooks/useAsync';
 import { loadCatalog, loadSyllabus } from '../lib/content';
+import { classifyContentError } from '../lib/errors';
 
 export function SyllabusView() {
-  const { data: catalog, error: catalogError } = useAsync(loadCatalog, []);
+  const { data: catalog, error: catalogError, reload: reloadCatalog } = useAsync(loadCatalog, []);
   const { data: syllabus, error, reload } = useAsync(loadSyllabus, []);
+  const loadError = error ?? catalogError;
   const subjects = catalog ?? [];
   const [selectedId, setSelectedId] = useState('');
   const selected = useMemo(() => syllabus?.find((item) => item.subjectId === (selectedId || syllabus[0]?.subjectId)), [selectedId, syllabus]);
@@ -24,8 +26,8 @@ export function SyllabusView() {
         <GraduationCap size={62} strokeWidth={1.25} />
       </div>
 
-      {!!error && <Notice title="Không thể tải syllabus." tone="error"><p>{error instanceof Error ? error.message : 'Đã xảy ra lỗi khi tải dữ liệu.'}</p><button className="btn" onClick={reload}>Thử lại</button></Notice>}
-      {!error && !catalogError && !syllabus && <p role="status">Đang tải syllabus…</p>}
+      {!!loadError && <Notice title="Không thể tải syllabus." tone="error"><p>{classifyContentError(loadError)}</p><button className="btn" onClick={error ? reload : reloadCatalog}>Thử lại</button></Notice>}
+      {!loadError && !syllabus && <p role="status">Đang tải syllabus…</p>}
       {selected && selectedContent && (
         <>
           <div className="syllabus-toolbar">

@@ -3,10 +3,11 @@ import {
   answerCurrent,
   buildQuizItems,
   createSession,
-  deadline,
+  finalizeExpired,
   isCorrect,
   moveTo,
   replaySession,
+  sessionDeadline,
   submitSession,
   summarize,
 } from '../src/quiz/engine';
@@ -17,11 +18,11 @@ const questions: Question[] = [
   { id: 'ms', type: 'multiple_select', prompt: 'Several?', choices: ['A', 'B', 'C'], correctIndices: [0, 2], tags: [] },
   { id: 'tf', type: 'true_false', prompt: 'True?', answer: true, tags: [] },
 ];
-const make = (timer: number | null = null) =>
+const make = (timeLimit: number | null = null) =>
   createSession({
     title: 'Test',
     deckId: 'test',
-    timer,
+    timeLimit,
     items: buildQuizItems(questions, { shuffleQuestions: false, shuffleChoices: false }),
   });
 describe('LMSPK quiz engine: adapted original grading and session invariants', () => {
@@ -59,7 +60,7 @@ describe('LMSPK quiz engine: adapted original grading and session invariants', (
     expect(answerCurrent(answered, { type: 'multiple_choice', choice: 1 })).toBe(answered);
     expect(answerCurrent(answered, { type: 'timeout' })).toBe(answered);
   });
-  it('clamps navigation and resets answers on restart while preserving timer choice', () => {
+  it('clamps navigation and resets answers on restart while preserving the time limit', () => {
     let s = answerCurrent(make(), { type: 'multiple_choice', choice: 1 });
     expect(moveTo(s, -1).current).toBe(0);
     expect(moveTo(s, 99).current).toBe(2);
@@ -68,21 +69,59 @@ describe('LMSPK quiz engine: adapted original grading and session invariants', (
     expect(fresh.answers).toEqual([null, null, null]);
     expect(fresh.submitted).toBe(false);
     expect(fresh.current).toBe(0);
+    expect(fresh.timeLimit).toBeNull();
+    expect(replaySession(submitSession(make(60))).timeLimit).toBe(60);
   });
-  it('enforces original timer deadline even when the browser timer fires late', () => {
-    const s = make(10);
-    const end = deadline(s)!;
+  it('stores a whole-quiz time limit and derives a single session deadline', () => {
+    const timed = make(60);
+    expect(timed.timeLimit).toBe(60);
+    expect(sessionDeadline(timed)).toBe(timed.startedAt + 60_000);
+    const untimed = make();
+    expect(untimed.timeLimit).toBeNull();
+    expect(sessionDeadline(untimed)).toBeNull();
+  });
+  it('finalizes every unanswered question and submits once the session deadline passes', () => {
+    const s = make(60);
+    const end = sessionDeadline(s)!;
+    expect(finalizeExpired(s, end - 1)).toBe(s);
+    const expired = finalizeExpired(s, end);
+    expect(expired.submitted).toBe(true);
+    expect(expired.answers).toEqual([
+      { type: 'timeout' },
+      { type: 'timeout' },
+      { type: 'timeout' },
+    ]);
+    expect(summarize(expired).correct).toBe(0);
+    expect(finalizeExpired(expired, end + 1)).toBe(expired);
+    const untimed = make();
+    expect(finalizeExpired(untimed, Date.now())).toBe(untimed);
+  });
+  it('does not submit early when every question is answered before the deadline', () => {
+    let s = make(60);
+    s = answerCurrent(s, { type: 'multiple_choice', choice: 1 }, s.startedAt + 1_000);
+    s = moveTo(s, 1);
+    s = answerCurrent(s, { type: 'multiple_select', choices: [0, 2] }, s.startedAt + 2_000);
+    s = moveTo(s, 2);
+    s = answerCurrent(s, { type: 'true_false', answer: true }, s.startedAt + 3_000);
+    expect(s.submitted).toBe(false);
+    expect(answerCurrent(s, { type: 'timeout' }, s.startedAt + 3_500)).toBe(s);
+    expect(finalizeExpired(s, sessionDeadline(s)!).submitted).toBe(true);
+  });
+  it('treats an answer arriving after the session deadline as a full timeout', () => {
+    const s = make(60);
+    const end = sessionDeadline(s)!;
     expect(answerCurrent(s, { type: 'timeout' }, end - 1)).toBe(s);
-    expect(moveTo(s, 1)).toBe(s);
     const late = answerCurrent(s, { type: 'multiple_choice', choice: 1 }, end);
-    expect(late.answers[0]).toEqual({ type: 'timeout' });
-    expect(answerCurrent(late, { type: 'multiple_choice', choice: 1 }, end + 1)).toBe(late);
-    expect(moveTo(late, 1).current).toBe(1);
-    expect(replaySession(late).timer).toBe(10);
+    expect(late.submitted).toBe(true);
+    expect(late.answers).toEqual([
+      { type: 'timeout' },
+      { type: 'timeout' },
+      { type: 'timeout' },
+    ]);
   });
-  it('locks confirmed timed answers and keeps 100 points per correct answer without bonuses', () => {
+  it('locks confirmed answers and keeps 100 points per correct answer without bonuses', () => {
     const s = make(20);
-    const answered = answerCurrent(s, { type: 'multiple_choice', choice: 1 }, s.questionStartedAt + 1000);
+    const answered = answerCurrent(s, { type: 'multiple_choice', choice: 1 }, s.startedAt + 1_000);
     expect(answerCurrent(answered, { type: 'multiple_choice', choice: 0 })).toBe(answered);
     expect(summarize(answered).score).toBe(100);
   });

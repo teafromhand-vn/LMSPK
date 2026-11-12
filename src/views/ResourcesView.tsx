@@ -5,7 +5,7 @@ import { ResourceLink } from '../components/ResourceLink';
 import { Notice } from '../components/Notice';
 import { useAsync } from '../hooks/useAsync';
 import { loadCatalog } from '../lib/content';
-import { errorMessage } from '../lib/errors';
+import { classifyContentError } from '../lib/errors';
 
 export function ResourcesView({ section }: { section: 'documents' | 'flashcards' }) {
   const { data, error, reload } = useAsync(loadCatalog, []);
@@ -25,7 +25,7 @@ export function ResourcesView({ section }: { section: 'documents' | 'flashcards'
         {(data ?? []).map(({ subject }) => <option key={subject.id} value={subject.id}>{subject.courseId ?? subject.id.toUpperCase()}</option>)}
       </select>
     </div>
-    {error ? <Notice title="Không thể tải tài nguyên." tone="error"><p>{errorMessage(error)}</p><button className="btn" onClick={reload}>Thử lại</button></Notice>
+    {error ? <Notice title="Không thể tải tài nguyên." tone="error"><p>{classifyContentError(error)}</p><button className="btn" onClick={reload}>Thử lại</button></Notice>
       : !data ? <p role="status">Đang tải tài nguyên…</p>
       : groups.length ? groups.map(({ subject, resources }) => <section className="chapter-group" key={subject.id}>
         <div className="chapter-group-heading"><h2><Link to={{ name: 'subject', subjectId: subject.id, section }}>{subject.name}</Link></h2></div>
