@@ -6,6 +6,8 @@ import { Notice } from '../components/Notice';
 import { useAsync } from '../hooks/useAsync';
 import { loadCatalog } from '../lib/content';
 import { classifyContentError } from '../lib/errors';
+import { DocumentFormatBadge } from '../components/DocumentFormatBadge';
+import type { LearningDocument } from '../models/types';
 
 export function ResourcesView({ section }: { section: 'documents' | 'flashcards' }) {
   const { data, error, reload } = useAsync(loadCatalog, []);
@@ -30,7 +32,7 @@ export function ResourcesView({ section }: { section: 'documents' | 'flashcards'
       : groups.length ? groups.map(({ subject, resources }) => <section className="chapter-group" key={subject.id}>
         <div className="chapter-group-heading"><h2><Link to={{ name: 'subject', subjectId: subject.id, section }}>{subject.name}</Link></h2></div>
         <div className="resource-list">{resources.map((r) => <ResourceLink key={r.id} resource={r} subjectId={subject.id}>
-          <span className="resource-info"><strong>{r.name}</strong><small>{subject.chapters.find((c) => c.id === r.chapterId)?.name}</small></span>
+           <span className="resource-icon documents"><DocumentFormatBadge document={r as LearningDocument} /></span><span className="resource-info"><strong>{r.name}</strong><small>{String((r as LearningDocument).format).toUpperCase()} · {subject.chapters.find((c) => c.id === r.chapterId)?.name}</small></span>
           <span className="resource-open">{section === 'documents' ? 'Mở ↗' : 'Ôn tập →'}</span>
         </ResourceLink>)}</div>
       </section>) : <Notice title="Không tìm thấy tài nguyên."><p>Thử từ khóa khác hoặc bổ sung nội dung vào bảng tính.</p></Notice>}

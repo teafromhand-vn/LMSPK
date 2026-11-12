@@ -1,9 +1,10 @@
 import { useState } from 'react';
-import { BookOpen, Layers, ListChecks, ChevronRight, Search, FileText, ArrowUpRight } from 'lucide-react';
+import { BookOpen, Layers, ListChecks, ChevronRight, Search, ArrowUpRight } from 'lucide-react';
 import { Screen } from '../components/Screen';
 import { Link } from '../components/Link';
 import { ResourceLink } from '../components/ResourceLink';
 import { Notice } from '../components/Notice';
+import { DocumentFormatBadge } from '../components/DocumentFormatBadge';
 import { useAsync } from '../hooks/useAsync';
 import { loadSubject } from '../lib/content';
 import { classifyContentError } from '../lib/errors';
@@ -189,8 +190,8 @@ function SubjectResources({
                     const body = (
                       <>
                         <span className={`resource-icon ${section}`}>
-                          {section === 'documents' ? (
-                            <FileText size={22} />
+                           {section === 'documents' ? (
+                             <DocumentFormatBadge document={r as LearningDocument} />
                           ) : section === 'tests' ? (
                             <ListChecks size={22} />
                           ) : (
@@ -200,8 +201,8 @@ function SubjectResources({
                         <span className="resource-info">
                           <strong>{r.name}</strong>
                           <small>
-                            {'format' in r
-                              ? (r as LearningDocument).format.toUpperCase()
+                           {'format' in r
+                               ? String((r as LearningDocument).format).toUpperCase()
                               : `${(r as Collection).count} ${section === 'tests' ? 'câu hỏi' : 'thẻ'}`}
                           </small>
                         </span>

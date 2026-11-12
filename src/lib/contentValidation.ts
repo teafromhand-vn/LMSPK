@@ -34,7 +34,7 @@ export function validateIndex(value: unknown, documents = false): Collection[] |
     ids.add(String(entry.id));
     if (
       documents
-        ? !['pdf', 'docx', 'md', 'txt'].includes(String(entry.format)) ||
+        ? !text(entry.format) ||
           !(path(entry.file) || isDocumentUrl(entry.file))
         : !Number.isInteger(entry.count) || Number(entry.count) < 1
     )

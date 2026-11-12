@@ -2100,6 +2100,27 @@ kbd {
   background: #f3edfa;
   color: #8b67a8;
 }
+.document-format {
+  display: inline-grid;
+  place-items: center;
+  min-width: 34px;
+  height: 28px;
+  padding: 0 5px;
+  border: 1px solid currentColor;
+  border-radius: 5px;
+  font-size: 9px;
+  font-weight: 800;
+  line-height: 1;
+  text-transform: uppercase;
+}
+.document-format-docx { color: #fff; background: #1473c9; }
+.document-format-xlsx { color: #fff; background: #218c50; }
+.document-format-pdf { color: #fff; background: #d64040; }
+.document-format-txt, .document-format-md { color: #fff; background: #747b85; }
+.document-format-py { color: #1f2937; background: #f4c542; }
+.document-format-zip { color: #fff; background: #b47700; }
+.document-format-java { color: #1f2937; background: #d8e83f; }
+.document-format:not(.document-format-docx):not(.document-format-xlsx):not(.document-format-pdf):not(.document-format-txt):not(.document-format-md):not(.document-format-py):not(.document-format-zip):not(.document-format-java) { color: #111; background: #fff; }
 .resource-info {
   display: flex;
   flex-direction: column;

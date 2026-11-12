@@ -91,7 +91,7 @@ export interface Deck {
   name: string;
   questions: Question[];
 }
-export type DocumentFormat = 'pdf' | 'docx' | 'md' | 'txt';
+export type DocumentFormat = 'docx' | 'xlsx' | 'pdf' | 'txt' | 'md' | 'py' | 'zip' | 'java' | string;
 export interface LearningDocument extends Omit<Collection, 'count'> {
   file: string;
   format: DocumentFormat;
