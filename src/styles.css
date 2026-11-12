@@ -192,55 +192,6 @@ select:focus-visible {
 .theme-toggle {
   margin-left: auto;
 }
-.ad-slot {
-  margin: 0 0 28px;
-  padding: 10px;
-  border: 1px solid var(--line);
-  border-radius: 10px;
-  background: var(--surface);
-  text-align: center;
-}
-.ad-slot:not(:first-child) { margin-top: 28px; }
-.ad-label {
-  display: block;
-  margin-bottom: 8px;
-  color: var(--dim);
-  font-size: 10px;
-}
-.ad-slot a { display: block; }
-.ad-slot img { display: block; width: 100%; max-height: 180px; object-fit: contain; margin: auto; }
-.ad-placeholder {
-  min-height: 90px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  border: 1px dashed var(--line);
-  border-radius: 6px;
-  color: var(--dim);
-  font-size: 13px;
-}
-.ad-placeholder small { font-size: 11px; }
-.ad-rail { display: none; }
-@media (min-width: 1280px) {
-  .with-side-ads {
-    display: grid;
-    grid-template-columns: 160px minmax(0, 1164px) 160px;
-    justify-content: center;
-    align-items: start;
-    gap: 16px;
-    padding: 0 16px;
-  }
-  .with-side-ads > .content { grid-column: 2; grid-row: 1; width: 100%; min-width: 0; padding-left: 16px; padding-right: 16px; }
-  .with-side-ads > .ad-rail-left { grid-column: 1; grid-row: 1; }
-  .with-side-ads > .ad-rail-right { grid-column: 3; grid-row: 1; }
-  .ad-rail { display: block; padding-top: 43px; }
-  .ad-slot-vertical { padding: 8px; margin: 0; }
-  .ad-slot-vertical .ad-label { line-height: 1.6; }
-  .ad-slot-vertical .ad-placeholder { min-height: 500px; padding: 8px; }
-  .ad-slot-vertical img { max-height: none; height: auto; }
-}
 .content {
   max-width: 1164px;
   margin: auto;

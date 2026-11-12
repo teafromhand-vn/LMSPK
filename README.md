@@ -123,29 +123,6 @@ npm run test:e2e
 
 Tests dùng Google Sheets responses giả lập; không yêu cầu API key thật và không ghi Google Sheets. Browser tests chạy Vite trên port 4173 với ID/key giả lập, chặn các yêu cầu Sheets và kiểm tra desktop/mobile, retry, reader, quiz và xóa trạng thái khi reload. Kiểm tra kết nối Google thật cần bảng tính/API key của chủ dự án.
 
-## Vị trí quảng cáo
-
-Cấu hình tại `src/config/ads.ts`:
-
-- `home-top`: đầu danh sách môn học.
-- `side-left`: banner dọc bên trái danh sách môn học và trang chi tiết môn học.
-- `side-right`: banner dọc bên phải danh sách môn học và trang chi tiết môn học.
-
-Hai banner dọc thay cho quảng cáo cuối trang, chỉ hiển thị khi màn hình rộng từ 1280px và nằm ngoài nội dung chính. Màn hình nhỏ tự ẩn hai banner bên. Dùng ảnh dọc, ví dụ 160 × 600 px; mỗi bên có ảnh và liên kết riêng.
-
-Đặt ảnh trong `public/ads/`, sau đó điền cấu hình, ví dụ:
-
-```ts
-'home-top': {
-  enabled: true,
-  image: 'ads/banner.webp',
-  alt: 'Tên nhà tài trợ và nội dung ưu đãi',
-  href: 'https://example.com',
-},
-```
-
-Đặt `enabled: false` để tắt một vị trí. Đặt `showAdPlaceholders = false` để ẩn các khung chưa có banner khi xuất bản. Mặc định các khung mẫu được hiển thị để dễ xem vị trí. Link mở tab mới, có nhãn Quảng cáo; không có script quảng cáo, đo lượt xem/click hay lưu dữ liệu. Thay cấu hình/ảnh cần deploy lại.
-
 ## Quyền chia sẻ và đóng góp
 
 Chỉ đưa vào repository/Sheets các tài liệu mà chủ dự án có quyền phân phối. Giữ tác giả, nguồn, giấy phép và attribution theo yêu cầu. Nội dung công khai trên mạng không tự động có quyền tái phân phối. Xem [giấy phép nội dung mẫu](templates/google-sheets/LICENSE.md) và [hướng dẫn đóng góp](CONTRIBUTING.md).

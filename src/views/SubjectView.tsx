@@ -88,7 +88,7 @@ function SubjectResources({
       </Screen>
     );
   return (
-    <Screen path={['subjects', subject.name]} title={subject.name} sideAds>
+    <Screen path={['subjects', subject.name]} title={subject.name}>
       <nav className="breadcrumbs" aria-label="Đường dẫn">
         <Link to={{ name: 'library' }}>Môn học</Link>
         <ChevronRight size={13} />

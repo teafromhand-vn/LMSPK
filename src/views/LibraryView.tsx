@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { ArrowUpRight, BookOpen, Layers, ListChecks, Search } from 'lucide-react';
 import { Screen } from '../components/Screen';
-import { AdSlot } from '../components/AdSlot';
 import { Link } from '../components/Link';
 import { Notice } from '../components/Notice';
 import { SubjectCode } from '../components/SubjectCode';
@@ -21,8 +20,7 @@ export function LibraryView() {
       (subject.courseId ?? subject.id).toLowerCase().includes(query.trim().toLowerCase()),
   );
   return (
-    <Screen path={['subjects']} title="Môn học" sideAds>
-      <AdSlot placement="home-top" />
+    <Screen path={['subjects']} title="Môn học">
       <div className="section-heading">
         <div>
           <h2>Khám phá môn học</h2>

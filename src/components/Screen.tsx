@@ -4,7 +4,6 @@ import { useRoute } from '../app/router';
 import { useTheme } from '../app/ThemeContext';
 import { KeyBar, type KeyAction } from './KeyBar';
 import { Link } from './Link';
-import { AdSlot } from './AdSlot';
 import { SessionBanner } from './SessionBanner';
 
 interface ScreenProps {
@@ -12,13 +11,12 @@ interface ScreenProps {
   title: string;
   actions?: KeyAction[];
   children: ReactNode;
-  sideAds?: boolean;
 }
 export function scrollScreenToTop(): void {
   window.scrollTo(0, 0);
 }
 /** LMSPK's shared frame and keyboard bar, restyled for a quiet study library. */
-export function Screen({ title, actions = [], children, sideAds = false }: ScreenProps) {
+export function Screen({ title, actions = [], children }: ScreenProps) {
   const theme = useTheme();
   const route = useRoute();
   const screenRef = useRef<HTMLDivElement>(null);
@@ -89,13 +87,11 @@ export function Screen({ title, actions = [], children, sideAds = false }: Scree
           </button>
         </div>
       </header>
-      <div className={`screen-body${sideAds ? ' with-side-ads' : ''}`}>
-        {sideAds && <div className="ad-rail ad-rail-left"><AdSlot placement="side-left" /></div>}
+      <div className="screen-body">
         <main className="content" id="main" tabIndex={-1}>
           <SessionBanner />
           {children}
         </main>
-        {sideAds && <div className="ad-rail ad-rail-right"><AdSlot placement="side-right" /></div>}
       </div>
       {actions.length > 0 && (
         <div className="bottombar">
