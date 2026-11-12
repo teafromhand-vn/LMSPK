@@ -5,6 +5,7 @@ import { Notice } from '../components/Notice';
 import { useAsync } from '../hooks/useAsync';
 import { loadSubject, resourceContext } from '../lib/content';
 import { Breadcrumbs } from '../components/Breadcrumbs';
+import { DocumentFormatTag } from '../components/DocumentFormatTag';
 import { classifyContentError } from '../lib/errors';
 export function DocumentView({ documentId, subjectId }: { documentId: string; subjectId: string }) {
   const { data, error, reload } = useAsync(async () => {
@@ -32,7 +33,7 @@ export function DocumentView({ documentId, subjectId }: { documentId: string; su
         <>
           <div className="reader-heading">
             <p className="page-kicker">
-              {data.subject} / {data.format.toUpperCase()}
+              {data.subject} <DocumentFormatTag format={data.format} />
             </p>
             <h1>{data.name}</h1>
           </div>

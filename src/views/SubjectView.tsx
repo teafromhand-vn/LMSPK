@@ -1,10 +1,10 @@
 import { useState } from 'react';
-import { BookOpen, Layers, ListChecks, ChevronRight, Search, ArrowUpRight } from 'lucide-react';
+import { BookOpen, FileText, Layers, ListChecks, ChevronRight, Search, ArrowUpRight } from 'lucide-react';
 import { Screen } from '../components/Screen';
 import { Link } from '../components/Link';
 import { ResourceLink } from '../components/ResourceLink';
 import { Notice } from '../components/Notice';
-import { DocumentFormatBadge } from '../components/DocumentFormatBadge';
+import { DocumentFormatTag } from '../components/DocumentFormatTag';
 import { useAsync } from '../hooks/useAsync';
 import { loadSubject } from '../lib/content';
 import { classifyContentError } from '../lib/errors';
@@ -58,6 +58,7 @@ function SubjectResources({
   const { subject } = content;
   const [query, setQuery] = useState('');
   const [category, setCategory] = useState('');
+  const [format, setFormat] = useState('');
   const selectedChapter = subject.chapters.find((c) => c.id === chapterId);
   const tabs = [
     { id: 'flashcards', label: 'Thẻ ghi nhớ', icon: Layers },
@@ -66,10 +67,12 @@ function SubjectResources({
   ] as const;
   const resources = content[section];
   const sectionLabel = tabs.find((tab) => tab.id === section)!.label.toLowerCase();
+  const formats = [...new Set(content.documents.map((d) => d.format.toLowerCase()))].sort();
   const filtered = resources.filter(
     (r) =>
       (!chapterId || r.chapterId === chapterId) &&
       (!category || r.category === category) &&
+      (section !== 'documents' || !format || (r as LearningDocument).format.toLowerCase() === format) &&
       r.name.toLowerCase().includes(query.trim().toLowerCase()),
   );
   const groups = [
@@ -171,6 +174,11 @@ function SubjectResources({
             )}
             </div>
           </div>
+          {section === 'documents' && formats.length > 0 && <div className="tag-filter" role="group" aria-label="Lọc theo định dạng tệp">
+            <span className="tag-filter-label">Định dạng</span>
+            <button type="button" className={`tag tag-reset${format ? '' : ' tag-active'}`} aria-pressed={!format} onClick={() => setFormat('')}>Tất cả</button>
+            {formats.map((value) => <DocumentFormatTag key={value} format={value} active={format === value} onClick={() => setFormat(format === value ? '' : value)} />)}
+          </div>}
           {groups.map((chapter) => (
             <section className="chapter-group" key={chapter.id} aria-label={chapter.name}>
               {chapter.id && <div className="chapter-group-heading">
@@ -191,7 +199,7 @@ function SubjectResources({
                       <>
                         <span className={`resource-icon ${section}`}>
                            {section === 'documents' ? (
-                             <DocumentFormatBadge document={r as LearningDocument} />
+                             <FileText size={22} />
                           ) : section === 'tests' ? (
                             <ListChecks size={22} />
                           ) : (
@@ -200,10 +208,10 @@ function SubjectResources({
                         </span>
                         <span className="resource-info">
                           <strong>{r.name}</strong>
-                          <small>
+                          <small className="resource-meta">
                            {'format' in r
-                               ? String((r as LearningDocument).format).toUpperCase()
-                              : `${(r as Collection).count} ${section === 'tests' ? 'câu hỏi' : 'thẻ'}`}
+                               ? <DocumentFormatTag format={(r as LearningDocument).format} />
+                              : <span>{`${(r as Collection).count} ${section === 'tests' ? 'câu hỏi' : 'thẻ'}`}</span>}
                           </small>
                         </span>
                         <span className="resource-open">
@@ -240,16 +248,17 @@ function SubjectResources({
           {!filtered.length && (
             <Notice title={`Chưa có ${sectionLabel} ở đây.`}>
               <p>
-                {query || category
-                  ? 'Thử từ khóa hoặc loại tài liệu khác.'
+                {query || category || format
+                  ? 'Thử từ khóa, loại tài liệu hoặc định dạng khác.'
                   : 'Chọn chương hoặc mục tài nguyên khác.'}
               </p>
-              {(query || category) && (
+              {(query || category || format) && (
                 <button
                   className="btn"
                   onClick={() => {
                     setQuery('');
                     setCategory('');
+                    setFormat('');
                   }}
                 >
                   Xóa bộ lọc
